@@ -88,17 +88,17 @@ export default function TerminalBg() {
         zIndex: 0,
       }}
     >
-      {/* 暗いオーバーレイ（コントラスト調整） */}
+      {/* ダーク背景用オーバーレイ */}
       <div style={{
         position: "absolute", inset: 0,
-        background: "linear-gradient(180deg, rgba(245,248,252,0.72) 0%, rgba(255,255,255,0.85) 100%)",
+        background: "linear-gradient(180deg, rgba(10,22,40,0.55) 0%, rgba(10,22,40,0.45) 100%)",
         zIndex: 2,
       }} />
 
       {/* グリッドパターン */}
       <div style={{
         position: "absolute", inset: 0,
-        backgroundImage: "linear-gradient(to right, rgba(44,95,184,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(44,95,184,0.07) 1px, transparent 1px)",
+        backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)",
         backgroundSize: "48px 48px",
         zIndex: 1,
       }} />
@@ -129,7 +129,7 @@ export default function TerminalBg() {
                 fontFamily: "'SF Mono','Menlo','Consolas','Courier New',monospace",
                 fontSize: "11px",
                 lineHeight: "1.8",
-                color: "rgba(28,60,120,0.55)",
+                color: "rgba(100,180,255,0.45)",
                 padding: "0 12px",
                 whiteSpace: "nowrap",
               }}
@@ -143,10 +143,10 @@ export default function TerminalBg() {
                     key={li}
                     style={{
                       color: isOk
-                        ? "rgba(38,128,90,0.65)"
+                        ? "rgba(80,220,140,0.75)"
                         : isCmd
-                        ? "rgba(28,60,120,0.75)"
-                        : "rgba(44,95,184,0.45)",
+                        ? "rgba(150,210,255,0.85)"
+                        : "rgba(100,180,255,0.4)",
                       fontWeight: isCmd ? 600 : 400,
                     }}
                   >

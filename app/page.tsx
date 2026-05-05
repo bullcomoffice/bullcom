@@ -8,10 +8,10 @@ export default function HomePage() {
       {/* ===== HERO ===== */}
       <section style={{
         position: "relative",
-        background: "linear-gradient(180deg, #eef3fb 0%, #f8fafd 100%)",
+        background: "linear-gradient(135deg, #0a1628 0%, #1e3a6f 50%, #2c5fb8 100%)",
         overflow: "hidden",
         padding: 0,
-        borderBottom: "1px solid var(--color-border)",
+        borderBottom: "none",
       }}>
         {/* ターミナルアニメーション背景 */}
         <TerminalBg />
@@ -29,31 +29,31 @@ export default function HomePage() {
             <div style={{
               display: "inline-flex", alignItems: "center", gap: "10px",
               fontFamily: "var(--font-en)", fontSize: "13px", fontWeight: 600,
-              letterSpacing: "0.18em", color: "var(--color-primary-dark)",
-              background: "rgba(255,255,255,0.7)", border: "1px solid #d6e0f0",
+              letterSpacing: "0.18em", color: "rgba(255,255,255,0.85)",
+              background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)",
               padding: "6px 14px", borderRadius: "999px", marginBottom: "24px",
             }}>
-              <span style={{ width: "6px", height: "6px", background: "var(--color-primary)", borderRadius: "50%" }} />
+              <span style={{ width: "6px", height: "6px", background: "#6495ED", borderRadius: "50%" }} />
               SINCE 2002 · KOBE / AKASHI
             </div>
 
             <h1 style={{
               fontSize: "clamp(32px, 5vw, 52px)", lineHeight: 1.3,
-              letterSpacing: "0.005em", marginBottom: "24px",
+              letterSpacing: "0.005em", marginBottom: "24px", color: "#fff",
             }}>
               パソコンのお困りごと、<br />
               <span style={{
-                background: "linear-gradient(transparent 75%, rgba(100,149,237,0.35) 75%)",
+                background: "linear-gradient(transparent 70%, rgba(100,149,237,0.5) 70%)",
                 padding: "0 4px",
               }}>そのままお持ちください。</span>
             </h1>
 
             <p style={{
-              fontSize: "17px", color: "var(--color-text-soft)",
+              fontSize: "17px", color: "rgba(255,255,255,0.8)",
               lineHeight: 1.85, marginBottom: "32px", maxWidth: "540px",
             }}>
               起動しない・動作が遅い・データが消えた——<br />
-              小さな不調から本格的な修理まで、<strong>持ち込み診断は無料</strong>。<br />
+              小さな不調から本格的な修理まで、<strong style={{ color: "#fcd34d" }}>持ち込み診断は無料</strong>。<br />
               個人・法人どちらでも、神戸・明石エリアで20年以上の実績があります。
             </p>
 
@@ -68,10 +68,10 @@ export default function HomePage() {
               </a>
             </div>
 
-            <div style={{ display: "flex", gap: "24px", flexWrap: "wrap", paddingTop: "24px", borderTop: "1px solid var(--color-border)" }}>
+            <div style={{ display: "flex", gap: "24px", flexWrap: "wrap", paddingTop: "24px", borderTop: "1px solid rgba(255,255,255,0.2)" }}>
               {["持ち込み診断 無料", "個人・法人どちらも対応", "出張・郵送OK"].map((text) => (
-                <span key={text} style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", fontWeight: 600, color: "var(--color-text-soft)" }}>
-                  <span style={{ width: "32px", height: "32px", background: "var(--color-bg-tint)", borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--color-primary)", flexShrink: 0 }}>
+                <span key={text} style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>
+                  <span style={{ width: "32px", height: "32px", background: "rgba(100,149,237,0.25)", borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#6495ED", flexShrink: 0 }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                   </span>
                   {text}
