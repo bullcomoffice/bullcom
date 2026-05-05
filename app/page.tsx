@@ -204,14 +204,30 @@ export default function HomePage() {
       </section>
 
       {/* ===== BLOG ===== */}
-      <section className="bg-soft">
-        <div className="container">
+      <section style={{
+        background: "linear-gradient(135deg, #1e3a6f 0%, #2c5fb8 100%)",
+        position: "relative", overflow: "hidden",
+      }}>
+        {/* 背景装飾 */}
+        <div aria-hidden="true" style={{
+          position: "absolute", inset: 0,
+          backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+          pointerEvents: "none",
+        }} />
+        <div aria-hidden="true" style={{
+          position: "absolute", right: "-100px", top: "-100px",
+          width: "400px", height: "400px",
+          background: "radial-gradient(closest-side, rgba(100,149,237,0.25), transparent)",
+          borderRadius: "50%", pointerEvents: "none",
+        }} />
+        <div className="container" style={{ position: "relative", zIndex: 1 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "32px" }}>
             <div>
-              <span className="section-head__eyebrow">BLOG</span>
-              <h2 style={{ fontSize: "clamp(24px, 3vw, 34px)" }}>ブログ・コラム</h2>
+              <span style={{ display: "inline-block", fontFamily: "var(--font-en)", fontSize: "13px", letterSpacing: "0.18em", color: "rgba(255,255,255,0.6)", fontWeight: 600, textTransform: "uppercase", marginBottom: "12px" }}>BLOG</span>
+              <h2 style={{ fontSize: "clamp(24px, 3vw, 34px)", color: "#fff" }}>ブログ・コラム</h2>
             </div>
-            <Link href="/blog" className="btn btn-ghost">ブログ一覧を見る →</Link>
+            <Link href="/blog" style={{ color: "rgba(255,255,255,0.8)", fontSize: "15px", fontWeight: 600 }}>ブログ一覧を見る →</Link>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }} className="blog-grid">
             {[
@@ -220,18 +236,19 @@ export default function HomePage() {
               { tag: "設定", date: "2026.04.12", title: "新しいパソコンに買い替え。データ移行のベストな手順とは" },
             ].map((post) => (
               <Link key={post.title} href="/blog" style={{
-                background: "#fff", borderRadius: "var(--radius-lg)",
-                overflow: "hidden", border: "1px solid var(--color-border)",
-                transition: "transform 0.18s, box-shadow 0.18s",
+                background: "rgba(255,255,255,0.18)", backdropFilter: "blur(8px)",
+                borderRadius: "var(--radius-lg)",
+                overflow: "hidden", border: "1px solid rgba(255,255,255,0.3)",
+                transition: "transform 0.18s, box-shadow 0.18s, background 0.18s",
                 display: "flex", flexDirection: "column", textDecoration: "none",
               }}>
-                <div style={{ aspectRatio: "16/10", background: "repeating-linear-gradient(135deg, #e8eef7 0 12px, #dee6f3 12px 24px)" }} />
+                <div style={{ aspectRatio: "16/10", background: "repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0 12px, rgba(255,255,255,0.03) 12px 24px)", borderBottom: "1px solid rgba(255,255,255,0.1)" }} />
                 <div style={{ padding: "22px", flex: 1, display: "flex", flexDirection: "column", gap: "10px" }}>
-                  <div style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "12px", color: "var(--color-text-muted)", fontFamily: "var(--font-en)" }}>
-                    <span className="tag">{post.tag}</span>
+                  <div style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "12px", color: "rgba(255,255,255,0.5)", fontFamily: "var(--font-en)" }}>
+                    <span style={{ display: "inline-block", padding: "3px 10px", background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.9)", fontSize: "12px", borderRadius: "4px", fontWeight: 500 }}>{post.tag}</span>
                     <span>{post.date}</span>
                   </div>
-                  <h3 style={{ fontSize: "16px", lineHeight: 1.6, color: "var(--color-text)" }}>{post.title}</h3>
+                  <h3 style={{ fontSize: "16px", lineHeight: 1.6, color: "#fff" }}>{post.title}</h3>
                 </div>
               </Link>
             ))}
