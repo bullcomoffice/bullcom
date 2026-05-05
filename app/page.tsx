@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import TerminalBg from "@/components/sections/TerminalBg";
 
 export default function HomePage() {
   return (
@@ -7,41 +8,20 @@ export default function HomePage() {
       {/* ===== HERO ===== */}
       <section style={{
         position: "relative",
-        background: "radial-gradient(circle at 80% 20%, rgba(100,149,237,0.18), transparent 50%), radial-gradient(circle at 20% 80%, rgba(180,200,235,0.2), transparent 55%), linear-gradient(180deg, #f5f8fc 0%, #ffffff 100%)",
+        background: "linear-gradient(180deg, #eef3fb 0%, #f8fafd 100%)",
         overflow: "hidden",
         padding: 0,
         borderBottom: "1px solid var(--color-border)",
       }}>
-        {/* グリッド背景 */}
-        <div aria-hidden="true" style={{
-          position: "absolute", inset: 0,
-          backgroundImage: "linear-gradient(to right, rgba(44,95,184,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(44,95,184,0.08) 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-          maskImage: "radial-gradient(ellipse at center, #000 30%, transparent 75%)",
-          WebkitMaskImage: "radial-gradient(ellipse at center, #000 30%, transparent 75%)",
-          opacity: 0.6, pointerEvents: "none",
-        }} />
-
-        {/* ターミナル風テキスト（左上） */}
-        <div aria-hidden="true" style={{
-          position: "absolute", top: "18px", left: "24px",
-          fontFamily: "'SF Mono','Menlo','Consolas','Courier New',monospace",
-          color: "rgba(44,95,184,0.55)", whiteSpace: "pre", lineHeight: 1.7,
-          fontSize: "15px", opacity: 0.45, transform: "rotate(-1deg)", pointerEvents: "none", zIndex: 0,
-        }}>
-          <span style={{ color: "rgba(44,95,184,0.4)" }}>$</span>{" bullcom "}
-          <span style={{ color: "rgba(28,60,120,0.85)", fontWeight: 600 }}>--check</span>{" --target=client_pc\n"}
-          <span style={{ color: "rgba(44,95,184,0.38)" }}>› running diagnostics ........... </span>
-          <span style={{ color: "rgba(38,128,90,0.7)" }}>[ OK ]{"\n"}</span>
-          <span style={{ color: "rgba(44,95,184,0.38)" }}>› malware signature update ..... </span>
-          <span style={{ color: "rgba(38,128,90,0.7)" }}>[ DONE ]</span>
-        </div>
+        {/* ターミナルアニメーション背景 */}
+        <TerminalBg />
 
         <div style={{
           maxWidth: "var(--container)", margin: "0 auto",
           padding: "80px 24px 90px",
           display: "grid", gridTemplateColumns: "1.1fr 0.9fr",
           gap: "56px", alignItems: "center", position: "relative",
+          zIndex: 10,
         }} className="hero-inner">
 
           {/* コピー */}
@@ -127,7 +107,7 @@ export default function HomePage() {
               <span style={{ fontFamily: "var(--font-en)", fontSize: "22px", fontWeight: 700, color: "var(--color-primary)", lineHeight: 1 }}>24<small style={{ fontSize: "13px" }}>年</small></span>
               <span>
                 <span style={{ display: "block", fontWeight: 700 }}>創業 2002年</span>
-                <span style={{ color: "var(--color-text-muted)", fontSize: "11px" }}>地域に根ざして</span>
+                <span style={{ color: "var(--color-text-muted)", fontSize: "11px" }}>地域密着</span>
               </span>
             </div>
             <Image
@@ -135,13 +115,17 @@ export default function HomePage() {
               alt="BULLCOM"
               width={460}
               height={460}
-              style={{ width: "100%", maxWidth: "460px", filter: "drop-shadow(0 30px 60px rgba(44,95,184,0.25))" }}
+              style={{ width: "100%", maxWidth: "460px", filter: "drop-shadow(0 30px 60px rgba(44,95,184,0.25))", animation: "floaty 6s ease-in-out infinite" }}
               priority
             />
           </div>
         </div>
 
         <style>{`
+          @keyframes floaty {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-14px) rotate(2deg); }
+          }
           @media (max-width: 900px) {
             .hero-inner { grid-template-columns: 1fr !important; padding: 56px 20px 64px !important; gap: 32px !important; }
           }
