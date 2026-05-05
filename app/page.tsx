@@ -485,52 +485,89 @@ export default function HomePage() {
       </section>
 
       {/* ===== CONTACT FORM ===== */}
-      <section className="bg-soft">
-        <div className="container-narrow">
-          <div className="section-head">
-            <span className="section-head__eyebrow">CONTACT</span>
-            <h2>お気軽にご相談ください</h2>
-            <p className="section-head__lead">営業時間内に順次ご返信いたします。お急ぎの場合はお電話またはLINEにてご連絡ください。</p>
+      <section style={{ background: "linear-gradient(135deg, #1e3a6f 0%, #2c5fb8 100%)", position: "relative", overflow: "hidden" }}>
+        {/* 背景装飾 */}
+        <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "40px 40px", pointerEvents: "none" }} />
+        <div aria-hidden="true" style={{ position: "absolute", left: "-100px", bottom: "-100px", width: "400px", height: "400px", background: "radial-gradient(closest-side, rgba(100,149,237,0.2), transparent)", borderRadius: "50%", pointerEvents: "none" }} />
+
+        <div className="container" style={{ position: "relative", zIndex: 1 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1.4fr", gap: "56px", alignItems: "start" }} className="contact-layout">
+
+            {/* 左：連絡方法 */}
+            <div>
+              <span style={{ display: "inline-block", fontFamily: "var(--font-en)", fontSize: "13px", letterSpacing: "0.18em", color: "rgba(255,255,255,0.6)", fontWeight: 600, marginBottom: "12px" }}>CONTACT</span>
+              <h2 style={{ fontSize: "clamp(24px, 3vw, 34px)", color: "#fff", marginBottom: "12px" }}>お気軽にご相談ください</h2>
+              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "14.5px", lineHeight: 1.8, marginBottom: "40px" }}>営業時間内に順次ご返信いたします。お急ぎの場合はお電話またはLINEにてご連絡ください。</p>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                {/* 電話 */}
+                <a href="tel:0789122656" style={{ display: "flex", alignItems: "center", gap: "16px", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: "var(--radius-lg)", padding: "20px 24px", textDecoration: "none", transition: "background 0.15s" }}>
+                  <div style={{ width: "48px", height: "48px", background: "rgba(255,255,255,0.15)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", flexShrink: 0 }}>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)", letterSpacing: "0.1em", fontFamily: "var(--font-en)", marginBottom: "2px" }}>PHONE</div>
+                    <div style={{ fontSize: "22px", fontWeight: 700, color: "#fff", fontFamily: "var(--font-en)" }}>078-912-2656</div>
+                    <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)" }}>9:00〜19:00</div>
+                  </div>
+                </a>
+                {/* LINE */}
+                <a href="https://lin.ee/vX5z2Xf" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "16px", background: "rgba(6,199,85,0.25)", border: "1px solid rgba(6,199,85,0.4)", borderRadius: "var(--radius-lg)", padding: "20px 24px", textDecoration: "none" }}>
+                  <div style={{ width: "48px", height: "48px", background: "#06c755", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", flexShrink: 0 }}>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 5.6 2 10c0 2.8 1.8 5.3 4.6 6.7-.1.6-.6 2.4-.7 2.7-.1.4.2.4.4.3.2-.1 2.6-1.8 3.7-2.5.7.1 1.3.1 2 .1 5.5 0 10-3.6 10-8.3S17.5 2 12 2z"/></svg>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)", letterSpacing: "0.1em", fontFamily: "var(--font-en)", marginBottom: "2px" }}>LINE</div>
+                    <div style={{ fontSize: "18px", fontWeight: 700, color: "#fff" }}>LINEで相談する</div>
+                    <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)" }}>写真送付で無料診断</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            {/* 右：フォーム */}
+            <form style={{ background: "#fff", borderRadius: "var(--radius-lg)", padding: "40px", display: "grid", gap: "20px", boxShadow: "0 24px 48px rgba(0,0,0,0.2)" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }} className="form-row">
+                <div className="form-field">
+                  <label>お名前 <span className="req">必須</span></label>
+                  <input type="text" placeholder="山田 太郎" required />
+                </div>
+                <div className="form-field">
+                  <label>電話番号 <span className="req">必須</span></label>
+                  <input type="tel" placeholder="090-0000-0000" required />
+                </div>
+              </div>
+              <div className="form-field">
+                <label>メールアドレス <span className="opt">任意</span></label>
+                <input type="email" placeholder="example@bullcom.jp" />
+              </div>
+              <div className="form-field">
+                <label>お客様区分 <span className="req">必須</span></label>
+                <div className="form-radio-row">
+                  <label className="form-radio"><input type="radio" name="type" defaultChecked />個人</label>
+                  <label className="form-radio"><input type="radio" name="type" />法人</label>
+                </div>
+              </div>
+              <div className="form-field">
+                <label>ご相談内容 <span className="req">必須</span></label>
+                <textarea rows={5} placeholder="症状や、お困りの状況をお聞かせください" required />
+              </div>
+              <button type="submit" style={{ background: "linear-gradient(180deg,#3a73d1,#2c5fb8)", color: "#fff", padding: "16px 32px", borderRadius: "var(--radius)", fontSize: "16px", fontWeight: 700, cursor: "pointer", marginTop: "4px", boxShadow: "0 6px 18px rgba(44,95,184,0.3)" }}>
+                送信する
+              </button>
+              <p style={{ fontSize: "13px", color: "var(--color-text-muted)", textAlign: "center", margin: 0 }}>
+                ※ 送信内容は <Link href="/privacy" style={{ color: "var(--color-primary)" }}>プライバシーポリシー</Link> に基づいて取り扱います
+              </p>
+            </form>
           </div>
-          <form style={{ background: "#fff", border: "1px solid var(--color-border)", borderRadius: "var(--radius-lg)", padding: "40px", display: "grid", gap: "20px", boxShadow: "var(--shadow-sm)" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }} className="form-row">
-              <div className="form-field">
-                <label>お名前 <span className="req">必須</span></label>
-                <input type="text" placeholder="山田 太郎" required />
-              </div>
-              <div className="form-field">
-                <label>電話番号 <span className="req">必須</span></label>
-                <input type="tel" placeholder="090-0000-0000" required />
-              </div>
-            </div>
-            <div className="form-field">
-              <label>メールアドレス <span className="opt">任意</span></label>
-              <input type="email" placeholder="example@bullcom.jp" />
-            </div>
-            <div className="form-field">
-              <label>お客様区分 <span className="req">必須</span></label>
-              <div className="form-radio-row">
-                <label className="form-radio"><input type="radio" name="type" defaultChecked />個人</label>
-                <label className="form-radio"><input type="radio" name="type" />法人</label>
-              </div>
-            </div>
-            <div className="form-field">
-              <label>ご相談内容 <span className="req">必須</span></label>
-              <textarea rows={5} placeholder="症状や、お困りの状況をお聞かせください" required />
-            </div>
-            <button type="submit" style={{ background: "linear-gradient(180deg,#3a73d1,#2c5fb8)", color: "#fff", padding: "16px 32px", borderRadius: "var(--radius)", fontSize: "16px", fontWeight: 700, cursor: "pointer", marginTop: "12px", boxShadow: "0 6px 18px rgba(44,95,184,0.3)", transition: "transform 0.1s" }}>
-              送信する
-            </button>
-            <p style={{ fontSize: "13px", color: "var(--color-text-muted)", textAlign: "center", margin: 0 }}>
-              ※ 送信内容は <Link href="/privacy" style={{ color: "var(--color-primary)" }}>プライバシーポリシー</Link> に基づいて取り扱います
-            </p>
-          </form>
         </div>
-        <style>{`@media (max-width: 600px) { .form-row { grid-template-columns: 1fr !important; } }`}</style>
+        <style>{`
+          @media (max-width: 760px) { .contact-layout { grid-template-columns: 1fr !important; } .form-row { grid-template-columns: 1fr !important; } }
+        `}</style>
       </section>
 
       {/* ===== FAQ ===== */}
-      <section>
+      <section className="bg-soft">
         <div className="container">
           <div className="section-head">
             <span className="section-head__eyebrow">FAQ</span>
