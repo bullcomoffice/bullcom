@@ -375,48 +375,89 @@ export default function HomePage() {
       </section>
 
       {/* ===== MAILING FLOW ===== */}
-      <section>
+      <section style={{ background: "#fff" }}>
         <div className="container">
           <div className="section-head">
             <span className="section-head__eyebrow">MAILING REPAIR</span>
             <h2>遠方の方も安心。郵送で修理を受け付けます。</h2>
             <p className="section-head__lead">来店が難しい方には、郵送での修理をご利用いただけます。シンプルな4ステップです。</p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px", counterReset: "step" }} className="flow-grid">
+
+          {/* ステップフロー */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0", alignItems: "stretch" }} className="flow-grid">
             {[
-              { title: "お申し込み", desc: "LINEまたはお問い合わせフォームから症状をご連絡ください。", icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> },
-              { title: "パソコンを送付", desc: "梱包後、元払いでお送りください。着払いは不可です。", icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg> },
-              { title: "診断・お見積り", desc: "到着後に内容を確認し、作業前に必ずお見積りをご連絡します。", icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> },
-              { title: "修理・返送", desc: "作業完了後、ご指定の住所へお返しいたします。返送料は当社負担です。", icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg> },
+              { color: ["#3a73d1","#1e4a99"], num: "01", title: "お申し込み", desc: "LINEまたはお問い合わせフォームから症状をご連絡ください。", icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> },
+              { color: ["#f5820a","#c96200"], num: "02", title: "パソコンを送付", desc: "梱包後、元払いでお送りください。着払いは不可です。", icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg> },
+              { color: ["#9b59d4","#7340aa"], num: "03", title: "診断・お見積り", desc: "到着後に内容を確認し、作業前に必ずお見積りをご連絡します。", icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> },
+              { color: ["#2db87a","#1a8a58"], num: "04", title: "修理・返送", desc: "作業完了後、ご指定の住所へお返しいたします。返送料は当社負担です。", icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg> },
             ].map((step, i) => (
-              <div key={step.title} style={{ position: "relative", background: "#fff", border: "1px solid var(--color-border)", borderRadius: "var(--radius-lg)", padding: "32px 22px 24px" }}>
-                <div style={{ position: "absolute", top: "-12px", left: "22px", background: "var(--color-primary)", color: "#fff", padding: "4px 10px", borderRadius: "4px", fontFamily: "var(--font-en)", fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em" }}>STEP {i + 1}</div>
-                <div style={{ color: "var(--color-primary)", marginBottom: "8px" }}>{step.icon}</div>
-                <h4 style={{ fontSize: "17px", marginBottom: "6px" }}>{step.title}</h4>
-                <p style={{ fontSize: "13.5px", color: "var(--color-text-soft)", margin: 0, lineHeight: 1.7 }}>{step.desc}</p>
+              <div key={step.title} style={{ position: "relative", display: "flex", alignItems: "stretch" }}>
+                {/* カード */}
+                <div style={{
+                  flex: 1, background: "#fff",
+                  border: "1px solid var(--color-border)", borderRadius: "var(--radius-lg)",
+                  padding: "36px 24px 28px", margin: "0 8px",
+                  borderTop: `4px solid ${step.color[0]}`,
+                  boxShadow: "0 2px 12px rgba(28,60,120,0.06)",
+                }}>
+                  {/* ステップ番号 */}
+                  <div style={{
+                    display: "inline-flex", alignItems: "center", justifyContent: "center",
+                    width: "56px", height: "56px",
+                    background: `linear-gradient(135deg, ${step.color[0]}, ${step.color[1]})`,
+                    borderRadius: "16px", marginBottom: "20px",
+                    color: "#fff", boxShadow: `0 6px 16px ${step.color[0]}44`,
+                  }}>
+                    {step.icon}
+                  </div>
+                  <div style={{
+                    fontFamily: "var(--font-en)", fontSize: "11px", fontWeight: 800,
+                    letterSpacing: "0.12em", color: step.color[0], marginBottom: "6px",
+                  }}>STEP {step.num}</div>
+                  <h4 style={{ fontSize: "18px", marginBottom: "10px", color: "var(--color-text)" }}>{step.title}</h4>
+                  <p style={{ fontSize: "13.5px", color: "var(--color-text-soft)", margin: 0, lineHeight: 1.75 }}>{step.desc}</p>
+                </div>
+                {/* 矢印（最後以外） */}
+                {i < 3 && (
+                  <div style={{
+                    position: "absolute", right: "-12px", top: "50%",
+                    transform: "translateY(-50%)",
+                    width: "24px", height: "24px",
+                    background: "#fff", border: "1px solid var(--color-border)",
+                    borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+                    color: "var(--color-primary)", zIndex: 2,
+                    boxShadow: "0 2px 6px rgba(28,60,120,0.1)",
+                  }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                  </div>
+                )}
               </div>
             ))}
           </div>
-        </div>
-        <style>{`@media (max-width: 760px) { .flow-grid { grid-template-columns: 1fr 1fr !important; } }`}</style>
-      </section>
 
-      {/* ===== SHIPPING BANNER ===== */}
-      <section className="tight">
-        <div className="container">
-          <div style={{ background: "#fff", border: "1.5px solid var(--color-primary-light)", borderRadius: "var(--radius-lg)", padding: "32px 36px", display: "grid", gridTemplateColumns: "auto 1fr auto", gap: "28px", alignItems: "center" }} className="ship-banner">
-            <div style={{ width: "64px", height: "64px", background: "var(--color-bg-tint)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--color-primary)", flexShrink: 0 }}>
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M9 16h2"/></svg>
+          {/* 送付先バナー */}
+          <div style={{
+            marginTop: "40px",
+            background: "linear-gradient(135deg, #1e3a6f 0%, #2c5fb8 100%)",
+            borderRadius: "var(--radius-lg)", padding: "28px 36px",
+            display: "grid", gridTemplateColumns: "auto 1fr auto", gap: "24px", alignItems: "center",
+            position: "relative", overflow: "hidden",
+          }} className="ship-banner">
+            <div aria-hidden="true" style={{ position: "absolute", right: "-60px", top: "-60px", width: "200px", height: "200px", background: "radial-gradient(closest-side, rgba(255,255,255,0.08), transparent)", borderRadius: "50%", pointerEvents: "none" }} />
+            <div style={{ width: "56px", height: "56px", background: "rgba(255,255,255,0.15)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", flexShrink: 0 }}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M9 16h2"/></svg>
             </div>
             <div>
-              <h3 style={{ fontSize: "19px", marginBottom: "4px" }}>郵送修理の送付先</h3>
-              <p style={{ fontFamily: "var(--font-en)", fontWeight: 600, color: "var(--color-text)", fontSize: "13.5px", margin: 0 }}>〒651-2113 兵庫県神戸市西区伊川谷町有瀬846-10 ギャラリエ1F BULLCOM 宛</p>
-              <p style={{ marginTop: "6px", fontSize: "14px", color: "var(--color-text-soft)" }}>TEL: 078-912-2656　梱包は丁寧にお願いいたします。送料は元払いでご送付ください。</p>
+              <h3 style={{ fontSize: "18px", marginBottom: "4px", color: "#fff" }}>郵送修理の送付先</h3>
+              <p style={{ fontWeight: 600, color: "rgba(255,255,255,0.9)", fontSize: "13.5px", margin: 0 }}>〒651-2113 兵庫県神戸市西区伊川谷町有瀬846-10 ギャラリエ1F BULLCOM 宛</p>
+              <p style={{ marginTop: "4px", fontSize: "13px", color: "rgba(255,255,255,0.7)" }}>TEL: 078-912-2656　送料は元払いでお送りください。着払い不可。</p>
             </div>
-            <Link href="/contact" className="btn btn-outline">配送修理の詳細</Link>
+            <Link href="/contact" style={{ background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.4)", color: "#fff", padding: "10px 20px", borderRadius: "var(--radius)", fontWeight: 600, fontSize: "14px", flexShrink: 0, whiteSpace: "nowrap" }}>
+              配送修理の詳細
+            </Link>
           </div>
         </div>
-        <style>{`@media (max-width: 760px) { .ship-banner { grid-template-columns: 1fr !important; } }`}</style>
+        <style>{`@media (max-width: 760px) { .flow-grid { grid-template-columns: 1fr 1fr !important; } .ship-banner { grid-template-columns: 1fr !important; } }`}</style>
       </section>
 
       {/* ===== LINE BANNER ===== */}
