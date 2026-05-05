@@ -46,7 +46,7 @@ export default function Footer() {
             <h4>Contact</h4>
             <ul>
               <li><Link href="/contact">お問い合わせ</Link></li>
-              <li><a href="#">LINEで相談</a></li>
+              <li><a href="https://lin.ee/vX5z2Xf" target="_blank" rel="noopener noreferrer">LINEで相談</a></li>
               <li><a href="tel:0789122656">電話でお問い合わせ</a></li>
             </ul>
             <h4 style={{ marginTop: "32px" }}>Follow</h4>

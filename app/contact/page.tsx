@@ -37,7 +37,7 @@ export default function ContactPage() {
               <p style={{ fontSize: "13.5px", color: "var(--color-text-soft)", marginBottom: "20px" }}>写真を送るだけで概算のご案内ができます。</p>
               <div style={{ fontFamily: "var(--font-en)", fontSize: "18px", fontWeight: 700, color: "#06c755", lineHeight: 1, marginBottom: "6px" }}>@bullcom</div>
               <div style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>24時間受付・返信は営業時間内</div>
-              <a href="#" className="btn btn-line" style={{ marginTop: "16px", width: "100%", justifyContent: "center" }}>LINEで相談する</a>
+              <a href="https://lin.ee/vX5z2Xf" target="_blank" rel="noopener noreferrer" className="btn btn-line" style={{ marginTop: "16px", width: "100%", justifyContent: "center" }}>LINEで相談する</a>
             </div>
 
             {/* フォーム */}

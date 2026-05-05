@@ -12,7 +12,7 @@ type Props = {
 export default function CtaBanner({
   title, desc,
   primaryLabel = "LINEで相談",
-  primaryHref = "#",
+  primaryHref = "https://lin.ee/vX5z2Xf",
   secondaryLabel = "お問い合わせ",
   secondaryHref = "/contact",
 }: Props) {
@@ -23,7 +23,7 @@ export default function CtaBanner({
         <p>{desc}</p>
       </div>
       <div className="cta-banner__actions">
-        <a href={primaryHref} className="btn btn-line">{primaryLabel}</a>
+        <a href={primaryHref} target="_blank" rel="noopener noreferrer" className="btn btn-line">{primaryLabel}</a>
         <Link href={secondaryHref} className="btn btn-outline">{secondaryLabel}</Link>
       </div>
     </div>
