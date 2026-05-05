@@ -2,8 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import TerminalBg from "@/components/sections/TerminalBg";
 import ContactForm from "@/components/ui/ContactForm";
+import { getLatestBlogs } from "@/lib/microcms";
 
-export default function HomePage() {
+export const revalidate = 3600;
+
+const formatDate = (dateStr: string) => {
+  const d = new Date(dateStr);
+  return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
+};
+
+export default async function HomePage() {
+  const { contents: latestPosts } = await getLatestBlogs(3);
   return (
     <>
       {/* ===== HERO ===== */}
@@ -231,23 +240,26 @@ export default function HomePage() {
             <Link href="/blog" style={{ color: "rgba(255,255,255,0.8)", fontSize: "15px", fontWeight: 600 }}>ブログ一覧を見る →</Link>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }} className="blog-grid">
-            {[
-              { tag: "修理", date: "2026.04.28", title: "突然パソコンが起動しない？まず確認したい3つのチェックポイント" },
-              { tag: "セキュリティ", date: "2026.04.20", title: "怪しいメールを開いてしまったら—被害を最小限にする初動対応" },
-              { tag: "設定", date: "2026.04.12", title: "新しいパソコンに買い替え。データ移行のベストな手順とは" },
-            ].map((post) => (
-              <Link key={post.title} href="/blog" style={{
+            {latestPosts.map((post) => (
+              <Link key={post.id} href={`/blog/${post.id}`} style={{
                 background: "rgba(255,255,255,0.18)", backdropFilter: "blur(8px)",
                 borderRadius: "var(--radius-lg)",
                 overflow: "hidden", border: "1px solid rgba(255,255,255,0.3)",
                 transition: "transform 0.18s, box-shadow 0.18s, background 0.18s",
                 display: "flex", flexDirection: "column", textDecoration: "none",
               }}>
-                <div style={{ aspectRatio: "16/10", background: "repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0 12px, rgba(255,255,255,0.03) 12px 24px)", borderBottom: "1px solid rgba(255,255,255,0.1)" }} />
+                {/* アイキャッチ */}
+                <div style={{ aspectRatio: "16/10", position: "relative", background: "repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0 12px, rgba(255,255,255,0.03) 12px 24px)", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
+                  {post.eyecatch && (
+                    <Image src={post.eyecatch.url} alt={post.title} fill style={{ objectFit: "cover" }} />
+                  )}
+                </div>
                 <div style={{ padding: "22px", flex: 1, display: "flex", flexDirection: "column", gap: "10px" }}>
                   <div style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "12px", color: "rgba(255,255,255,0.5)", fontFamily: "var(--font-en)" }}>
-                    <span style={{ display: "inline-block", padding: "3px 10px", background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.9)", fontSize: "12px", borderRadius: "4px", fontWeight: 500 }}>{post.tag}</span>
-                    <span>{post.date}</span>
+                    {post.category && (
+                      <span style={{ display: "inline-block", padding: "3px 10px", background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.9)", fontSize: "12px", borderRadius: "4px", fontWeight: 500 }}>{post.category.name}</span>
+                    )}
+                    <span>{formatDate(post.publishedAt ?? post.createdAt)}</span>
                   </div>
                   <h3 style={{ fontSize: "16px", lineHeight: 1.6, color: "#fff" }}>{post.title}</h3>
                 </div>
