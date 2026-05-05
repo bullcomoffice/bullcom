@@ -16,9 +16,8 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
 
-  // Cloudflare Pages 向け: Node.js API を使わない設定
-  // （必要に応じてコメントアウト解除）
-  // output: "export",
+  // 静的エクスポート（Cloudflare Pages向け）
+  output: "export",
 };
 
 export default nextConfig;
