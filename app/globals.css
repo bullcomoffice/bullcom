@@ -1,122 +1,236 @@
 @import "tailwindcss";
 
 /* ========================================
-   BULLCOMカスタムカラー・テーマ設定
+   BULLCOM HP - Design System
+   style.cssから移植
    ======================================== */
 
 :root {
-  /* ブランドカラー */
-  --color-primary: #6495ED;        /* コーンフラワーブルー（メイン） */
-  --color-primary-dark: #4a7fd4;   /* ホバー時など */
-  --color-primary-light: #e8f0fd;  /* 背景・薄い強調 */
-
-  /* アクセントカラー */
-  --color-line: #06C755;           /* LINE グリーン */
-
-  /* テキスト */
-  --color-text-base: #1a1a1a;
-  --color-text-muted: #6b7280;
-
-  /* 背景 */
+  --color-primary: #2c5fb8;
+  --color-primary-light: #6495ED;
+  --color-primary-dark: #1e4a99;
+  --color-accent: #4a7fd6;
+  --color-pink: #e2477a;
+  --color-pink-dark: #b3214e;
+  --color-pink-soft: #ffe4ee;
+  --color-warm: #f59e2c;
+  --color-warm-soft: #fff4dd;
+  --color-warm-dark: #c97a18;
+  --color-success: #2da06b;
+  --color-success-soft: #e6f4ec;
   --color-bg: #ffffff;
-  --color-bg-subtle: #f8faff;      /* セクション背景（青みがかった白） */
+  --color-bg-soft: #f5f8fc;
+  --color-bg-tint: #eef3fa;
+  --color-border: #dde6f1;
+  --color-text: #1a2332;
+  --color-text-soft: #4a5568;
+  --color-text-muted: #768193;
+  --color-line: #06c755;
+
+  --font-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+  --font-display: "Zen Kaku Gothic New", "Noto Sans JP", system-ui, sans-serif;
+  --font-en: "Inter", system-ui, sans-serif;
+
+  --radius: 6px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(28, 60, 120, 0.06);
+  --shadow: 0 4px 16px rgba(28, 60, 120, 0.08);
+  --shadow-lg: 0 12px 40px rgba(28, 60, 120, 0.12);
+  --container: 1200px;
+  --header-h: 84px;
 }
 
-@theme inline {
-  /* カラー */
-  --color-primary: var(--color-primary);
-  --color-primary-dark: var(--color-primary-dark);
-  --color-primary-light: var(--color-primary-light);
-  --color-line: var(--color-line);
-  --color-bg-subtle: var(--color-bg-subtle);
-
-  /* フォント */
-  --font-sans: var(--font-noto-sans-jp), "Noto Sans JP", sans-serif;
-}
-
-/* ========================================
-   ベーススタイル
-   ======================================== */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text-base);
-  font-family: var(--font-sans);
-  line-height: 1.8;
+  margin: 0;
+  font-family: var(--font-jp);
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* 見出し */
-h1, h2, h3, h4, h5, h6 {
-  line-height: 1.4;
+img { max-width: 100%; display: block; }
+a { color: var(--color-primary); text-decoration: none; }
+a:hover { color: var(--color-primary-dark); }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
   font-weight: 700;
-}
-
-/* リンク */
-a {
-  transition: opacity 0.2s ease;
+  line-height: 1.35;
+  margin: 0;
+  letter-spacing: 0.01em;
 }
 
 /* ========================================
-   ユーティリティ
+   Layout
    ======================================== */
+.container { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
+.container-narrow { max-width: 880px; margin: 0 auto; padding: 0 24px; }
 
-/* セクション共通パディング */
-.section {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+/* ========================================
+   Buttons
+   ======================================== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px 22px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 15px;
+  transition: transform 0.1s, box-shadow 0.15s, background 0.15s;
+  white-space: nowrap;
+  cursor: pointer;
 }
-
-@media (min-width: 768px) {
-  .section {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
-  }
-}
-
-/* セクションタイトル */
-.section-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--color-text-base);
-  text-align: center;
-}
-
-@media (min-width: 768px) {
-  .section-title {
-    font-size: 2.25rem;
-  }
-}
-
-/* プライマリボタン */
 .btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-primary);
-  color: #ffffff;
-  font-weight: 700;
-  padding: 0.75rem 2rem;
-  border-radius: 9999px;
-  transition: background-color 0.2s ease;
+  background: linear-gradient(180deg, #3a73d1, #2c5fb8);
+  color: #fff;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 4px 14px rgba(44, 95, 184, 0.35);
 }
-
-.btn-primary:hover {
-  background-color: var(--color-primary-dark);
-}
-
-/* LINEボタン */
+.btn-primary:hover { color: #fff; transform: translateY(-1px); box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 8px 22px rgba(44, 95, 184, 0.45); }
 .btn-line {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-line);
-  color: #ffffff;
-  font-weight: 700;
-  padding: 0.75rem 2rem;
-  border-radius: 9999px;
-  transition: opacity 0.2s ease;
+  background: linear-gradient(180deg, #06d268, #06c755);
+  color: #fff;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 4px 14px rgba(6, 199, 85, 0.3);
+}
+.btn-line:hover { color: #fff; transform: translateY(-1px); }
+.btn-outline {
+  background: #fff; color: var(--color-primary-dark);
+  border: 1.5px solid var(--color-border);
+}
+.btn-outline:hover { border-color: var(--color-primary); background: var(--color-bg-soft); color: var(--color-primary-dark); }
+.btn-ghost { color: var(--color-primary-dark); background: transparent; padding: 8px 12px; }
+.btn-ghost:hover { color: var(--color-primary); }
+.btn-white { background: #fff; }
+
+/* ========================================
+   Sections
+   ======================================== */
+section { padding: 80px 0; }
+section.tight { padding: 56px 0; }
+.section-head { text-align: center; margin-bottom: 48px; }
+.section-head__eyebrow {
+  display: inline-block;
+  font-family: var(--font-en);
+  font-size: 13px; letter-spacing: 0.18em;
+  color: var(--color-primary);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.section-head h2 { font-size: clamp(24px, 3vw, 34px); }
+.section-head__lead {
+  margin-top: 16px;
+  color: var(--color-text-soft);
+  max-width: 680px;
+  margin-left: auto; margin-right: auto;
 }
 
-.btn-line:hover {
-  opacity: 0.85;
+/* ========================================
+   Backgrounds
+   ======================================== */
+.bg-soft { background: var(--color-bg-soft); }
+.bg-tint { background: var(--color-bg-tint); }
+
+/* ========================================
+   Tags & Badges
+   ======================================== */
+.tag {
+  display: inline-block;
+  padding: 3px 10px;
+  background: var(--color-bg-tint);
+  color: var(--color-primary-dark);
+  font-size: 12px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: var(--color-bg-tint);
+  color: var(--color-primary-dark);
+  border: 1px solid #d6e0f0;
+}
+
+/* ========================================
+   Form
+   ======================================== */
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field label { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.form-field label .req {
+  font-size: 11px; padding: 2px 7px;
+  background: #e84a5f; color: #fff;
+  border-radius: 3px; font-weight: 700;
+}
+.form-field label .opt {
+  font-size: 11px; padding: 2px 7px;
+  background: #e7ecf3; color: var(--color-text-muted);
+  border-radius: 3px; font-weight: 600;
+}
+.form-field input, .form-field textarea, .form-field select {
+  padding: 12px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 15px;
+  background: #fff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.form-field input:focus, .form-field textarea:focus, .form-field select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(100,149,237,0.18);
+}
+.form-radio-row { display: flex; gap: 16px; padding-top: 4px; }
+.form-radio { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 15px; }
+.form-radio input { accent-color: var(--color-primary); }
+
+/* ========================================
+   CTA Banner
+   ======================================== */
+.cta-banner {
+  background: linear-gradient(135deg, #2c5fb8 0%, #1e4a99 100%);
+  border-radius: var(--radius-lg);
+  padding: 40px 48px;
+  color: #fff;
+  display: flex; align-items: center; justify-content: space-between; gap: 32px;
+  position: relative; overflow: hidden;
+}
+.cta-banner::before {
+  content: ''; position: absolute; right: -80px; bottom: -80px;
+  width: 280px; height: 280px;
+  background: radial-gradient(closest-side, rgba(255,255,255,0.15), transparent);
+  border-radius: 50%;
+}
+.cta-banner h3 { font-size: 24px; margin-bottom: 8px; color: #fff; }
+.cta-banner p { color: #cfe0fa; margin: 0; }
+.cta-banner__actions { display: flex; gap: 12px; flex-shrink: 0; position: relative; }
+
+/* ========================================
+   Floating LINE (SP)
+   ======================================== */
+.floating-line {
+  position: fixed; right: 16px; bottom: 16px; z-index: 50;
+  background: #06c755; color: #fff;
+  padding: 12px 18px; border-radius: 999px;
+  font-weight: 600; font-size: 14px;
+  box-shadow: 0 8px 24px rgba(6, 199, 85, 0.4);
+  display: none;
+  align-items: center; gap: 8px;
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+@media (max-width: 760px) {
+  .floating-line { display: inline-flex; }
+  section { padding: 56px 0; }
+  .container { padding: 0 16px; }
+  .cta-banner { flex-direction: column; align-items: flex-start; padding: 28px 20px; }
 }
