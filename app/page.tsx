@@ -461,7 +461,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== LINE BANNER ===== */}
-      <section className="tight">
+      <section className="tight bg-soft">
         <div className="container">
           <div style={{ background: "radial-gradient(circle at 90% 90%, rgba(255,255,255,0.18), transparent 40%), linear-gradient(135deg, #06c755 0%, #02a347 100%)", color: "#fff", borderRadius: "var(--radius-lg)", padding: "56px 56px", display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center", gap: "32px", position: "relative", overflow: "hidden" }} className="line-inner">
             <div>
