@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import TerminalBg from "@/components/sections/TerminalBg";
+import ContactForm from "@/components/ui/ContactForm";
 
 export default function HomePage() {
   return (
@@ -526,39 +527,7 @@ export default function HomePage() {
             </div>
 
             {/* 右：フォーム */}
-            <form style={{ background: "#fff", borderRadius: "var(--radius-lg)", padding: "40px", display: "grid", gap: "20px", boxShadow: "0 24px 48px rgba(0,0,0,0.2)" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }} className="form-row">
-                <div className="form-field">
-                  <label>お名前 <span className="req">必須</span></label>
-                  <input type="text" placeholder="山田 太郎" required />
-                </div>
-                <div className="form-field">
-                  <label>電話番号 <span className="req">必須</span></label>
-                  <input type="tel" placeholder="090-0000-0000" required />
-                </div>
-              </div>
-              <div className="form-field">
-                <label>メールアドレス <span className="opt">任意</span></label>
-                <input type="email" placeholder="example@bullcom.jp" />
-              </div>
-              <div className="form-field">
-                <label>お客様区分 <span className="req">必須</span></label>
-                <div className="form-radio-row">
-                  <label className="form-radio"><input type="radio" name="type" defaultChecked />個人</label>
-                  <label className="form-radio"><input type="radio" name="type" />法人</label>
-                </div>
-              </div>
-              <div className="form-field">
-                <label>ご相談内容 <span className="req">必須</span></label>
-                <textarea rows={5} placeholder="症状や、お困りの状況をお聞かせください" required />
-              </div>
-              <button type="submit" style={{ background: "linear-gradient(180deg,#3a73d1,#2c5fb8)", color: "#fff", padding: "16px 32px", borderRadius: "var(--radius)", fontSize: "16px", fontWeight: 700, cursor: "pointer", marginTop: "4px", boxShadow: "0 6px 18px rgba(44,95,184,0.3)" }}>
-                送信する
-              </button>
-              <p style={{ fontSize: "13px", color: "var(--color-text-muted)", textAlign: "center", margin: 0 }}>
-                ※ 送信内容は <Link href="/privacy" style={{ color: "var(--color-primary)" }}>プライバシーポリシー</Link> に基づいて取り扱います
-              </p>
-            </form>
+            <ContactForm />
           </div>
         </div>
         <style>{`
