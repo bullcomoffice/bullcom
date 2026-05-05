@@ -72,7 +72,6 @@ export default function Footer() {
           background: #0e1a2f;
           color: #c4d0e3;
           padding: 64px 0 32px;
-          margin-top: 80px;
         }
         .site-footer a { color: #c4d0e3; }
         .site-footer a:hover { color: #fff; }

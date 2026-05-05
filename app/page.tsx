@@ -569,32 +569,54 @@ export default function HomePage() {
       {/* ===== FAQ ===== */}
       <section className="bg-soft">
         <div className="container">
-          <div className="section-head">
-            <span className="section-head__eyebrow">FAQ</span>
-            <h2>よくあるご質問</h2>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "880px", margin: "0 auto" }}>
-            {[
-              { q: "診断だけでも来店できますか？", a: "もちろん大丈夫です。診断のみであれば無料です。お気軽にご来店ください。" },
-              { q: "修理にどれくらいかかりますか？", a: "内容により様々です。気になる方は作業前にお尋ねください。お見積りの段階で目安の所要時間をお伝えいたします。" },
-              { q: "WindowsとMac、どちらも対応していますか？", a: "どちらも対応可能です。デスクトップ・ノートPC・一体型など機種は問いません。" },
-              { q: "出張費用はいくらかかりますか？", a: "¥5,500〜となります。エリアにより異なりますので、出張エリアのご案内をご確認ください。" },
-              { q: "着払いで送ってもいいですか？", a: "基本的に不可です。必ず元払いでお送りください。内容によっては可能な場合もありますので、事前にご相談ください。" },
-            ].map((item) => (
-              <details key={item.q} style={{ background: "#fff", border: "1px solid var(--color-border)", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
-                <summary style={{ listStyle: "none", padding: "22px 28px", cursor: "pointer", display: "flex", alignItems: "center", gap: "18px", fontWeight: 600, fontSize: "16px" }}>
-                  <span style={{ flexShrink: 0, width: "32px", height: "32px", background: "var(--color-primary)", color: "#fff", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-en)", fontWeight: 700 }}>Q</span>
-                  {item.q}
-                  <svg style={{ marginLeft: "auto", color: "var(--color-text-muted)" }} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
-                </summary>
-                <div style={{ padding: "0 28px 24px 78px", color: "var(--color-text-soft)", fontSize: "14.5px", lineHeight: 1.85 }}>{item.a}</div>
-              </details>
-            ))}
-          </div>
-          <div style={{ textAlign: "center", marginTop: "32px" }}>
-            <Link href="/faq" className="btn btn-outline">FAQをすべて見る →</Link>
+          <div style={{ display: "grid", gridTemplateColumns: "300px 1fr", gap: "56px", alignItems: "start" }} className="faq-layout">
+
+            {/* 左：スティッキーパネル */}
+            <div style={{ position: "sticky", top: "100px" }}>
+              <span style={{ display: "inline-block", fontFamily: "var(--font-en)", fontSize: "13px", letterSpacing: "0.18em", color: "var(--color-primary)", fontWeight: 600, marginBottom: "12px" }}>FAQ</span>
+              <h2 style={{ fontSize: "clamp(24px, 3vw, 32px)", marginBottom: "16px" }}>よくある<br />ご質問</h2>
+              <p style={{ fontSize: "14px", color: "var(--color-text-soft)", lineHeight: 1.8, marginBottom: "32px" }}>
+                お客様からよくいただくご質問をまとめました。解決しない場合はお気軽にご連絡ください。
+              </p>
+              {/* CTAカード */}
+              <div style={{ background: "linear-gradient(135deg, #1e3a6f, #2c5fb8)", borderRadius: "var(--radius-lg)", padding: "24px", color: "#fff" }}>
+                <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.85)", marginBottom: "16px", lineHeight: 1.7 }}>
+                  解決しないことがあれば、お気軽にご相談ください。
+                </p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                  <a href="https://lin.ee/vX5z2Xf" target="_blank" rel="noopener noreferrer" className="btn btn-line" style={{ justifyContent: "center", fontSize: "14px", padding: "12px 16px" }}>LINEで相談</a>
+                  <Link href="/contact" style={{ display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.3)", color: "#fff", padding: "12px 16px", borderRadius: "var(--radius)", fontWeight: 600, fontSize: "14px", textDecoration: "none" }}>お問い合わせ</Link>
+                </div>
+              </div>
+            </div>
+
+            {/* 右：アコーディオン */}
+            <div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                {[
+                  { q: "診断だけでも来店できますか？", a: "もちろん大丈夫です。診断のみであれば無料です。お気軽にご来店ください。" },
+                  { q: "修理にどれくらいかかりますか？", a: "内容により様々です。気になる方は作業前にお尋ねください。お見積りの段階で目安の所要時間をお伝えいたします。" },
+                  { q: "WindowsとMac、どちらも対応していますか？", a: "どちらも対応可能です。デスクトップ・ノートPC・一体型など機種は問いません。" },
+                  { q: "出張費用はいくらかかりますか？", a: "¥5,500〜となります。エリアにより異なりますので、出張エリアのご案内をご確認ください。" },
+                  { q: "着払いで送ってもいいですか？", a: "基本的に不可です。必ず元払いでお送りください。内容によっては可能な場合もありますので、事前にご相談ください。" },
+                ].map((item, i) => (
+                  <details key={item.q} style={{ background: "#fff", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "0 2px 8px rgba(28,60,120,0.06)", border: "1px solid var(--color-border)" }}>
+                    <summary style={{ listStyle: "none", padding: "20px 24px", cursor: "pointer", display: "flex", alignItems: "center", gap: "16px", fontWeight: 600, fontSize: "15px" }}>
+                      <span style={{ flexShrink: 0, width: "32px", height: "32px", background: `hsl(${220 + i * 15}, 70%, 50%)`, color: "#fff", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-en)", fontWeight: 800, fontSize: "14px" }}>Q</span>
+                      {item.q}
+                      <svg style={{ marginLeft: "auto", color: "var(--color-text-muted)", flexShrink: 0 }} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </summary>
+                    <div style={{ padding: "0 24px 20px 72px", color: "var(--color-text-soft)", fontSize: "14.5px", lineHeight: 1.85, borderTop: "1px solid var(--color-border)" }}>{item.a}</div>
+                  </details>
+                ))}
+              </div>
+              <div style={{ marginTop: "28px" }}>
+                <Link href="/faq" className="btn btn-outline">FAQをすべて見る →</Link>
+              </div>
+            </div>
           </div>
         </div>
+        <style>{`@media (max-width: 760px) { .faq-layout { grid-template-columns: 1fr !important; } }`}</style>
       </section>
     </>
   );
