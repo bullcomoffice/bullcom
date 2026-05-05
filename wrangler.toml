@@ -1,0 +1,6 @@
+name = "bullcom"
+compatibility_date = "2025-01-01"
+
+# 静的エクスポートの出力フォルダを指定
+[assets]
+directory = "./out"
