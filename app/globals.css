@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/* ========================================
+   BULLCOMカスタムカラー・テーマ設定
+   ======================================== */
+
+:root {
+  /* ブランドカラー */
+  --color-primary: #6495ED;        /* コーンフラワーブルー（メイン） */
+  --color-primary-dark: #4a7fd4;   /* ホバー時など */
+  --color-primary-light: #e8f0fd;  /* 背景・薄い強調 */
+
+  /* アクセントカラー */
+  --color-line: #06C755;           /* LINE グリーン */
+
+  /* テキスト */
+  --color-text-base: #1a1a1a;
+  --color-text-muted: #6b7280;
+
+  /* 背景 */
+  --color-bg: #ffffff;
+  --color-bg-subtle: #f8faff;      /* セクション背景（青みがかった白） */
+}
+
+@theme inline {
+  /* カラー */
+  --color-primary: var(--color-primary);
+  --color-primary-dark: var(--color-primary-dark);
+  --color-primary-light: var(--color-primary-light);
+  --color-line: var(--color-line);
+  --color-bg-subtle: var(--color-bg-subtle);
+
+  /* フォント */
+  --font-sans: var(--font-noto-sans-jp), "Noto Sans JP", sans-serif;
+}
+
+/* ========================================
+   ベーススタイル
+   ======================================== */
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-base);
+  font-family: var(--font-sans);
+  line-height: 1.8;
+}
+
+/* 見出し */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+/* リンク */
+a {
+  transition: opacity 0.2s ease;
+}
+
+/* ========================================
+   ユーティリティ
+   ======================================== */
+
+/* セクション共通パディング */
+.section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+/* セクションタイトル */
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text-base);
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .section-title {
+    font-size: 2.25rem;
+  }
+}
+
+/* プライマリボタン */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* LINEボタン */
+.btn-line {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-line);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  transition: opacity 0.2s ease;
+}
+
+.btn-line:hover {
+  opacity: 0.85;
+}
