@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1280px; height: 720px; overflow: hidden; }
+  .card {
+    width: 1280px; height: 720px;
+    background: linear-gradient(135deg, #0a1e0a 0%, #0f3d1f 40%, #1a6b35 100%);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 64px 80px; position: relative;
+    font-family: "Noto Sans JP", "Yu Gothic", sans-serif; overflow: hidden;
+  }
+  .card::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .glow { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
+  .glow-1 { width: 500px; height: 500px; background: rgba(77,187,107,0.35); top: -100px; left: -100px; }
+  .glow-2 { width: 400px; height: 400px; background: rgba(26,107,53,0.15); bottom: -80px; right: 200px; }
+  .left { position: relative; z-index: 1; max-width: 640px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(77,187,107,0.2); border: 1px solid rgba(77,187,107,0.5);
+    color: #7dd49a; padding: 8px 18px; border-radius: 999px;
+    font-size: 18px; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 28px;
+  }
+  .badge .dot { width: 8px; height: 8px; background: #4dbb6b; border-radius: 50%; animation: blink 1.2s infinite; }
+  .title { font-size: 72px; font-weight: 900; color: #fff; line-height: 1.2; margin-bottom: 24px; letter-spacing: -0.02em; }
+  .title .highlight { color: #4dbb6b; }
+  .subtitle { font-size: 28px; color: rgba(255,255,255,0.75); font-weight: 500; line-height: 1.5; margin-bottom: 40px; }
+  .brand { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.5); font-size: 20px; font-weight: 700; font-family: "Inter", sans-serif; letter-spacing: 0.1em; }
+  .brand::before { content: ''; width: 32px; height: 2px; background: rgba(255,255,255,0.3); }
+  .right { position: relative; z-index: 1; flex-shrink: 0; }
+  .icon-box {
+    width: 320px; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15); border-radius: 20px;
+    padding: 36px 32px; text-align: center; backdrop-filter: blur(10px);
+  }
+  .main-icon { font-size: 90px; line-height: 1; margin-bottom: 20px; }
+  .icon-title { font-size: 22px; font-weight: 800; color: #4dbb6b; margin-bottom: 8px; }
+  .icon-desc { font-size: 16px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="left">
+    <div class="badge"><span class="dot"></span>データ保護</div>
+    <div class="title">バックアップ<br><span class="highlight">完全ガイド</span></div>
+    <div class="subtitle">大切なデータを守る方法</div>
+    <div class="brand">BULLCOM</div>
+  </div>
+  <div class="right">
+    <div class="icon-box">
+      <div class="main-icon">💾</div>
+      <div class="icon-title">3-2-1ルール</div>
+      <div class="icon-desc">3つのコピー<br>2種類の媒体</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
