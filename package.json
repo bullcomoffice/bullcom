@@ -6,13 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postbuild": "node scripts/post-to-x.cjs",
+    "post-to-x": "node scripts/post-to-x.cjs"
   },
   "dependencies": {
     "microcms-js-sdk": "^3.4.0",
     "next": "^16.2.4",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "twitter-api-v2": "^1.29.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
