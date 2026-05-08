@@ -96,6 +96,40 @@ function igPost(endpoint, body) {
   });
 }
 
+// コンテナのステータスをポーリング（最大30秒）
+function waitForContainer(containerId, pageToken) {
+  return new Promise((resolve, reject) => {
+    let attempts = 0;
+    const check = () => {
+      attempts++;
+      const options = {
+        hostname: 'graph.facebook.com',
+        path: `/v25.0/${containerId}?fields=status_code&access_token=${pageToken}`,
+        method: 'GET',
+      };
+      https.get(options, (res) => {
+        let data = '';
+        res.on('data', c => data += c);
+        res.on('end', () => {
+          const d = JSON.parse(data);
+          const status = d.status_code;
+          console.log(`[IG投稿] コンテナ状態: ${status}`);
+          if (status === 'FINISHED') {
+            resolve();
+          } else if (status === 'ERROR' || status === 'EXPIRED') {
+            reject(new Error(`コンテナエラー: ${status}`));
+          } else if (attempts >= 6) {
+            reject(new Error('コンテナ処理タイムアウト'));
+          } else {
+            setTimeout(check, 5000);
+          }
+        });
+      }).on('error', reject);
+    };
+    setTimeout(check, 5000); // 最初に5秒待つ
+  });
+}
+
 // ハッシュタグ生成
 function generateHashtags(title) {
   const tags = ['#BULLCOM', '#パソコン修理', '#神戸', '#明石', '#PC修理'];
@@ -158,7 +192,11 @@ async function main() {
     }
     console.log(`[IG投稿] コンテナID: ${container.id}`);
 
-    // Step 2: 投稿を公開
+    // Step 2: コンテナの処理完了を待つ
+    console.log('[IG投稿] 画像処理待ち...');
+    await waitForContainer(container.id, pageToken);
+
+    // Step 3: 投稿を公開
     console.log('[IG投稿] 投稿を公開中...');
     const result = await igPost(`${igAccountId}/media_publish`, {
       creation_id: container.id,
