@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "postbuild": "node scripts/post-to-x.cjs",
-    "post-to-x": "node scripts/post-to-x.cjs"
+    "postbuild": "node scripts/post-to-x.cjs && node scripts/post-to-instagram.cjs",
+    "post-to-x": "node scripts/post-to-x.cjs",
+    "post-to-instagram": "node scripts/post-to-instagram.cjs"
   },
   "dependencies": {
     "microcms-js-sdk": "^3.4.0",
