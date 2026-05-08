@@ -102,6 +102,17 @@ async function main() {
       process.exit(0);
     }
 
+    // 公開時間チェック（公開から60分以内の記事のみ投稿）
+    // microCMSのスケジュール公開時のみ投稿し、コードpush時のビルドはスキップ
+    const publishedAt = new Date(article.publishedAt);
+    const now = new Date();
+    const minutesSincePublish = (now - publishedAt) / 1000 / 60;
+    console.log(`[X投稿] 公開からの経過時間: ${Math.round(minutesSincePublish)}分`);
+    if (minutesSincePublish > 60) {
+      console.log(`[X投稿] 公開から60分以上経過しているためスキップします（コードpushによるビルドと判断）`);
+      process.exit(0);
+    }
+
     // ツイート文作成
     const url = `https://bullcom.jp/blog/${article.id}`;
     const hashtags = generateHashtags(article.title);
