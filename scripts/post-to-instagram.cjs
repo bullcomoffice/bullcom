@@ -208,6 +208,21 @@ async function main() {
     }
     console.log(`[IG投稿] 投稿成功! Post ID: ${result.id}`);
 
+    // Step 4: Facebookページにも投稿
+    const fbPageId = '1165513313302170'; // It Support Bullcom
+    const fbMessage = `【新着記事】${article.title}\n\n${articleUrl}\n\n${hashtags}`;
+    console.log('[FB投稿] Facebookページに投稿中...');
+    const fbResult = await igPost(`${fbPageId}/photos`, {
+      url: imageUrl,
+      message: fbMessage,
+      access_token: pageToken,
+    });
+    if (fbResult.id) {
+      console.log(`[FB投稿] 投稿成功! Post ID: ${fbResult.id}`);
+    } else {
+      console.log(`[FB投稿] 投稿失敗（インスタは成功済み）: ${JSON.stringify(fbResult)}`);
+    }
+
     // 投稿済みIDを保存
     saveLastPostedId(article.id);
 
