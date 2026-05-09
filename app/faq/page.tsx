@@ -76,7 +76,7 @@ export default function FaqPage() {
           <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: "48px", alignItems: "start" }} className="faq-layout">
 
             {/* ===== 左：スティッキーナビ ===== */}
-            <div style={{ position: "sticky", top: "100px" }}>
+            <div style={{ position: "sticky", top: "100px" }} className="faq-sticky">
               <p style={{ fontFamily: "var(--font-en)", fontSize: "12px", fontWeight: 700, letterSpacing: "0.15em", color: "var(--color-text-muted)", marginBottom: "12px" }}>CATEGORIES</p>
               <nav style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 {faqs.map((f) => (
@@ -168,6 +168,7 @@ export default function FaqPage() {
         }
         @media (max-width: 900px) {
           .faq-layout { grid-template-columns: 1fr !important; }
+          .faq-sticky { position: static !important; }
         }
       `}</style>
     </>

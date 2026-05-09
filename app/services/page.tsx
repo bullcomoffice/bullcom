@@ -36,15 +36,28 @@ const PackCard = ({ title, price, items, accent }: { title: string, price: strin
 );
 
 const MenuTable = ({ rows, note }: { rows: [string, string, string][], note?: string }) => (
-  <div style={{ overflowX: "auto" }}>
-    <table className="price-table" style={{ width: "100%" }}>
-      <thead><tr><th>サービス名</th><th>説明</th><th style={{ textAlign: "right" }}>料金（税込）</th></tr></thead>
-      <tbody>
-        {rows.map(([name, desc, price]) => (
-          <tr key={name}><td className="name-cell">{name}</td><td style={{ fontSize: "14px", color: "var(--color-text-soft)" }}>{desc}</td><td className="price-cell">{price}</td></tr>
-        ))}
-      </tbody>
-    </table>
+  <div>
+    {/* スマホ: カードレイアウト */}
+    <div className="menu-card-list">
+      {rows.map(([name, desc, price]) => (
+        <div key={name} className="menu-card">
+          <div className="menu-card__name">{name}</div>
+          <div className="menu-card__desc">{desc}</div>
+          <div className="menu-card__price">{price}<span>税込</span></div>
+        </div>
+      ))}
+    </div>
+    {/* PC: テーブルレイアウト */}
+    <div className="menu-table-wrap">
+      <table className="price-table" style={{ width: "100%" }}>
+        <thead><tr><th>サービス名</th><th>説明</th><th style={{ textAlign: "right" }}>料金（税込）</th></tr></thead>
+        <tbody>
+          {rows.map(([name, desc, price]) => (
+            <tr key={name}><td className="name-cell">{name}</td><td style={{ fontSize: "14px", color: "var(--color-text-soft)" }}>{desc}</td><td className="price-cell">{price}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
     {note && <p style={{ fontSize: "13px", color: "var(--color-text-muted)", marginTop: "12px" }}>{note}</p>}
   </div>
 );
@@ -239,9 +252,28 @@ export default function ServicesPage() {
       </section>
 
       <style>{`
+        /* テーブル共通スタイル */
+        .price-table { border-collapse: collapse; }
+        .price-table th { background: var(--color-bg-tint); padding: 12px 16px; font-size: 13px; font-weight: 600; color: var(--color-text-muted); border-bottom: 2px solid var(--color-border); text-align: left; }
+        .price-table td { padding: 14px 16px; border-bottom: 1px solid var(--color-border); vertical-align: top; }
+        .name-cell { font-weight: 600; font-size: 14px; min-width: 140px; }
+        .price-cell { text-align: right; font-weight: 700; color: var(--color-primary); font-family: var(--font-en); font-size: 15px; white-space: nowrap; }
+
+        /* PC: テーブル表示、カード非表示 */
+        .menu-card-list { display: none; }
+        .menu-table-wrap { display: block; overflow-x: auto; }
+
         @media (max-width: 760px) {
           .pack-grid { grid-template-columns: 1fr !important; }
           .pack-grid-3 { grid-template-columns: 1fr !important; }
+          /* スマホ: カード表示、テーブル非表示 */
+          .menu-card-list { display: flex; flex-direction: column; gap: 10px; }
+          .menu-table-wrap { display: none; }
+          .menu-card { background: var(--color-bg-tint); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+          .menu-card__name { font-weight: 700; font-size: 14px; color: var(--color-text); }
+          .menu-card__desc { font-size: 13px; color: var(--color-text-soft); line-height: 1.6; }
+          .menu-card__price { font-size: 16px; font-weight: 800; color: var(--color-primary); font-family: var(--font-en); margin-top: 4px; }
+          .menu-card__price span { font-family: var(--font-jp); font-size: 11px; font-weight: 500; color: var(--color-text-muted); margin-left: 4px; }
         }
       `}</style>
     </>

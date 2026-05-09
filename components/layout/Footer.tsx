@@ -111,6 +111,7 @@ export default function Footer() {
         .footer-social svg { width: 16px; height: 16px; fill: currentColor; }
         @media (max-width: 800px) {
           .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+          .footer-grid .footer-col:first-child { grid-column: 1 / -1; }
           .footer-bottom { flex-direction: column; gap: 12px; }
         }
       `}</style>

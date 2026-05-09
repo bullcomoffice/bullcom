@@ -11,6 +11,17 @@ const formatDate = (dateStr: string) => {
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
 };
 
+const catColors: Record<string, string> = {
+  "テクノロジー":   "#3a73d1",
+  "更新情報":       "#2db87a",
+  "チュートリアル": "#f5820a",
+  "修理":           "#e84a5f",
+  "セキュリティ":   "#9b59d4",
+  "設定":           "#00b4d8",
+  "データ":         "#6366f1",
+  "お知らせ":       "#2db87a",
+};
+
 export default async function HomePage() {
   const { contents: latestPosts } = await getLatestBlogs(3);
   return (
@@ -257,7 +268,7 @@ export default async function HomePage() {
                 <div style={{ padding: "22px", flex: 1, display: "flex", flexDirection: "column", gap: "10px" }}>
                   <div style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "12px", color: "rgba(255,255,255,0.5)", fontFamily: "var(--font-en)" }}>
                     {post.category && (
-                      <span style={{ display: "inline-block", padding: "3px 10px", background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.9)", fontSize: "12px", borderRadius: "4px", fontWeight: 500 }}>{post.category.name}</span>
+                      <span style={{ display: "inline-block", padding: "3px 10px", background: catColors[post.category.name] ?? "#3a73d1", color: "#fff", fontSize: "12px", borderRadius: "999px", fontWeight: 700 }}>{post.category.name}</span>
                     )}
                     <span>{formatDate(post.publishedAt ?? post.createdAt)}</span>
                   </div>
@@ -466,11 +477,11 @@ export default async function HomePage() {
               <p style={{ marginTop: "4px", fontSize: "13px", color: "rgba(255,255,255,0.7)" }}>TEL: 078-912-2656　送料は元払いでお送りください。着払い不可。</p>
             </div>
             <Link href="/contact" style={{ background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.4)", color: "#fff", padding: "10px 20px", borderRadius: "var(--radius)", fontWeight: 600, fontSize: "14px", flexShrink: 0, whiteSpace: "nowrap" }}>
-              配送修理の詳細
+              郵送修理の申し込み
             </Link>
           </div>
         </div>
-        <style>{`@media (max-width: 760px) { .flow-grid { grid-template-columns: 1fr 1fr !important; } .ship-banner { grid-template-columns: 1fr !important; } }`}</style>
+        <style>{`@media (max-width: 760px) { .flow-grid { grid-template-columns: 1fr 1fr !important; } .ship-banner { grid-template-columns: 1fr !important; text-align: center; justify-items: center; } .ship-banner a { width: 100%; text-align: center; box-sizing: border-box; } }`}</style>
       </section>
 
       {/* ===== LINE BANNER ===== */}
@@ -489,12 +500,18 @@ export default async function HomePage() {
                 </a>
               </div>
             </div>
-            <div style={{ width: "140px", height: "140px", background: "#fff", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", color: "#02a347", fontFamily: "var(--font-en)", fontSize: "11px", textAlign: "center", lineHeight: 1.4, padding: "12px" }}>
-              QR<br />CODE<br />HERE
+            <div style={{ width: "140px", height: "140px", background: "#fff", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", padding: "8px" }}>
+              <img src="/line-qr.png" alt="LINE QRコード" width={124} height={124} style={{ borderRadius: "6px" }} />
             </div>
           </div>
         </div>
-        <style>{`@media (max-width: 760px) { .line-inner { padding: 40px 28px !important; grid-template-columns: 1fr !important; } }`}</style>
+        <style>{`
+          @media (max-width: 760px) {
+            .line-inner { padding: 40px 28px !important; grid-template-columns: 1fr !important; text-align: center; align-items: center; }
+            .line-inner .btn { display: inline-flex !important; }
+            .line-inner > div:last-child { margin: 0 auto; }
+          }
+        `}</style>
       </section>
 
       {/* ===== CONTACT FORM ===== */}
@@ -553,7 +570,7 @@ export default async function HomePage() {
           <div style={{ display: "grid", gridTemplateColumns: "300px 1fr", gap: "56px", alignItems: "start" }} className="faq-layout">
 
             {/* 左：スティッキーパネル */}
-            <div style={{ position: "sticky", top: "100px" }}>
+            <div style={{ position: "sticky", top: "100px" }} className="faq-sticky">
               <span style={{ display: "inline-block", fontFamily: "var(--font-en)", fontSize: "13px", letterSpacing: "0.18em", color: "var(--color-primary)", fontWeight: 600, marginBottom: "12px" }}>FAQ</span>
               <h2 style={{ fontSize: "clamp(24px, 3vw, 32px)", marginBottom: "16px" }}>よくある<br />ご質問</h2>
               <p style={{ fontSize: "14px", color: "var(--color-text-soft)", lineHeight: 1.8, marginBottom: "32px" }}>
@@ -591,13 +608,19 @@ export default async function HomePage() {
                   </details>
                 ))}
               </div>
-              <div style={{ marginTop: "28px" }}>
+              <div style={{ marginTop: "28px" }} className="faq-btn-wrap">
                 <Link href="/faq" className="btn btn-outline">FAQをすべて見る →</Link>
               </div>
             </div>
           </div>
         </div>
-        <style>{`@media (max-width: 760px) { .faq-layout { grid-template-columns: 1fr !important; } }`}</style>
+        <style>{`
+          @media (max-width: 760px) {
+            .faq-layout { grid-template-columns: 1fr !important; }
+            .faq-sticky { position: static !important; }
+            .faq-btn-wrap { text-align: center; }
+          }
+        `}</style>
       </section>
     </>
   );
