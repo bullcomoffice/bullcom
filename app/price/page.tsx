@@ -43,7 +43,7 @@ export default function PricePage() {
               </p>
             </div>
             <Link href="/contact" style={{ background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.4)", color: "#fff", padding: "14px 24px", borderRadius: "var(--radius)", fontWeight: 700, fontSize: "15px", flexShrink: 0, whiteSpace: "nowrap", textDecoration: "none" }}>
-              来店予約する
+              未店予約をする
             </Link>
           </div>
 
@@ -182,7 +182,8 @@ export default function PricePage() {
 
       <style>{`
         @media (max-width: 760px) {
-          .free-hero { grid-template-columns: 1fr !important; text-align: left; }
+          .free-hero { grid-template-columns: 1fr !important; text-align: center; justify-items: center; padding: 32px 24px !important; }
+          .free-hero a { width: 100%; text-align: center; justify-content: center; box-sizing: border-box; }
           .basic-grid { grid-template-columns: 1fr !important; }
           .area-price-grid { grid-template-columns: 1fr !important; }
           .ship-grid { grid-template-columns: 1fr 1fr !important; }

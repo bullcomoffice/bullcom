@@ -5,7 +5,7 @@ import PageHero from "@/components/ui/PageHero";
 import CtaBanner from "@/components/ui/CtaBanner";
 
 export const metadata: Metadata = {
-  title: "会社概要",
+  title: "会社概要｜パソコン修理 BULLCOM 神戸・明石",
   description: "BULLCOMの会社概要・アクセス情報。神戸・明石のパソコン修理・設定専門店。",
 };
 

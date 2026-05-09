@@ -13,11 +13,14 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 const catColors: Record<string, string> = {
-  "修理": "#e84a5f",
-  "セキュリティ": "#f5820a",
-  "設定": "#3a73d1",
-  "データ": "#9b59d4",
-  "お知らせ": "#2db87a",
+  "テクノロジー": "#3a73d1",
+  "更新情報":     "#2db87a",
+  "チュートリアル": "#f5820a",
+  "修理":         "#e84a5f",
+  "セキュリティ": "#9b59d4",
+  "設定":         "#00b4d8",
+  "データ":       "#6366f1",
+  "お知らせ":     "#2db87a",
 };
 const defaultColor = "#3a73d1";
 
@@ -50,7 +53,7 @@ export default async function BlogPage() {
             {categories.map((cat) => {
               const color = catColors[cat.name] ?? defaultColor;
               return (
-                <a key={cat.id} href={`/blog?category=${cat.id}`} style={{ padding: "9px 20px", borderRadius: "999px", background: "#fff", border: `1.5px solid ${color}44`, color, fontSize: "13px", fontWeight: 700, textDecoration: "none" }}>
+                <a key={cat.id} href={`/blog?category=${cat.id}`} style={{ padding: "9px 20px", borderRadius: "999px", background: color, color: "#fff", fontSize: "13px", fontWeight: 700, textDecoration: "none", boxShadow: `0 4px 10px ${color}44`, opacity: 0.9 }}>
                   {cat.name}
                 </a>
               );
