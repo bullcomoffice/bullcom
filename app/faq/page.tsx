@@ -6,6 +6,17 @@ import CtaBanner from "@/components/ui/CtaBanner";
 export const metadata: Metadata = {
   title: "よくある質問",
   description: "パソコン修理・設定に関するよくある質問をまとめています。診断・費用・修理期間など。",
+  alternates: { canonical: "/faq" },
+  openGraph: {
+    title: "よくある質問｜パソコン修理・設定 BULLCOM",
+    description: "パソコン修理・設定に関するよくある質問をまとめています。診断・費用・修理期間など。",
+    url: "https://bullcom.jp/faq",
+    siteName: "BULLCOM（ブルコム）パソコン修理",
+    locale: "ja_JP",
+    type: "website",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "BULLCOM よくある質問" }],
+  },
+  twitter: { card: "summary_large_image", title: "よくある質問｜パソコン修理・設定 BULLCOM", description: "パソコン修理・設定に関するよくある質問をまとめています。診断・費用・修理期間など。", images: ["/og-image.jpg"] },
 };
 
 const faqs = [

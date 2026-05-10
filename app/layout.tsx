@@ -27,6 +27,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://bullcom.jp"),
   title: {
     default: "パソコン修理・設定 BULLCOM｜神戸・明石 持ち込み診断無料",
     template: "%s｜パソコン修理・設定 BULLCOM",
@@ -34,6 +35,33 @@ export const metadata: Metadata = {
   description:
     "神戸・明石のパソコン修理・設定専門店BULLCOM。持ち込み診断料無料、出張・郵送対応。個人・法人どちらも対応しています。",
   keywords: ["パソコン修理", "パソコン設定", "明石", "神戸", "PC修理"],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "パソコン修理・設定 BULLCOM｜神戸・明石 持ち込み診断無料",
+    description:
+      "神戸・明石のパソコン修理・設定専門店BULLCOM。持ち込み診断料無料、出張・郵送対応。個人・法人どちらも対応しています。",
+    url: "https://bullcom.jp",
+    siteName: "BULLCOM（ブルコム）パソコン修理",
+    locale: "ja_JP",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "BULLCOM（ブルコム）パソコン修理",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "パソコン修理・設定 BULLCOM｜神戸・明石 持ち込み診断無料",
+    description:
+      "神戸・明石のパソコン修理・設定専門店BULLCOM。持ち込み診断料無料、出張・郵送対応。個人・法人どちらも対応しています。",
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default function RootLayout({

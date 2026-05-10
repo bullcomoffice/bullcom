@@ -7,6 +7,17 @@ import CtaBanner from "@/components/ui/CtaBanner";
 export const metadata: Metadata = {
   title: "会社概要｜パソコン修理 BULLCOM 神戸・明石",
   description: "BULLCOMの会社概要・アクセス情報。神戸・明石のパソコン修理・設定専門店。",
+  alternates: { canonical: "/about" },
+  openGraph: {
+    title: "会社概要｜パソコン修理 BULLCOM 神戸・明石",
+    description: "BULLCOMの会社概要・アクセス情報。神戸・明石のパソコン修理・設定専門店。",
+    url: "https://bullcom.jp/about",
+    siteName: "BULLCOM（ブルコム）パソコン修理",
+    locale: "ja_JP",
+    type: "website",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "BULLCOM 会社概要" }],
+  },
+  twitter: { card: "summary_large_image", title: "会社概要｜パソコン修理 BULLCOM 神戸・明石", description: "BULLCOMの会社概要・アクセス情報。神戸・明石のパソコン修理・設定専門店。", images: ["/og-image.jpg"] },
 };
 
 export default function AboutPage() {

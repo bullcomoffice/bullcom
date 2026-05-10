@@ -24,8 +24,43 @@ const catColors: Record<string, string> = {
 
 export default async function HomePage() {
   const { contents: latestPosts } = await getLatestBlogs(3);
+
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "BULLCOM（ブルコム）パソコン修理",
+    "url": "https://bullcom.jp",
+  };
+
+  const localBusinessJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "BULLCOM（ブルコム）パソコン修理",
+    "url": "https://bullcom.jp",
+    "telephone": "078-912-2656",
+    "image": "https://bullcom.jp/og-image.jpg",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "伊川谷町有瀬846-10 ギャラリエ1F",
+      "addressLocality": "神戸市西区",
+      "addressRegion": "兵庫県",
+      "postalCode": "651-2113",
+      "addressCountry": "JP",
+    },
+    "openingHours": "Mo-Su 09:00-19:00",
+    "priceRange": "¥¥",
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+      />
       {/* ===== HERO ===== */}
       <section style={{
         position: "relative",

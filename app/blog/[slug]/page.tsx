@@ -18,9 +18,35 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const blog = await getBlogById(slug);
+  const ogImage = blog.eyecatch?.url ?? "/og-image.jpg";
   return {
     title: blog.title,
     description: blog.title,
+    alternates: {
+      canonical: `/blog/${slug}`,
+    },
+    openGraph: {
+      title: blog.title,
+      description: blog.title,
+      url: `https://bullcom.jp/blog/${slug}`,
+      siteName: "BULLCOM（ブルコム）パソコン修理",
+      locale: "ja_JP",
+      type: "article",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: blog.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: blog.title,
+      description: blog.title,
+      images: [ogImage],
+    },
   };
 }
 
@@ -42,8 +68,46 @@ export default async function BlogPostPage({ params }: Props) {
   const blog = await getBlogById(slug);
   const color = catColors[blog.category?.name ?? ""] ?? "#3a73d1";
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://bullcom.jp" },
+      { "@type": "ListItem", "position": 2, "name": "ブログ", "item": "https://bullcom.jp/blog" },
+      { "@type": "ListItem", "position": 3, "name": blog.title, "item": `https://bullcom.jp/blog/${slug}` },
+    ],
+  };
+
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": blog.title,
+    "image": blog.eyecatch?.url ?? "https://bullcom.jp/og-image.jpg",
+    "datePublished": blog.publishedAt ?? blog.createdAt,
+    "dateModified": blog.updatedAt ?? blog.publishedAt ?? blog.createdAt,
+    "author": {
+      "@type": "Organization",
+      "name": "BULLCOM（ブルコム）パソコン修理",
+      "url": "https://bullcom.jp",
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "BULLCOM（ブルコム）パソコン修理",
+      "url": "https://bullcom.jp",
+    },
+    "url": `https://bullcom.jp/blog/${slug}`,
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* ヒーロー */}
       <section style={{ background: `linear-gradient(135deg, #1e3a6f, #2c5fb8)`, padding: "64px 0 56px", position: "relative", overflow: "hidden" }}>
         <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "40px 40px", pointerEvents: "none" }} />

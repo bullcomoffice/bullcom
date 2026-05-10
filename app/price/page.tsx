@@ -6,6 +6,17 @@ import CtaBanner from "@/components/ui/CtaBanner";
 export const metadata: Metadata = {
   title: "料金・プラン",
   description: "パソコン修理・設定の料金一覧。持ち込み診断料無料。出張・郵送の費用も掲載。",
+  alternates: { canonical: "/price" },
+  openGraph: {
+    title: "料金・プラン｜パソコン修理・設定 BULLCOM",
+    description: "パソコン修理・設定の料金一覧。持ち込み診断料無料。出張・郵送の費用も掲載。",
+    url: "https://bullcom.jp/price",
+    siteName: "BULLCOM（ブルコム）パソコン修理",
+    locale: "ja_JP",
+    type: "website",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "BULLCOM 料金・プラン" }],
+  },
+  twitter: { card: "summary_large_image", title: "料金・プラン｜パソコン修理・設定 BULLCOM", description: "パソコン修理・設定の料金一覧。持ち込み診断料無料。出張・郵送の費用も掲載。", images: ["/og-image.jpg"] },
 };
 
 const SectionHeader = ({ num, color, title, lead }: { num: string, color: string, title: string, lead?: string }) => (

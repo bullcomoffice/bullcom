@@ -6,6 +6,17 @@ import ContactForm from "@/components/ui/ContactForm";
 export const metadata: Metadata = {
   title: "お問い合わせ",
   description: "BULLCOMへのお問い合わせ。電話・LINE・フォームからご連絡ください。",
+  alternates: { canonical: "/contact" },
+  openGraph: {
+    title: "お問い合わせ｜パソコン修理・設定 BULLCOM",
+    description: "BULLCOMへのお問い合わせ。電話・LINE・フォームからご連絡ください。",
+    url: "https://bullcom.jp/contact",
+    siteName: "BULLCOM（ブルコム）パソコン修理",
+    locale: "ja_JP",
+    type: "website",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "BULLCOM お問い合わせ" }],
+  },
+  twitter: { card: "summary_large_image", title: "お問い合わせ｜パソコン修理・設定 BULLCOM", description: "BULLCOMへのお問い合わせ。電話・LINE・フォームからご連絡ください。", images: ["/og-image.jpg"] },
 };
 
 export default function ContactPage() {

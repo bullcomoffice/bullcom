@@ -5,6 +5,17 @@ import PageHero from "@/components/ui/PageHero";
 export const metadata: Metadata = {
   title: "プライバシーポリシー",
   description: "パソコン修理・設定 BULLCOMのプライバシーポリシーです。",
+  alternates: { canonical: "/privacy" },
+  openGraph: {
+    title: "プライバシーポリシー｜パソコン修理・設定 BULLCOM",
+    description: "パソコン修理・設定 BULLCOMのプライバシーポリシーです。",
+    url: "https://bullcom.jp/privacy",
+    siteName: "BULLCOM（ブルコム）パソコン修理",
+    locale: "ja_JP",
+    type: "website",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "BULLCOM プライバシーポリシー" }],
+  },
+  twitter: { card: "summary_large_image", title: "プライバシーポリシー｜パソコン修理・設定 BULLCOM", description: "パソコン修理・設定 BULLCOMのプライバシーポリシーです。", images: ["/og-image.jpg"] },
 };
 
 const sections = [
