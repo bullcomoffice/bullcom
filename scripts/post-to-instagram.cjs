@@ -10,6 +10,16 @@
 
 const https = require('https');
 
+// 予期せぬエラーでもデプロイを継続する
+process.on('uncaughtException', (e) => {
+  console.error('[IG投稿] 予期せぬエラー:', e.message);
+  process.exit(0);
+});
+process.on('unhandledRejection', (e) => {
+  console.error('[IG投稿] 未処理のPromiseエラー:', e?.message || e);
+  process.exit(0);
+});
+
 // 環境変数チェック
 const requiredEnvs = [
   'MICROCMS_SERVICE_DOMAIN',
@@ -111,7 +121,8 @@ function waitForContainer(containerId, pageToken) {
         let data = '';
         res.on('data', c => data += c);
         res.on('end', () => {
-          const d = JSON.parse(data);
+          let d = {};
+          try { d = JSON.parse(data); } catch (e) { d = {}; }
           const status = d.status_code;
           console.log(`[IG投稿] コンテナ状態: ${status}`);
           if (status === 'FINISHED') {

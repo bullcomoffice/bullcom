@@ -7,6 +7,16 @@
 const https = require('https');
 const { TwitterApi } = require('twitter-api-v2');
 
+// 予期せぬエラーでもデプロイを継続する
+process.on('uncaughtException', (e) => {
+  console.error('[X投稿] 予期せぬエラー:', e.message);
+  process.exit(0);
+});
+process.on('unhandledRejection', (e) => {
+  console.error('[X投稿] 未処理のPromiseエラー:', e?.message || e);
+  process.exit(0);
+});
+
 // 環境変数チェック
 const requiredEnvs = [
   'MICROCMS_SERVICE_DOMAIN',
