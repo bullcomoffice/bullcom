@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "_postbuild_disabled": "SNS post moved to GitHub Actions (.github/workflows/sns-post.yml)",
+    "postbuild": "node scripts/trigger-sns-post.cjs",
     "post-to-x": "node scripts/post-to-x.cjs",
     "post-to-instagram": "node scripts/post-to-instagram.cjs"
   },
