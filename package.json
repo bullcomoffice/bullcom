@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "postbuild": "node scripts/trigger-sns-post.cjs",
+    "_postbuild_note": "SNS post handled by GitHub Actions, triggered directly from microCMS webhook",
     "post-to-x": "node scripts/post-to-x.cjs",
     "post-to-instagram": "node scripts/post-to-instagram.cjs"
   },
