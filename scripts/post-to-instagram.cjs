@@ -171,9 +171,10 @@ async function main() {
     const publishedAt = new Date(article.publishedAt);
     const now = new Date();
     const minutesSincePublish = (now - publishedAt) / 1000 / 60;
-    console.log(`[IG投稿] 公開からの経過時間: ${Math.round(minutesSincePublish)}分`);
-    if (minutesSincePublish > 60) {
-      console.log(`[IG投稿] 公開から60分以上経過しているためスキップします`);
+    const maxMinutes = process.env.SNS_POST_MAX_MINUTES ? Number(process.env.SNS_POST_MAX_MINUTES) : 60;
+    console.log(`[IG投稿] 公開からの経過時間: ${Math.round(minutesSincePublish)}分 (上限: ${maxMinutes}分)`);
+    if (minutesSincePublish > maxMinutes) {
+      console.log(`[IG投稿] 上限超過のためスキップ`);
       process.exit(0);
     }
 
