@@ -63,6 +63,21 @@ function fetchLatestArticle() {
   });
 }
 
+// 画像URLをBufferとしてダウンロード
+function downloadImage(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      if (res.statusCode !== 200) {
+        reject(new Error(`画像取得失敗: ${res.statusCode}`));
+        return;
+      }
+      const chunks = [];
+      res.on('data', (chunk) => chunks.push(chunk));
+      res.on('end', () => resolve(Buffer.concat(chunks)));
+    }).on('error', reject);
+  });
+}
+
 // 前回投稿したIDを確認（重複投稿防止）
 function getLastPostedId() {
   try {
@@ -140,7 +155,22 @@ async function main() {
       accessSecret: process.env.X_ACCESS_TOKEN_SECRET,
     });
 
-    const result = await client.v2.tweet(tweet);
+    // 画像付き投稿（取得失敗時はテキストのみフォールバック）
+    let mediaIds;
+    try {
+      const imageUrl = `https://bullcom.jp/blog-thumbnails/${article.id}.jpg`;
+      console.log(`[X投稿] 画像取得: ${imageUrl}`);
+      const buffer = await downloadImage(imageUrl);
+      const mediaId = await client.v1.uploadMedia(buffer, { mimeType: 'image/jpeg' });
+      mediaIds = [mediaId];
+      console.log(`[X投稿] 画像アップロード成功: ${mediaId}`);
+    } catch (e) {
+      console.log(`[X投稿] 画像取得失敗 (テキストのみで投稿): ${e.message}`);
+    }
+
+    const result = mediaIds
+      ? await client.v2.tweet({ text: tweet, media: { media_ids: mediaIds } })
+      : await client.v2.tweet(tweet);
     console.log(`[X投稿] 投稿成功! Tweet ID: ${result.data.id}`);
 
     // 投稿済みIDを保存
