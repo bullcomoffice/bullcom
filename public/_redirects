@@ -1,0 +1,17 @@
+# 旧 WordPress URL → 新 Next.js URL の 301 リダイレクト
+# 2026-05 リブランド前の HTML/PDF ページが GSC でランキングしてるため
+# 新 URL にリンクジュースを集約する
+
+/company.html       /about         301
+/contact.html       /contact       301
+/pc-setup.html      /services      301
+/area.html          /              301
+/blog/              /blog          301
+
+# 旧ソフト紹介 PDF（事業終了済み・410 = Gone で完全削除示唆）
+/software/kaitai.pdf      /  410
+/software/hitokawa.pdf    /  410
+/software/                /  410
+
+# www → apex（Cloudflare 側で設定済みなら不要だが念のため）
+# https://www.bullcom.jp/*  https://bullcom.jp/:splat  301

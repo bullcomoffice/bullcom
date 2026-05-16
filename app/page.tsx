@@ -34,11 +34,15 @@ export default async function HomePage() {
 
   const localBusinessJsonLd = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": ["LocalBusiness", "ProfessionalService"],
+    "@id": "https://bullcom.jp/#localbusiness",
     "name": "BULLCOM（ブルコム）パソコン修理",
+    "alternateName": ["パソコン修理 BULLCOM", "ブルコム"],
+    "description": "神戸市・明石市のパソコン修理・設定専門店。持ち込み診断料無料、出張・郵送対応。2002年創業の地域密着サービス。",
     "url": "https://bullcom.jp",
     "telephone": "078-912-2656",
     "image": "https://bullcom.jp/og-image.jpg",
+    "logo": "https://bullcom.jp/logo-full.png",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "伊川谷町有瀬846-10 ギャラリエ1F",
@@ -47,8 +51,38 @@ export default async function HomePage() {
       "postalCode": "651-2113",
       "addressCountry": "JP",
     },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 34.7028,
+      "longitude": 135.0188,
+    },
+    "areaServed": [
+      { "@type": "City", "name": "神戸市", "containedInPlace": { "@type": "State", "name": "兵庫県" } },
+      { "@type": "City", "name": "明石市", "containedInPlace": { "@type": "State", "name": "兵庫県" } },
+      { "@type": "AdministrativeArea", "name": "神戸市西区" },
+      { "@type": "AdministrativeArea", "name": "神戸市垂水区" },
+      { "@type": "AdministrativeArea", "name": "兵庫県" },
+    ],
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "opens": "09:00",
+      "closes": "19:00",
+    }],
     "openingHours": "Mo-Su 09:00-19:00",
     "priceRange": "¥¥",
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "パソコン修理・設定サービス",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "パソコン修理（持ち込み診断無料）" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "パソコン設定・初期設定" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "出張サポート（神戸・明石）" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "郵送修理対応（全国）" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "データ復旧・移行" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "ウイルス駆除・セキュリティ対策" } },
+      ],
+    },
   };
 
   return (

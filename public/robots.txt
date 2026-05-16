@@ -1,3 +1,49 @@
+# BULLCOM パソコン修理 - robots.txt
+
+# 通常の検索エンジン
 User-agent: *
 Allow: /
+
+# AI 検索 / LLM 学習・推論クローラを明示的に許可
+# （GEO: Generative Engine Optimization のため）
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# サイトマップ
 Sitemap: https://bullcom.jp/sitemap.xml

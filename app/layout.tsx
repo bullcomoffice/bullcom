@@ -29,19 +29,19 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://bullcom.jp"),
   title: {
-    default: "パソコン修理・設定 BULLCOM｜神戸・明石 持ち込み診断無料",
+    default: "パソコン修理・設定 BULLCOM｜神戸市・明石市 持ち込み診断無料",
     template: "%s｜パソコン修理・設定 BULLCOM",
   },
   description:
-    "神戸・明石のパソコン修理・設定専門店BULLCOM。持ち込み診断料無料、出張・郵送対応。個人・法人どちらも対応しています。",
-  keywords: ["パソコン修理", "パソコン設定", "明石", "神戸", "PC修理"],
+    "神戸市・明石市のパソコン修理・設定専門店BULLCOM。持ち込み診断料無料、出張・郵送対応。個人・法人どちらも対応。神戸市西区・明石市の地域密着で20年以上の実績。",
+  keywords: ["パソコン修理", "パソコン修理 明石", "パソコン修理 明石市", "パソコン修理 神戸", "パソコン修理 神戸市", "明石市 パソコン修理", "神戸市 パソコン修理", "明石 PC修理", "神戸 PC修理", "パソコン設定", "明石", "神戸", "PC修理"],
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "パソコン修理・設定 BULLCOM｜神戸・明石 持ち込み診断無料",
+    title: "パソコン修理・設定 BULLCOM｜神戸市・明石市 持ち込み診断無料",
     description:
-      "神戸・明石のパソコン修理・設定専門店BULLCOM。持ち込み診断料無料、出張・郵送対応。個人・法人どちらも対応しています。",
+      "神戸市・明石市のパソコン修理・設定専門店BULLCOM。持ち込み診断料無料、出張・郵送対応。個人・法人どちらも対応。神戸市西区・明石市の地域密着で20年以上の実績。",
     url: "https://bullcom.jp",
     siteName: "BULLCOM（ブルコム）パソコン修理",
     locale: "ja_JP",
@@ -57,9 +57,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "パソコン修理・設定 BULLCOM｜神戸・明石 持ち込み診断無料",
+    title: "パソコン修理・設定 BULLCOM｜神戸市・明石市 持ち込み診断無料",
     description:
-      "神戸・明石のパソコン修理・設定専門店BULLCOM。持ち込み診断料無料、出張・郵送対応。個人・法人どちらも対応しています。",
+      "神戸市・明石市のパソコン修理・設定専門店BULLCOM。持ち込み診断料無料、出張・郵送対応。個人・法人どちらも対応。神戸市西区・明石市の地域密着で20年以上の実績。",
     images: ["/og-image.jpg"],
   },
 };

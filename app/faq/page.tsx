@@ -78,8 +78,26 @@ const faqs = [
 ];
 
 export default function FaqPage() {
+  // FAQPage JSON-LD（全カテゴリの Q&A をフラット化）
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.flatMap(group => group.items.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a,
+      },
+    }))),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <PageHero sub="FAQ" title="よくあるご質問" crumb="よくある質問" lead="皆様からよくいただくご質問をカテゴリ別にまとめました。解決しない場合はお気軽にお問い合わせください。" />
 
       <section style={{ background: "var(--color-bg-soft)" }}>
