@@ -20,6 +20,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Trigger Cloudflare rebuild (safety double-fire)
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$DEPLOY_HOOK_URL" ]; then
+            echo "CLOUDFLARE_DEPLOY_HOOK_URL not set, skipping"
+            exit 0
+          fi
+          echo "Triggering Cloudflare deploy hook..."
+          RESPONSE=$(curl -s -X POST "$DEPLOY_HOOK_URL")
+          echo "Response: $RESPONSE"
+          # 冪等：microCMSのwebhookが既に発火していても問題なし（Cloudflare側で重複ビルドはキューイング処理）
+
       - name: Wait for thumbnail deployment
         env:
           MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
