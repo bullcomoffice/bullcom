@@ -62,6 +62,7 @@ jobs:
           X_API_SECRET: ${{ secrets.X_API_SECRET }}
           X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
           X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+          SNS_POST_MAX_MINUTES: ${{ secrets.SNS_POST_MAX_MINUTES }}
         run: node scripts/post-to-x.cjs
 
       - name: Post to Instagram & Facebook
@@ -70,4 +71,6 @@ jobs:
           MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
           IG_BUSINESS_ACCOUNT_ID: ${{ secrets.IG_BUSINESS_ACCOUNT_ID }}
           IG_PAGE_ACCESS_TOKEN: ${{ secrets.IG_PAGE_ACCESS_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          SNS_POST_MAX_MINUTES: ${{ secrets.SNS_POST_MAX_MINUTES }}
         run: node scripts/post-to-instagram.cjs
