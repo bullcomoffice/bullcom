@@ -38,7 +38,7 @@ function fetchLatestArticle() {
   return new Promise((resolve, reject) => {
     const domain = process.env.MICROCMS_SERVICE_DOMAIN;
     const apiKey = process.env.MICROCMS_API_KEY;
-    const url = `https://${domain}.microcms.io/api/v1/blogs?limit=1&orders=-publishedAt&fields=id,title,publishedAt`;
+    const url = `https://${domain}.microcms.io/api/v1/blogs?limit=1&orders=-publishedAt&fields=id,title,publishedAt,eyecatch`;
 
     const options = {
       headers: { 'X-MICROCMS-API-KEY': apiKey },
@@ -158,7 +158,7 @@ async function main() {
     // 画像付き投稿（取得失敗時はテキストのみフォールバック）
     let mediaIds;
     try {
-      const imageUrl = `https://bullcom.jp/blog-thumbnails/${article.id}.jpg`;
+      const imageUrl = article.eyecatch?.url || `https://bullcom.jp/blog-thumbnails/${article.id}.jpg`;
       console.log(`[X投稿] 画像取得: ${imageUrl}`);
       const buffer = await downloadImage(imageUrl);
       const mediaId = await client.v1.uploadMedia(buffer, { mimeType: 'image/jpeg' });

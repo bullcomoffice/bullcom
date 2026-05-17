@@ -39,7 +39,7 @@ function fetchLatestArticle() {
   return new Promise((resolve, reject) => {
     const domain = process.env.MICROCMS_SERVICE_DOMAIN;
     const apiKey = process.env.MICROCMS_API_KEY;
-    const url = `https://${domain}.microcms.io/api/v1/blogs?limit=1&orders=-publishedAt&fields=id,title,publishedAt`;
+    const url = `https://${domain}.microcms.io/api/v1/blogs?limit=1&orders=-publishedAt&fields=id,title,publishedAt,eyecatch`;
 
     https.get(url, { headers: { 'X-MICROCMS-API-KEY': apiKey } }, (res) => {
       let data = '';
@@ -187,8 +187,8 @@ async function main() {
     const caption = `【新着記事】${article.title}\n\n記事はこちら→プロフィールのリンクから\n🔗 ${articleUrl}\n\n${hashtags}`;
     console.log(`[IG投稿] キャプション:\n${caption}`);
 
-    // サムネイル画像URL（Cloudflare Workers経由）
-    const imageUrl = `https://bullcom.bullcom-office.workers.dev/blog-thumbnails/${article.id}.jpg`;
+    // サムネイル画像URL（microCMS CDNを優先、fallbackでCloudflare Workers）
+    const imageUrl = article.eyecatch?.url || `https://bullcom.bullcom-office.workers.dev/blog-thumbnails/${article.id}.jpg`;
     console.log(`[IG投稿] 画像URL: ${imageUrl}`);
 
     // Step 1: メディアコンテナ作成
