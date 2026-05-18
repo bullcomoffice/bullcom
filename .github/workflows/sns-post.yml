@@ -11,6 +11,10 @@ on:
         description: 'X (Twitter) 投稿をスキップ（IG/FBだけ流したい場合 true）'
         type: boolean
         default: false
+      skip_ig:
+        description: 'Instagram/Facebook 投稿をスキップ（Xだけ流したい場合 true）'
+        type: boolean
+        default: false
 
 jobs:
   post:
@@ -66,6 +70,7 @@ jobs:
         run: node scripts/post-to-x.cjs
 
       - name: Post to Instagram & Facebook
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.skip_ig != 'true' }}
         env:
           MICROCMS_SERVICE_DOMAIN: ${{ secrets.MICROCMS_SERVICE_DOMAIN }}
           MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
