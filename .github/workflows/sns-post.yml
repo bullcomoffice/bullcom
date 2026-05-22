@@ -15,6 +15,10 @@ on:
         description: 'Instagram/Facebook 投稿をスキップ（Xだけ流したい場合 true）'
         type: boolean
         default: false
+      skip_gbp:
+        description: 'Google Business Profile 投稿をスキップ（true）'
+        type: boolean
+        default: false
 
 jobs:
   post:
@@ -79,3 +83,16 @@ jobs:
           FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
           SNS_POST_MAX_MINUTES: ${{ secrets.SNS_POST_MAX_MINUTES }}
         run: node scripts/post-to-instagram.cjs
+
+      - name: Post to Google Business Profile
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.skip_gbp != 'true' }}
+        env:
+          MICROCMS_SERVICE_DOMAIN: ${{ secrets.MICROCMS_SERVICE_DOMAIN }}
+          MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
+          GBP_CLIENT_ID: ${{ secrets.GBP_CLIENT_ID }}
+          GBP_CLIENT_SECRET: ${{ secrets.GBP_CLIENT_SECRET }}
+          GBP_REFRESH_TOKEN: ${{ secrets.GBP_REFRESH_TOKEN }}
+          GBP_ACCOUNT_ID: ${{ secrets.GBP_ACCOUNT_ID }}
+          GBP_LOCATION_ID: ${{ secrets.GBP_LOCATION_ID }}
+          SNS_POST_MAX_MINUTES: ${{ secrets.SNS_POST_MAX_MINUTES }}
+        run: node scripts/post-to-gbp.cjs
