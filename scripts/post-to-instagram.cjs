@@ -13,11 +13,11 @@ const https = require('https');
 // 予期せぬエラーでもデプロイを継続する
 process.on('uncaughtException', (e) => {
   console.error('[IG投稿] 予期せぬエラー:', e.message);
-  process.exit(0);
+  process.exit(1);
 });
 process.on('unhandledRejection', (e) => {
   console.error('[IG投稿] 未処理のPromiseエラー:', e?.message || e);
-  process.exit(0);
+  process.exit(1);
 });
 
 // 環境変数チェック
@@ -240,7 +240,7 @@ async function main() {
 
   } catch (e) {
     console.error('[IG投稿] エラー:', e.message);
-    process.exit(0); // デプロイは継続
+    process.exit(1);
   }
 }
 

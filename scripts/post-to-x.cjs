@@ -10,11 +10,11 @@ const { TwitterApi } = require('twitter-api-v2');
 // 予期せぬエラーでもデプロイを継続する
 process.on('uncaughtException', (e) => {
   console.error('[X投稿] 予期せぬエラー:', e.message);
-  process.exit(0);
+  process.exit(1);
 });
 process.on('unhandledRejection', (e) => {
   console.error('[X投稿] 未処理のPromiseエラー:', e?.message || e);
-  process.exit(0);
+  process.exit(1);
 });
 
 // 環境変数チェック
@@ -150,8 +150,7 @@ async function main() {
 
   } catch (e) {
     console.error('[X投稿] エラー:', e.message);
-    // X投稿失敗してもデプロイは継続する
-    process.exit(0);
+    process.exit(1);
   }
 }
 
