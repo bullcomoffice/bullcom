@@ -31,6 +31,9 @@ jobs:
           echo "Response: $RESPONSE"
 
       - name: Post to X (Twitter)
+        # 2026-05-26 自動投稿停止（X API課金化に伴い手動運用に切替）
+        # 手動投稿スケジュール: blog_check/bullcom_jp_x_schedule.md
+        if: ${{ false }}
         env:
           MICROCMS_SERVICE_DOMAIN: ${{ secrets.MICROCMS_SERVICE_DOMAIN }}
           MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
