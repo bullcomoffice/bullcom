@@ -1,246 +1,177 @@
-/**
+﻿/**
  * post-to-instagram.cjs
- * microCMSの最新公開記事をInstagramに自動投稿するスクリプト
- * Cloudflare Workers Buildの postbuild フックで実行される
- *
- * Instagram Graph API (Facebook Login) を使用
- * - IG Business Account ID: 17841405354198125
- * - FB Page ID: 1165513313302170 (It Support Bullcom)
+ * microCMSの最新公開記事をInstagram + Facebookに画像付き自動投稿
  */
 
 const https = require('https');
 
-// 予期せぬエラーでもデプロイを継続する
 process.on('uncaughtException', (e) => {
-  console.error('[IG投稿] 予期せぬエラー:', e.message);
-  process.exit(1);
+  console.error('[IG/FB投稿] 予期せぬエラー:', e.message);
+  process.exit(0);
 });
 process.on('unhandledRejection', (e) => {
-  console.error('[IG投稿] 未処理のPromiseエラー:', e?.message || e);
-  process.exit(1);
+  console.error('[IG/FB投稿] 未処理のPromiseエラー:', e?.message || e);
+  process.exit(0);
 });
 
-// 環境変数チェック
 const requiredEnvs = [
-  'MICROCMS_SERVICE_DOMAIN',
-  'MICROCMS_API_KEY',
-  'IG_PAGE_ACCESS_TOKEN',
-  'IG_BUSINESS_ACCOUNT_ID',
+  'MICROCMS_SERVICE_DOMAIN', 'MICROCMS_API_KEY',
+  'IG_BUSINESS_ACCOUNT_ID', 'IG_PAGE_ACCESS_TOKEN',
+  'FB_PAGE_ID', 'SITE_URL',
 ];
 for (const env of requiredEnvs) {
   if (!process.env[env]) {
-    console.log(`[IG投稿] ${env} が未設定のためスキップします`);
+    console.log(`[IG/FB投稿] ${env} が未設定のためスキップ`);
     process.exit(0);
   }
 }
 
-// microCMSから最新公開記事を取得
 function fetchLatestArticle() {
   return new Promise((resolve, reject) => {
-    const domain = process.env.MICROCMS_SERVICE_DOMAIN;
-    const apiKey = process.env.MICROCMS_API_KEY;
-    const url = `https://${domain}.microcms.io/api/v1/blogs?limit=1&orders=-publishedAt&fields=id,title,publishedAt,eyecatch`;
-
-    https.get(url, { headers: { 'X-MICROCMS-API-KEY': apiKey } }, (res) => {
+    const url = `https://${process.env.MICROCMS_SERVICE_DOMAIN}.microcms.io/api/v1/blogs?limit=1&orders=-publishedAt&fields=id,title,slug,publishedAt,eyecatch`;
+    https.get(url, { headers: { 'X-MICROCMS-API-KEY': process.env.MICROCMS_API_KEY } }, (res) => {
       let data = '';
-      res.on('data', (chunk) => data += chunk);
+      res.on('data', (c) => data += c);
       res.on('end', () => {
         try {
           const json = JSON.parse(data);
-          if (json.contents && json.contents.length > 0) {
-            resolve(json.contents[0]);
-          } else {
-            reject(new Error('記事が見つかりません'));
-          }
+          if (json.contents && json.contents.length > 0) resolve(json.contents[0]);
+          else reject(new Error('記事が見つかりません'));
         } catch (e) { reject(e); }
       });
     }).on('error', reject);
   });
 }
 
-// 前回投稿したIDを確認
-function getLastPostedId() {
-  try {
-    const fs = require('fs');
-    const path = require('path');
-    const filePath = path.join(__dirname, '.last-posted-ig-id');
-    if (fs.existsSync(filePath)) {
-      return fs.readFileSync(filePath, 'utf8').trim();
-    }
-  } catch (e) {}
-  return null;
-}
-
-function saveLastPostedId(id) {
-  try {
-    const fs = require('fs');
-    const path = require('path');
-    fs.writeFileSync(path.join(__dirname, '.last-posted-ig-id'), id, 'utf8');
-  } catch (e) {}
-}
-
-// Instagram Graph API リクエスト
 function igPost(endpoint, body) {
   return new Promise((resolve, reject) => {
     const bodyStr = JSON.stringify(body);
-    const options = {
+    const req = https.request({
       hostname: 'graph.facebook.com',
       path: `/v25.0/${endpoint}`,
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(bodyStr),
-      },
-    };
-    const req = https.request(options, (res) => {
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(bodyStr) },
+    }, (res) => {
       let data = '';
-      res.on('data', (chunk) => data += chunk);
-      res.on('end', () => {
-        try { resolve(JSON.parse(data)); }
-        catch (e) { reject(e); }
-      });
+      res.on('data', (c) => data += c);
+      res.on('end', () => { try { resolve(JSON.parse(data)); } catch (e) { reject(e); } });
     });
-    req.on('error', reject);
-    req.write(bodyStr);
-    req.end();
+    req.on('error', reject); req.write(bodyStr); req.end();
   });
 }
 
-// コンテナのステータスをポーリング（最大30秒）
-function waitForContainer(containerId, pageToken) {
+function waitForContainer(containerId, token) {
   return new Promise((resolve, reject) => {
     let attempts = 0;
+    const MAX_ATTEMPTS = 36; // 5秒 × 36回 = 約3分
     const check = () => {
       attempts++;
-      const options = {
-        hostname: 'graph.facebook.com',
-        path: `/v25.0/${containerId}?fields=status_code&access_token=${pageToken}`,
-        method: 'GET',
-      };
-      https.get(options, (res) => {
+      https.get(`https://graph.facebook.com/v25.0/${containerId}?fields=status_code,status&access_token=${token}`, (res) => {
         let data = '';
-        res.on('data', c => data += c);
+        res.on('data', (c) => data += c);
         res.on('end', () => {
-          let d = {};
-          try { d = JSON.parse(data); } catch (e) { d = {}; }
-          const status = d.status_code;
-          console.log(`[IG投稿] コンテナ状態: ${status}`);
-          if (status === 'FINISHED') {
-            resolve();
-          } else if (status === 'ERROR' || status === 'EXPIRED') {
-            reject(new Error(`コンテナエラー: ${status}`));
-          } else if (attempts >= 6) {
-            reject(new Error('コンテナ処理タイムアウト'));
-          } else {
-            setTimeout(check, 5000);
+          let d;
+          try { d = JSON.parse(data); }
+          catch (e) {
+            console.log(`[IG投稿] JSON parse失敗 (attempt ${attempts}): ${data.slice(0, 300)}`);
+            if (attempts >= MAX_ATTEMPTS) return reject(new Error('parse error'));
+            return setTimeout(check, 5000);
           }
+          if (d.status_code === 'FINISHED') return resolve();
+          if (d.status_code === 'ERROR' || d.status_code === 'EXPIRED') return reject(new Error(d.status_code));
+          // subcode 33 = container がまだ Graph API 側で認識されていない → retry
+          const isTransientAuthError = d.error && d.error.code === 100 && d.error.error_subcode === 33;
+          if (d.error && !isTransientAuthError) return reject(new Error(`API error: ${d.error.message || JSON.stringify(d.error)}`));
+          if (attempts >= MAX_ATTEMPTS) {
+            return reject(new Error(`timeout after ${attempts} attempts (last: ${d.status_code || (d.error && d.error.message) || 'undefined'})`));
+          }
+          if (attempts % 6 === 0 || attempts === 1) {
+            console.log(`[IG投稿] 画像処理待ち (${attempts * 5}秒経過, status: ${d.status_code || (d.error && d.error.message) || 'pending'})`);
+          }
+          setTimeout(check, 5000);
         });
       }).on('error', reject);
     };
-    setTimeout(check, 5000); // 最初に5秒待つ
+    setTimeout(check, 15000); // 初回wait 15秒（container作成直後のGraph API認識遅延対策）
   });
 }
 
-// ハッシュタグ生成
 function generateHashtags(title) {
-  const tags = ['#BULLCOM', '#パソコン修理', '#神戸', '#明石', '#PC修理'];
-  if (title.includes('ウイルス') || title.includes('セキュリティ') || title.includes('ランサムウェア')) {
-    tags.push('#セキュリティ対策');
-  }
-  if (title.includes('Windows')) tags.push('#Windows');
-  if (title.includes('バックアップ')) tags.push('#データバックアップ');
-  if (title.includes('中古')) tags.push('#中古パソコン');
-  if (title.includes('テレワーク') || title.includes('リモート')) tags.push('#テレワーク');
+  const tags = (process.env.SNS_HASHTAGS_IG || process.env.SNS_HASHTAGS || '#BULLCOM #パソコン修理 #神戸 #明石 #PC修理').split(' ');
   return tags.slice(0, 8).join(' ');
 }
 
 async function main() {
   try {
-    console.log('[IG投稿] 最新記事を取得中...');
     const article = await fetchLatestArticle();
-    console.log(`[IG投稿] 最新記事: ${article.title} (ID: ${article.id})`);
+    console.log(`[IG/FB投稿] 最新記事: ${article.title} (ID: ${article.id})`);
 
-    // 重複投稿チェック
-    const lastId = getLastPostedId();
-    if (lastId === article.id) {
-      console.log(`[IG投稿] 既に投稿済み (ID: ${article.id}) のためスキップします`);
-      process.exit(0);
-    }
-
-    // 公開時間チェック（60分以内のみ投稿）
     const publishedAt = new Date(article.publishedAt);
-    const now = new Date();
-    const minutesSincePublish = (now - publishedAt) / 1000 / 60;
-    const maxMinutes = process.env.SNS_POST_MAX_MINUTES ? Number(process.env.SNS_POST_MAX_MINUTES) : 60;
-    console.log(`[IG投稿] 公開からの経過時間: ${Math.round(minutesSincePublish)}分 (上限: ${maxMinutes}分)`);
-    if (minutesSincePublish > maxMinutes) {
-      console.log(`[IG投稿] 上限超過のためスキップ`);
-      process.exit(0);
+    const minutes = (Date.now() - publishedAt) / 60000;
+    const max = Number(process.env.SNS_POST_MAX_MINUTES || 60);
+    console.log(`[IG/FB投稿] 公開からの経過時間: ${Math.round(minutes)}分 (上限: ${max}分)`);
+    if (minutes > max) { console.log(`[IG/FB投稿] 上限超過のためスキップ`); process.exit(0); }
+
+    const articleUrl = `${process.env.SITE_URL}/blog/${article.slug || article.id}`;
+    // microCMS CDN URLを優先（Cloudflareキャッシュ問題回避）
+    const imageUrl = article.eyecatch?.url || `${process.env.SITE_URL}/blog-thumbnails/${article.id}.jpg`;
+
+    const igId = process.env.IG_BUSINESS_ACCOUNT_ID;
+    const fbId = process.env.FB_PAGE_ID;
+    const token = process.env.IG_PAGE_ACCESS_TOKEN;
+
+    // ===== Instagram =====
+    try {
+      console.log(`[IG投稿] 画像URL: ${imageUrl}`);
+      const igCaption = `【新着記事】${article.title}\n\n記事はこちら→プロフィールのリンクから\n🔗 ${articleUrl}\n\n${generateHashtags(article.title)}`;
+      const container = await igPost(`${igId}/media`, {
+        image_url: imageUrl, caption: igCaption, access_token: token,
+      });
+      if (!container.id) throw new Error(`IG container失敗: ${JSON.stringify(container)}`);
+      console.log(`[IG投稿] コンテナID: ${container.id}`);
+
+      // status_code 取得が常時 Authorization Error を返すため、
+      // status check は省略して固定時間待機 → publish 試行する方式に変更
+      console.log('[IG投稿] 60秒待機 (画像処理時間確保)...');
+      await new Promise(r => setTimeout(r, 60000));
+
+      console.log('[IG投稿] publish 試行...');
+      let igResult = await igPost(`${igId}/media_publish`, { creation_id: container.id, access_token: token });
+      // まだ処理中なら追加で30秒待ってリトライ
+      if (!igResult.id && igResult.error) {
+        console.log(`[IG投稿] publish失敗、30秒後にリトライ: ${JSON.stringify(igResult.error)}`);
+        await new Promise(r => setTimeout(r, 30000));
+        igResult = await igPost(`${igId}/media_publish`, { creation_id: container.id, access_token: token });
+      }
+      if (!igResult.id) throw new Error(`IG公開失敗: ${JSON.stringify(igResult)}`);
+      console.log(`[IG投稿] 投稿成功! Post ID: ${igResult.id}`);
+    } catch (e) {
+      console.error('[IG投稿] エラー:', e.message);
+      // IG失敗してもFBは続行
     }
 
-    const igAccountId = process.env.IG_BUSINESS_ACCOUNT_ID;
-    const pageToken = process.env.IG_PAGE_ACCESS_TOKEN;
-    const articleUrl = `https://bullcom.jp/blog/${article.id}`;
-    const hashtags = generateHashtags(article.title);
-
-    // Instagram投稿キャプション
-    const caption = `【新着記事】${article.title}\n\n記事はこちら→プロフィールのリンクから\n🔗 ${articleUrl}\n\n${hashtags}`;
-    console.log(`[IG投稿] キャプション:\n${caption}`);
-
-    // サムネイル画像URL（microCMS CDNを優先、fallbackでCloudflare Workers）
-    const imageUrl = article.eyecatch?.url || `https://bullcom.bullcom-office.workers.dev/blog-thumbnails/${article.id}.jpg`;
-    console.log(`[IG投稿] 画像URL: ${imageUrl}`);
-
-    // Step 1: メディアコンテナ作成
-    console.log('[IG投稿] メディアコンテナ作成中...');
-    const container = await igPost(`${igAccountId}/media`, {
-      image_url: imageUrl,
-      caption: caption,
-      access_token: pageToken,
-    });
-
-    if (!container.id) {
-      throw new Error(`コンテナ作成失敗: ${JSON.stringify(container)}`);
-    }
-    console.log(`[IG投稿] コンテナID: ${container.id}`);
-
-    // Step 2: コンテナの処理完了を待つ
-    console.log('[IG投稿] 画像処理待ち...');
-    await waitForContainer(container.id, pageToken);
-
-    // Step 3: 投稿を公開
-    console.log('[IG投稿] 投稿を公開中...');
-    const result = await igPost(`${igAccountId}/media_publish`, {
-      creation_id: container.id,
-      access_token: pageToken,
-    });
-
-    if (!result.id) {
-      throw new Error(`公開失敗: ${JSON.stringify(result)}`);
-    }
-    console.log(`[IG投稿] 投稿成功! Post ID: ${result.id}`);
-
-    // Step 4: Facebookページにも投稿
-    const fbPageId = '1165513313302170'; // It Support Bullcom
-    const fbMessage = `【新着記事】${article.title}\n\n${articleUrl}\n\n${hashtags}`;
-    console.log('[FB投稿] Facebookページに投稿中...');
-    const fbResult = await igPost(`${fbPageId}/photos`, {
-      url: imageUrl,
-      message: fbMessage,
-      access_token: pageToken,
-    });
-    if (fbResult.id) {
-      console.log(`[FB投稿] 投稿成功! Post ID: ${fbResult.id}`);
+    // ===== Facebook =====
+    if (process.env.IG_ONLY === '1') {
+      console.log('[FB投稿] IG_ONLY=1 のためFBスキップ');
     } else {
-      console.log(`[FB投稿] 投稿失敗（インスタは成功済み）: ${JSON.stringify(fbResult)}`);
+      try {
+        const fbMessage = `【新着記事】${article.title}\n\n${articleUrl}\n\n${generateHashtags(article.title)}`;
+        console.log('[FB投稿] Facebookページに投稿中...');
+        const fbResult = await igPost(`${fbId}/photos`, {
+          url: imageUrl, message: fbMessage, access_token: token,
+        });
+        if (fbResult.id) {
+          console.log(`[FB投稿] 投稿成功! Post ID: ${fbResult.id}`);
+        } else {
+          console.log(`[FB投稿] 投稿失敗: ${JSON.stringify(fbResult)}`);
+        }
+      } catch (e) {
+        console.error('[FB投稿] エラー:', e.message);
+      }
     }
-
-    // 投稿済みIDを保存
-    saveLastPostedId(article.id);
-
   } catch (e) {
-    console.error('[IG投稿] エラー:', e.message);
-    process.exit(1);
+    console.error('[IG/FB投稿] エラー:', e.message);
+    process.exit(0);
   }
 }
 
