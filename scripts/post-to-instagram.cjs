@@ -7,11 +7,11 @@ const https = require('https');
 
 process.on('uncaughtException', (e) => {
   console.error('[IG/FB投稿] 予期せぬエラー:', e.message);
-  process.exit(0);
+  process.exit(1);
 });
 process.on('unhandledRejection', (e) => {
   console.error('[IG/FB投稿] 未処理のPromiseエラー:', e?.message || e);
-  process.exit(0);
+  process.exit(1);
 });
 
 const requiredEnvs = [
@@ -171,7 +171,7 @@ async function main() {
     }
   } catch (e) {
     console.error('[IG/FB投稿] エラー:', e.message);
-    process.exit(0);
+    process.exit(1);
   }
 }
 

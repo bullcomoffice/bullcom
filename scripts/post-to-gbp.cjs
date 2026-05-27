@@ -29,11 +29,11 @@ const { URLSearchParams } = require('url');
 // 予期せぬエラーでもデプロイ継続
 process.on('uncaughtException', (e) => {
   console.error('[GBP投稿] 予期せぬエラー:', e.message);
-  process.exit(0);
+  process.exit(1);
 });
 process.on('unhandledRejection', (e) => {
   console.error('[GBP投稿] 未処理のPromiseエラー:', e?.message || e);
-  process.exit(0);
+  process.exit(1);
 });
 
 // 環境変数チェック
@@ -265,7 +265,7 @@ async function main() {
   if (res.status !== 200) {
     console.error(`[GBP投稿] ❌ 投稿失敗 (HTTP ${res.status})`);
     console.error(JSON.stringify(res.body, null, 2));
-    process.exit(0); // デプロイは継続
+    process.exit(1);
   }
 
   console.log(`[GBP投稿] ✅ 投稿成功!`);
@@ -278,5 +278,5 @@ async function main() {
 
 main().catch((e) => {
   console.error('[GBP投稿] エラー:', e.message);
-  process.exit(0);
+  process.exit(1);
 });
