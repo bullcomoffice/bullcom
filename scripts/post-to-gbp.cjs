@@ -11,6 +11,7 @@
 
 const https = require('https');
 const { URLSearchParams } = require('url');
+const { getPostContent } = require('./parse-sns-schedule.cjs');
 
 // .env.local を手動読み込み（dotenv不要）
 {
@@ -222,8 +223,9 @@ async function main() {
   const accessToken = await getAccessToken();
   console.log('[GBP投稿] ✅ access_token 取得');
 
-  // 投稿リクエスト組み立て
-  const summary = buildSummary(article);
+  // 投稿リクエスト組み立て（sns-schedule.md があればそれを使用）
+  const scheduled = getPostContent(article.id);
+  const summary = scheduled ? scheduled.full : buildSummary(article);
   console.log(`[GBP投稿] 投稿本文 (${summary.length}文字):\n${summary}`);
 
   const articleUrl = `${process.env.SITE_URL || 'https://bullcom.jp'}/blog/${article.id}`;

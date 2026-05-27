@@ -4,6 +4,7 @@
  */
 
 const https = require('https');
+const { getPostContent } = require('./parse-sns-schedule.cjs');
 
 process.on('uncaughtException', (e) => {
   console.error('[IG/FB投稿] 予期せぬエラー:', e.message);
@@ -120,10 +121,15 @@ async function main() {
     const fbId = process.env.FB_PAGE_ID;
     const token = process.env.IG_PAGE_ACCESS_TOKEN;
 
+    // sns-schedule.md から投稿テキスト取得（無ければ fallback）
+    const scheduled = getPostContent(article.id);
+
     // ===== Instagram =====
     try {
       console.log(`[IG投稿] 画像URL: ${imageUrl}`);
-      const igCaption = `【新着記事】${article.title}\n\n記事はこちら→プロフィールのリンクから\n🔗 ${articleUrl}\n\n${generateHashtags(article.title)}`;
+      const igCaption = scheduled
+        ? scheduled.full
+        : `【新着記事】${article.title}\n\n記事はこちら→プロフィールのリンクから\n🔗 ${articleUrl}\n\n${generateHashtags(article.title)}`;
       const container = await igPost(`${igId}/media`, {
         image_url: imageUrl, caption: igCaption, access_token: token,
       });
@@ -155,7 +161,9 @@ async function main() {
       console.log('[FB投稿] IG_ONLY=1 のためFBスキップ');
     } else {
       try {
-        const fbMessage = `【新着記事】${article.title}\n\n${articleUrl}\n\n${generateHashtags(article.title)}`;
+        const fbMessage = scheduled
+          ? scheduled.full
+          : `【新着記事】${article.title}\n\n${articleUrl}\n\n${generateHashtags(article.title)}`;
         console.log('[FB投稿] Facebookページに投稿中...');
         const fbResult = await igPost(`${fbId}/photos`, {
           url: imageUrl, message: fbMessage, access_token: token,
