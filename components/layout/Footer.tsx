@@ -39,6 +39,11 @@ export default function Footer() {
               <li><Link href="/blog">ブログ・コラム</Link></li>
               <li><Link href="/privacy">プライバシーポリシー</Link></li>
             </ul>
+            <h4 style={{ marginTop: "32px" }}>グループサイト</h4>
+            <ul>
+              <li><a href="https://bullcom.net" target="_blank" rel="noopener">BULLCOM Security（セキュリティ）</a></li>
+              <li><a href="https://bullcom.org" target="_blank" rel="noopener">BULLCOM（IT機器回収）</a></li>
+            </ul>
           </div>
 
           {/* Contact */}
