@@ -67,7 +67,7 @@ export default function ContactForm() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-          <input type="hidden" name="access_key" value="35b47419-5d55-4b8c-89d1-60e6adde5936" />
+          <input type="hidden" name="access_key" value="d01c5ee3-5d34-47fa-b431-b0856ba9edee" />
           <input type="hidden" name="subject" value="【BULLCOM】お問い合わせが届きました" />
           <input type="hidden" name="from_name" value="BULLCOM お問い合わせフォーム" />
           <input type="hidden" name="redirect" value="false" />
