@@ -21,6 +21,12 @@ export default function ContactForm() {
       if (json.success) {
         setStatus("success");
         form.reset();
+        // GA4 コンバージョン計測（お問い合わせ送信完了）
+        const w = window as unknown as { gtag?: (...args: unknown[]) => void };
+        w.gtag?.("event", "generate_lead", {
+          form_name: "contact_form",
+          category: String(data.get("category") || "未選択"),
+        });
       } else {
         setStatus("error");
       }
