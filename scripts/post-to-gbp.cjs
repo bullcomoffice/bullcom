@@ -9,23 +9,19 @@
  *   POST https://mybusiness.googleapis.com/v4/{accountId}/locations/{locationId}/localPosts
  */
 
-const https = require('https');
 const { URLSearchParams } = require('url');
 const { getPostContent } = require('./parse-sns-schedule.cjs');
+const {
+  loadEnvLocal,
+  httpsPostJson,
+  httpsPostForm,
+  fetchLatestArticle,
+  isWithinPostWindow,
+  getLastPostedId,
+  saveLastPostedId,
+} = require('./lib/sns-common.cjs');
 
-// .env.local を手動読み込み（dotenv不要）
-{
-  const fs = require('fs');
-  const path = require('path');
-  const envPath = path.join(__dirname, '..', '.env.local');
-  try {
-    const lines = fs.readFileSync(envPath, 'utf8').split(/\r?\n/);
-    for (const line of lines) {
-      const m = line.match(/^([A-Z_][A-Z0-9_]*)=(.*)$/);
-      if (m && !process.env[m[1]]) process.env[m[1]] = m[2];
-    }
-  } catch {}
-}
+loadEnvLocal();
 
 // 予期せぬエラーでもデプロイ継続
 process.on('uncaughtException', (e) => {
@@ -52,118 +48,6 @@ for (const env of requiredEnvs) {
     console.log(`[GBP投稿] ${env} が未設定のためスキップします`);
     process.exit(0);
   }
-}
-
-// ===== ヘルパー関数 =====
-
-function httpsGetJson(url, headers = {}) {
-  return new Promise((resolve, reject) => {
-    https.get(url, { headers }, (res) => {
-      let data = '';
-      res.on('data', (c) => (data += c));
-      res.on('end', () => {
-        try {
-          resolve({ status: res.statusCode, body: JSON.parse(data) });
-        } catch {
-          resolve({ status: res.statusCode, body: data });
-        }
-      });
-    }).on('error', reject);
-  });
-}
-
-function httpsPostJson(url, headers, bodyObj) {
-  const body = JSON.stringify(bodyObj);
-  return new Promise((resolve, reject) => {
-    const req = https.request(
-      url,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Content-Length': Buffer.byteLength(body),
-          ...headers,
-        },
-      },
-      (res) => {
-        let data = '';
-        res.on('data', (c) => (data += c));
-        res.on('end', () => {
-          try {
-            resolve({ status: res.statusCode, body: JSON.parse(data) });
-          } catch {
-            resolve({ status: res.statusCode, body: data });
-          }
-        });
-      }
-    );
-    req.on('error', reject);
-    req.write(body);
-    req.end();
-  });
-}
-
-function httpsPostForm(url, body) {
-  return new Promise((resolve, reject) => {
-    const data = body.toString();
-    const req = https.request(
-      url,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Content-Length': Buffer.byteLength(data),
-        },
-      },
-      (res) => {
-        let buf = '';
-        res.on('data', (c) => (buf += c));
-        res.on('end', () => {
-          try {
-            resolve({ status: res.statusCode, body: JSON.parse(buf) });
-          } catch {
-            resolve({ status: res.statusCode, body: buf });
-          }
-        });
-      }
-    );
-    req.on('error', reject);
-    req.write(data);
-    req.end();
-  });
-}
-
-// microCMS から最新公開記事を取得
-async function fetchLatestArticle() {
-  const domain = process.env.MICROCMS_SERVICE_DOMAIN;
-  const apiKey = process.env.MICROCMS_API_KEY;
-  const url = `https://${domain}.microcms.io/api/v1/blogs?limit=1&orders=-publishedAt&fields=id,title,publishedAt,eyecatch,description`;
-  const res = await httpsGetJson(url, { 'X-MICROCMS-API-KEY': apiKey });
-  if (res.status !== 200 || !res.body.contents?.length) {
-    throw new Error(`microCMS取得失敗: ${res.status}`);
-  }
-  return res.body.contents[0];
-}
-
-// 投稿済みID（重複投稿防止）
-function getLastPostedId() {
-  try {
-    const fs = require('fs');
-    const path = require('path');
-    const filePath = path.join(__dirname, '.last-posted-gbp-id');
-    if (fs.existsSync(filePath)) {
-      return fs.readFileSync(filePath, 'utf8').trim();
-    }
-  } catch {}
-  return null;
-}
-
-function saveLastPostedId(id) {
-  try {
-    const fs = require('fs');
-    const path = require('path');
-    fs.writeFileSync(path.join(__dirname, '.last-posted-gbp-id'), id, 'utf8');
-  } catch {}
 }
 
 // アクセストークン取得（リフレッシュトークンから）
@@ -195,25 +79,18 @@ function buildSummary(article) {
 
 async function main() {
   console.log('[GBP投稿] 最新記事を取得中...');
-  const article = await fetchLatestArticle();
+  const article = await fetchLatestArticle('id,title,publishedAt,eyecatch,description');
   console.log(`[GBP投稿] 最新記事: ${article.title} (ID: ${article.id})`);
 
   // 重複投稿チェック
-  const lastId = getLastPostedId();
+  const lastId = getLastPostedId('.last-posted-gbp-id');
   if (lastId === article.id) {
     console.log(`[GBP投稿] 既に投稿済み (ID: ${article.id}) のためスキップします`);
     process.exit(0);
   }
 
   // 公開時間チェック（公開から60分以内のみ投稿）
-  const publishedAt = new Date(article.publishedAt);
-  const now = new Date();
-  const minutesSincePublish = (now - publishedAt) / 1000 / 60;
-  const maxMinutes = process.env.SNS_POST_MAX_MINUTES
-    ? Number(process.env.SNS_POST_MAX_MINUTES)
-    : 60;
-  console.log(`[GBP投稿] 公開からの経過時間: ${Math.round(minutesSincePublish)}分 (上限: ${maxMinutes}分)`);
-  if (minutesSincePublish > maxMinutes) {
+  if (!isWithinPostWindow(article, '[GBP投稿]')) {
     console.log(`[GBP投稿] 上限超過のためスキップ`);
     process.exit(0);
   }
@@ -275,7 +152,7 @@ async function main() {
   console.log(`createTime: ${res.body.createTime}`);
   console.log(`searchUrl: ${res.body.searchUrl || '(N/A)'}`);
 
-  saveLastPostedId(article.id);
+  saveLastPostedId('.last-posted-gbp-id', article.id);
 }
 
 main().catch((e) => {
