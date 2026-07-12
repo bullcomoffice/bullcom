@@ -28,6 +28,11 @@ export default function Footer() {
               <li><Link href="/services#business">法人のお客様</Link></li>
               <li><Link href="/price">料金・プラン</Link></li>
             </ul>
+            <h4 style={{ marginTop: "32px" }}>対応エリア</h4>
+            <ul>
+              <li><Link href="/area/kobe">神戸市のパソコン修理</Link></li>
+              <li><Link href="/area/akashi">明石市のパソコン修理</Link></li>
+            </ul>
           </div>
 
           {/* Information */}
