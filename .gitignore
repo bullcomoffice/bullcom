@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# --- refactoring R1: 実行時生成物・ローカル専用ファイル ---
+scripts/.last-posted-id
+scripts/.last-posted-ig-id
+scripts/.last-posted-gbp-id
+.claude/
+*.msg
