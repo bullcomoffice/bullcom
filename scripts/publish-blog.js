@@ -26,7 +26,12 @@ const https = require('https');
 // ============================================================
 // 設定
 // ============================================================
-const API_KEY = process.env.MICROCMS_API_KEY || 'xbKRCEGIpylDJ1u7yRkvpGHv3YZDDMuw1nY4';
+const API_KEY = process.env.MICROCMS_API_KEY;
+if (!API_KEY) {
+  console.error('エラー: 環境変数 MICROCMS_API_KEY が未設定です。');
+  console.error('例: MICROCMS_API_KEY=xxxx node scripts/publish-blog.js <mdファイル>');
+  process.exit(1);
+}
 const SERVICE_DOMAIN = 'bullcom';
 const CF_BASE_URL = 'https://bullcom.bullcom-office.workers.dev';
 const BASE_URL = `https://${SERVICE_DOMAIN}.microcms.io/api/v1`;
