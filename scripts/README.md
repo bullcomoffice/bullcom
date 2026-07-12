@@ -69,3 +69,14 @@ id: wmcef_pc7                      # 更新時のみ（既存記事のコンテ�
 | テクノロジー | Windows・PC関連、技術情報 |
 | 更新情報 | お知らせ・サービス更新 |
 | チュートリアル | 使い方・設定ガイド |
+
+## tools/ — GBP API 検証・保守用ワンオフスクリプト
+
+| ファイル | 用途 |
+|---|---|
+| get-gbp-token.cjs | OAuth リフレッシュトークンの再取得（redirect URI = localhost:3000 が必要） |
+| test-gbp-api.cjs | リフレッシュトークン → accessToken → accounts/locations 取得の疎通確認 |
+| enable-mybusiness-api.cjs | mybusiness.googleapis.com (v4) の有効化試行 |
+| test-enable-gbp.cjs | 上記の検証版（bullcom-gbp/bullcom-seo 両プロジェクトで試行した際の残骸） |
+
+定常運用では使用しない。GBP のトークンが失効した場合のみ get-gbp-token.cjs / test-gbp-api.cjs を使う。
