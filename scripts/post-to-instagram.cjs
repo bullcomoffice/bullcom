@@ -1,10 +1,17 @@
-﻿/**
+/**
  * post-to-instagram.cjs
  * microCMSの最新公開記事をInstagram + Facebookに画像付き自動投稿
  */
 
 const https = require('https');
 const { getPostContent } = require('./parse-sns-schedule.cjs');
+const {
+  loadEnvLocal,
+  fetchLatestArticle,
+  isWithinPostWindow,
+} = require('./lib/sns-common.cjs');
+
+loadEnvLocal();
 
 process.on('uncaughtException', (e) => {
   console.error('[IG/FB投稿] 予期せぬエラー:', e.message);
@@ -25,23 +32,6 @@ for (const env of requiredEnvs) {
     console.log(`[IG/FB投稿] ${env} が未設定のためスキップ`);
     process.exit(0);
   }
-}
-
-function fetchLatestArticle() {
-  return new Promise((resolve, reject) => {
-    const url = `https://${process.env.MICROCMS_SERVICE_DOMAIN}.microcms.io/api/v1/blogs?limit=1&orders=-publishedAt&fields=id,title,slug,publishedAt,eyecatch`;
-    https.get(url, { headers: { 'X-MICROCMS-API-KEY': process.env.MICROCMS_API_KEY } }, (res) => {
-      let data = '';
-      res.on('data', (c) => data += c);
-      res.on('end', () => {
-        try {
-          const json = JSON.parse(data);
-          if (json.contents && json.contents.length > 0) resolve(json.contents[0]);
-          else reject(new Error('記事が見つかりません'));
-        } catch (e) { reject(e); }
-      });
-    }).on('error', reject);
-  });
 }
 
 function igPost(endpoint, body) {
@@ -104,14 +94,13 @@ function generateHashtags(title) {
 
 async function main() {
   try {
-    const article = await fetchLatestArticle();
+    const article = await fetchLatestArticle('id,title,slug,publishedAt,eyecatch');
     console.log(`[IG/FB投稿] 最新記事: ${article.title} (ID: ${article.id})`);
 
-    const publishedAt = new Date(article.publishedAt);
-    const minutes = (Date.now() - publishedAt) / 60000;
-    const max = Number(process.env.SNS_POST_MAX_MINUTES || 60);
-    console.log(`[IG/FB投稿] 公開からの経過時間: ${Math.round(minutes)}分 (上限: ${max}分)`);
-    if (minutes > max) { console.log(`[IG/FB投稿] 上限超過のためスキップ`); process.exit(0); }
+    if (!isWithinPostWindow(article, '[IG/FB投稿]')) {
+      console.log(`[IG/FB投稿] 上限超過のためスキップ`);
+      process.exit(0);
+    }
 
     const articleUrl = `${process.env.SITE_URL}/blog/${article.slug || article.id}`;
     // microCMS CDN URLを優先（Cloudflareキャッシュ問題回避）
