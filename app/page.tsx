@@ -3,24 +3,9 @@ import Link from "next/link";
 import TerminalBg from "@/components/sections/TerminalBg";
 import ContactForm from "@/components/ui/ContactForm";
 import { getLatestBlogs } from "@/lib/microcms";
+import { catColors, defaultCatColor, formatDate } from "@/lib/blog-ui";
 
 export const revalidate = 3600;
-
-const formatDate = (dateStr: string) => {
-  const d = new Date(dateStr);
-  return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
-};
-
-const catColors: Record<string, string> = {
-  "テクノロジー":   "#3a73d1",
-  "更新情報":       "#2db87a",
-  "チュートリアル": "#f5820a",
-  "修理":           "#e84a5f",
-  "セキュリティ":   "#9b59d4",
-  "設定":           "#00b4d8",
-  "データ":         "#6366f1",
-  "お知らせ":       "#2db87a",
-};
 
 export default async function HomePage() {
   const { contents: latestPosts } = await getLatestBlogs(3);
@@ -337,7 +322,7 @@ export default async function HomePage() {
                 <div style={{ padding: "22px", flex: 1, display: "flex", flexDirection: "column", gap: "10px" }}>
                   <div style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "12px", color: "rgba(255,255,255,0.5)", fontFamily: "var(--font-en)" }}>
                     {post.category && (
-                      <span style={{ display: "inline-block", padding: "3px 10px", background: catColors[post.category.name] ?? "#3a73d1", color: "#fff", fontSize: "12px", borderRadius: "999px", fontWeight: 700 }}>{post.category.name}</span>
+                      <span style={{ display: "inline-block", padding: "3px 10px", background: catColors[post.category.name] ?? defaultCatColor, color: "#fff", fontSize: "12px", borderRadius: "999px", fontWeight: 700 }}>{post.category.name}</span>
                     )}
                     <span>{formatDate(post.publishedAt ?? post.createdAt)}</span>
                   </div>
