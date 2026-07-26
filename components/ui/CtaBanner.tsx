@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 type Props = {
   title: string;
@@ -18,7 +19,8 @@ export default function CtaBanner({
 }: Props) {
   return (
     <div className="cta-banner">
-      <div>
+      <Image className="cta-banner__art" src="/illustrations/contact-support.svg" alt="ご相談を受け付けるイラスト" width={140} height={109} />
+      <div className="cta-banner__copy">
         <h3>{title}</h3>
         <p>{desc}</p>
       </div>

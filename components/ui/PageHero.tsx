@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 type Props = {
   sub: string;
@@ -8,14 +9,11 @@ type Props = {
 };
 
 export default function PageHero({ sub, title, lead, crumb }: Props) {
+  const illustration = sub === "CONTACT" ? "/illustrations/contact-support.svg" : sub === "SERVICES" || sub === "PRICE" ? "/illustrations/service-support.svg" : "/illustrations/pc-care.svg";
+  const illustrationAlt = sub === "CONTACT" ? "お問い合わせを案内するイラスト" : sub === "SERVICES" || sub === "PRICE" ? "パソコンのサービスを案内するイラスト" : "パソコン修理を案内するイラスト";
+
   return (
-    <section style={{
-      background: "linear-gradient(135deg, #1e3a6f 0%, #2c5fb8 60%, #4a7fd6 100%)",
-      borderBottom: "1px solid rgba(255,255,255,0.1)",
-      padding: "64px 0 60px",
-      position: "relative",
-      overflow: "hidden",
-    }}>
+    <section className="page-hero">
       {/* グリッドパターン */}
       <div aria-hidden="true" style={{
         position: "absolute", inset: 0,
@@ -38,7 +36,8 @@ export default function PageHero({ sub, title, lead, crumb }: Props) {
         borderRadius: "50%", pointerEvents: "none",
       }} />
 
-      <div className="container" style={{ position: "relative", zIndex: 1 }}>
+      <div className="container page-hero__inner" style={{ position: "relative", zIndex: 1 }}>
+        <div className="page-hero__copy">
         {/* パンくず */}
         <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.6)", display: "flex", gap: "8px", alignItems: "center", marginBottom: "20px" }}>
           <Link href="/" style={{ color: "rgba(255,255,255,0.6)" }}>トップ</Link>
@@ -54,6 +53,8 @@ export default function PageHero({ sub, title, lead, crumb }: Props) {
         {/* タイトル */}
         <h1 style={{ fontSize: "clamp(28px, 4vw, 44px)", marginBottom: lead ? "16px" : "0", color: "#fff", textShadow: "0 2px 12px rgba(0,0,0,0.15)" }}>{title}</h1>
         {lead && <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.8)", maxWidth: "640px", margin: 0, lineHeight: 1.8 }}>{lead}</p>}
+        </div>
+        <Image className="page-hero__illustration" src={illustration} alt={illustrationAlt} width={360} height={280} priority />
       </div>
     </section>
   );

@@ -186,8 +186,8 @@ export default async function HomePage() {
               </span>
             </div>
             <Image
-              src="/logo-preview.png"
-              alt="BULLCOM"
+              src="/illustrations/pc-care.svg"
+              alt="パソコンを診断・修理するイラスト"
               width={460}
               height={460}
               style={{ width: "100%", maxWidth: "460px", filter: "drop-shadow(0 30px 60px rgba(44,95,184,0.25))", animation: "floaty 6s ease-in-out infinite" }}
