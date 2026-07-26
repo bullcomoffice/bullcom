@@ -67,6 +67,16 @@ async function getAccessToken() {
   return res.body.access_token;
 }
 
+// localPosts API は Google側の一時的な 500 (INTERNAL) が時々発生するため、5xx時のみ短いリトライを挟む
+async function postLocalPostWithRetry(apiUrl, accessToken, postBody, maxRetries = 3) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    const res = await httpsPostJson(apiUrl, { Authorization: `Bearer ${accessToken}` }, postBody);
+    if (res.status === 200 || res.status < 500 || attempt === maxRetries) return res;
+    console.log(`[GBP投稿] ⚠️ HTTP ${res.status}（Google側の一時的エラーの可能性）。${attempt}/${maxRetries}回目、3秒後にリトライします`);
+    await new Promise((r) => setTimeout(r, 3000));
+  }
+}
+
 // 投稿本文（GBP の summary は最大 1500 文字）
 function buildSummary(article) {
   const title = article.title;
@@ -135,11 +145,7 @@ async function main() {
   const apiUrl = `https://mybusiness.googleapis.com/v4/${accountPath}/${locationPath}/localPosts`;
 
   console.log(`[GBP投稿] POST ${apiUrl}`);
-  const res = await httpsPostJson(
-    apiUrl,
-    { Authorization: `Bearer ${accessToken}` },
-    postBody
-  );
+  const res = await postLocalPostWithRetry(apiUrl, accessToken, postBody);
 
   if (res.status !== 200) {
     console.error(`[GBP投稿] ❌ 投稿失敗 (HTTP ${res.status})`);
