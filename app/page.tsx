@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import TerminalBg from "@/components/sections/TerminalBg";
 import ContactForm from "@/components/ui/ContactForm";
 import { getLatestBlogs } from "@/lib/microcms";
 import { catColors, defaultCatColor, formatDate } from "@/lib/blog-ui";
@@ -80,42 +81,68 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
       />
       {/* ===== HERO ===== */}
-      <section className="home-hero">
-        <div className="home-hero__shape home-hero__shape--one" aria-hidden="true" />
-        <div className="home-hero__shape home-hero__shape--two" aria-hidden="true" />
-        <div className="home-hero__grid">
-          <div className="home-hero__copy">
-            <div className="home-hero__eyebrow">
-              <span />
+      <section style={{
+        position: "relative",
+        background: "linear-gradient(135deg, #0a1628 0%, #1e3a6f 50%, #2c5fb8 100%)",
+        overflow: "hidden",
+        padding: 0,
+        borderBottom: "none",
+      }}>
+        <TerminalBg />
+        <div style={{
+          maxWidth: "var(--container)", margin: "0 auto",
+          padding: "80px 24px 90px",
+          display: "grid", gridTemplateColumns: "1.1fr 0.9fr",
+          gap: "56px", alignItems: "center", position: "relative",
+          zIndex: 10,
+        }} className="hero-inner">
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: "10px",
+              fontFamily: "var(--font-en)", fontSize: "13px", fontWeight: 600,
+              letterSpacing: "0.18em", color: "rgba(255,255,255,0.85)",
+              background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)",
+              padding: "6px 14px", borderRadius: "999px", marginBottom: "24px",
+            }}>
+              <span style={{ width: "6px", height: "6px", background: "#6495ED", borderRadius: "50%" }} />
               SINCE 2002 · KOBE / AKASHI
             </div>
 
-            <h1 className="home-hero__title">
+            <h1 style={{
+              fontSize: "clamp(32px, 5vw, 52px)", lineHeight: 1.3,
+              letterSpacing: "0.005em", marginBottom: "24px", color: "#fff",
+            }}>
               パソコンのお困りごと、<br />
-              <span>そのままお持ちください。</span>
+              <span style={{
+                background: "linear-gradient(transparent 70%, rgba(100,149,237,0.5) 70%)",
+                padding: "0 4px",
+              }}>そのままお持ちください。</span>
             </h1>
 
-            <p className="home-hero__lead">
+            <p style={{
+              fontSize: "17px", color: "rgba(255,255,255,0.8)",
+              lineHeight: 1.85, marginBottom: "32px", maxWidth: "540px",
+            }}>
               起動しない・動作が遅い・データが消えた——<br />
-              小さな不調から本格的な修理まで、<strong>持ち込み診断は無料</strong>。<br />
+              小さな不調から本格的な修理まで、<strong style={{ color: "#fcd34d" }}>持ち込み診断は無料</strong>。<br />
               個人・法人どちらでも、神戸・明石エリアで20年以上の実績があります。
             </p>
 
-            <div className="home-hero__actions">
-              <a href="tel:0789122656" className="btn btn-primary">
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginBottom: "32px" }}>
+              <a href="tel:0789122656" className="btn btn-primary" style={{ padding: "16px 28px", fontSize: "16px" }}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                 電話で相談する
               </a>
-              <a href="https://lin.ee/vX5z2Xf" target="_blank" rel="noopener noreferrer" className="btn btn-line">
+              <a href="https://lin.ee/vX5z2Xf" target="_blank" rel="noopener noreferrer" className="btn btn-line" style={{ padding: "16px 28px", fontSize: "16px" }}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
                 LINEで相談する
               </a>
             </div>
 
-            <div className="home-hero__trust">
+            <div style={{ display: "flex", gap: "24px", flexWrap: "wrap", paddingTop: "24px", borderTop: "1px solid rgba(255,255,255,0.2)" }}>
               {["持ち込み診断 無料", "個人・法人どちらも対応", "出張・郵送OK"].map((text) => (
-                <span key={text}>
-                  <span className="home-hero__check">
+                <span key={text} style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>
+                  <span style={{ width: "32px", height: "32px", background: "rgba(100,149,237,0.25)", borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#6495ED", flexShrink: 0 }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                   </span>
                   {text}
@@ -124,19 +151,31 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="home-hero__visual">
-            <div className="home-hero__chip home-hero__chip--free">
-              <span>¥0</span>
+          <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "480px", zIndex: 1 }}>
+            <div style={{
+              position: "absolute", top: "20px", left: "-10px",
+              background: "linear-gradient(135deg, #fff, #fff5f8)", border: "1px solid #ffd4e1",
+              borderRadius: "14px", padding: "14px 18px",
+              boxShadow: "0 12px 30px rgba(28,60,120,0.14)",
+              display: "flex", alignItems: "center", gap: "12px", fontSize: "13px", zIndex: 2,
+            }}>
+              <span style={{ fontFamily: "var(--font-en)", fontSize: "22px", fontWeight: 700, color: "var(--color-pink-dark)", lineHeight: 1 }}>¥0</span>
               <span>
-                <b>持ち込み診断</b>
-                <small>無料で承ります</small>
+                <span style={{ display: "block", fontWeight: 700 }}>持ち込み診断</span>
+                <span style={{ color: "var(--color-text-muted)", fontSize: "11px" }}>無料で承ります</span>
               </span>
             </div>
-            <div className="home-hero__chip home-hero__chip--years">
-              <span>24<small>年</small></span>
+            <div style={{
+              position: "absolute", bottom: "60px", right: "-10px",
+              background: "#fff", border: "1px solid var(--color-border)",
+              borderRadius: "14px", padding: "14px 18px",
+              boxShadow: "0 12px 30px rgba(28,60,120,0.14)",
+              display: "flex", alignItems: "center", gap: "12px", fontSize: "13px", zIndex: 2,
+            }}>
+              <span style={{ fontFamily: "var(--font-en)", fontSize: "22px", fontWeight: 700, color: "var(--color-primary)", lineHeight: 1 }}>24<small style={{ fontSize: "13px" }}>年</small></span>
               <span>
-                <b>創業 2002年</b>
-                <small>地域密着</small>
+                <span style={{ display: "block", fontWeight: 700 }}>創業 2002年</span>
+                <span style={{ color: "var(--color-text-muted)", fontSize: "11px" }}>地域密着</span>
               </span>
             </div>
             <Image
@@ -144,12 +183,20 @@ export default async function HomePage() {
               alt="パソコンを診断・修理するイラスト"
               width={460}
               height={460}
-              className="home-hero__art"
+              style={{ width: "100%", maxWidth: "460px", filter: "drop-shadow(0 30px 60px rgba(44,95,184,0.25))", animation: "floaty 6s ease-in-out infinite" }}
               priority
             />
           </div>
         </div>
-
+        <style>{`
+          @keyframes floaty {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-14px) rotate(2deg); }
+          }
+          @media (max-width: 900px) {
+            .hero-inner { grid-template-columns: 1fr !important; padding: 56px 20px 64px !important; gap: 32px !important; }
+          }
+        `}</style>
       </section>
 
       {/* ===== CONCEPT ===== */}
