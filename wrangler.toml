@@ -1,6 +1,8 @@
 name = "bullcom"
+main = "src/worker.js"
 compatibility_date = "2025-01-01"
 
-# 静的エクスポートの出力フォルダを指定
+# 静的エクスポートの出力フォルダ（Workerから env.ASSETS で参照）
 [assets]
 directory = "./out"
+binding = "ASSETS"
