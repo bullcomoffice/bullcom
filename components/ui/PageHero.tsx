@@ -12,6 +12,7 @@ export default function PageHero({ sub, title, lead, crumb }: Props) {
   return (
     <section className="page-hero">
       <TerminalBg />
+      <div className="page-hero__scrim" aria-hidden="true" />
       <div className="page-hero__scanline" aria-hidden="true" />
       <div className="container page-hero__inner">
         <div className="page-hero__copy">

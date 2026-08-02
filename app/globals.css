@@ -148,6 +148,18 @@ section.tight { padding: 56px 0; }
 .page-hero::before { content: ""; position: absolute; width: 700px; height: 700px; right: -220px; top: -470px; border: 1px solid rgba(167,211,255,.3); border-radius: 50%; box-shadow: 0 0 0 64px rgba(100,165,245,.07), 0 0 0 128px rgba(100,165,245,.05); }
 .page-hero::after { content: ""; position: absolute; left: -120px; bottom: -180px; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(circle, rgba(68,143,241,.3), transparent 68%); }
 .page-hero__scanline { position: absolute; inset: 0; pointer-events: none; z-index: 3; opacity: .24; background: repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(117,184,255,.045) 4px, rgba(117,184,255,.045) 5px); }
+/* テキスト側だけを暗く落とすスクリム。背景のターミナル演出は右側で活かしつつ、
+   見出し・パンくず・リード文の可読性を確保する（z-indexは背景2/3とコピー4の間） */
+.page-hero__scrim, .hero-scrim {
+  position: absolute; inset: 0; pointer-events: none; z-index: 3;
+  background: linear-gradient(100deg, rgba(4,14,30,.86) 0%, rgba(4,14,30,.72) 34%, rgba(4,14,30,.28) 58%, transparent 74%);
+}
+/* モバイルは1カラムでテキストが全幅に広がるため、スクリムも全面に効かせる */
+@media (max-width: 900px) {
+  .page-hero__scrim, .hero-scrim {
+    background: linear-gradient(180deg, rgba(4,14,30,.84) 0%, rgba(4,14,30,.78) 55%, rgba(4,14,30,.62) 100%);
+  }
+}
 .page-hero__inner { position: relative; z-index: 4; display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 48px; align-items: center; }
 .page-hero__copy { min-width: 0; }
 .page-hero__crumb { font-size: 13px; color: rgba(224,240,255,.65); display: flex; gap: 8px; align-items: center; margin-bottom: 20px; }

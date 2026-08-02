@@ -89,6 +89,8 @@ export default async function HomePage() {
         borderBottom: "none",
       }}>
         <TerminalBg />
+        {/* テキスト側だけを暗く落とすスクリム。右側のシールドロゴは背景演出を活かす */}
+        <div aria-hidden="true" className="hero-scrim" style={{ zIndex: 5 }} />
         <div style={{
           maxWidth: "var(--container)", margin: "0 auto",
           padding: "80px 24px 90px",
