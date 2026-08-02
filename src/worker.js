@@ -81,6 +81,23 @@ async function handleContactSubmit(request, env) {
     return json({ success: true });
   }
 
+  // フィールド名の文字化けチェック（最重要・他のスパムチェックより上流に置く）
+  // 一部のスパムボットはmultipartのname属性（日本語フィールド名）をUTF-8で正しく
+  // エンコードできず "?" や "�" に化けた状態で送ってくる。値側は正常に届くため
+  // 気づきにくいが、この状態だと form.get('電話番号') 等の完全一致が全て外れ、
+  // 電話番号チェック・URL混入チェックが揃って素通りする。
+  // 正規ブラウザが実フォームを送る限りフィールド名は化けないため、化けている＝機械的送信の指紋。
+  // （boatkaitori.com で本件によりResendの1日クォータを200%超過するスパム流入が発生）
+  for (const key of form.keys()) {
+    if (key.includes('?') || key.includes('�')) {
+      console.warn('[spam] フィールド名の文字化けを検知:', key);
+      return json({
+        success: false,
+        message: '送信内容を正しく読み取れませんでした。ブラウザを最新版にするか、時間をおいて再度お試しください。',
+      }, 400);
+    }
+  }
+
   const rows = [];
   const arrays = {};
   const attachments = [];
