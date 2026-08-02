@@ -79,9 +79,9 @@ export default function Footer() {
 
       <style>{`
         .site-footer {
-          background: #0e1a2f;
+          background: radial-gradient(circle at 14% 0%, #214f94 0%, #102d5d 31%, #0a1a35 78%);
           color: #c4d0e3;
-          padding: 64px 0 32px;
+          padding: 72px 0 32px;
         }
         .site-footer a { color: #c4d0e3; }
         .site-footer a:hover { color: #fff; }
@@ -104,7 +104,7 @@ export default function Footer() {
         .footer-bottom {
           margin-top: 48px;
           padding-top: 24px;
-          border-top: 1px solid #1f2e4d;
+          border-top: 1px solid rgba(172, 207, 255, .22);
           display: flex; justify-content: space-between; align-items: center;
           font-size: 13px;
           color: #7b89a3;

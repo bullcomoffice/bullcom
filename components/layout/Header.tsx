@@ -19,10 +19,10 @@ export default function Header() {
   return (
     <header style={{
       position: "sticky", top: 0, zIndex: 100,
-      background: "rgba(255,255,255,0.96)",
-      backdropFilter: "saturate(140%) blur(8px)",
+      background: "rgba(255,255,255,0.90)",
+      backdropFilter: "saturate(160%) blur(16px)",
       borderBottom: "1px solid var(--color-border)",
-      height: "var(--header-h)",
+      height: "76px",
       display: "flex", alignItems: "center",
     }}>
       <div className="site-header__inner" style={{
@@ -46,7 +46,7 @@ export default function Header() {
                 color: "var(--color-text)",
                 fontWeight: 500,
                 fontSize: "15px",
-                borderRadius: "6px",
+                borderRadius: "999px",
                 transition: "background 0.15s, color 0.15s",
               }}
               onMouseEnter={e => {

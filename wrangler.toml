@@ -1,6 +1,11 @@
 name = "bullcom"
+main = "src/worker.js"
 compatibility_date = "2025-01-01"
 
-# 静的エクスポートの出力フォルダを指定
+# 静的エクスポートの出力フォルダ（Workerから env.ASSETS で参照）
 [assets]
 directory = "./out"
+binding = "ASSETS"
+# Workerを先に通す。これが無いとアセット側が先に応答し /api/contact-submit のPOSTが
+# Workerまで届かない（bullcom.org / bullcom.net も同じ設定で運用中）
+run_worker_first = true

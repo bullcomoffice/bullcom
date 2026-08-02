@@ -88,9 +88,9 @@ export default async function HomePage() {
         padding: 0,
         borderBottom: "none",
       }}>
-        {/* ターミナルアニメーション背景 */}
         <TerminalBg />
-
+        {/* テキスト側だけを暗く落とすスクリム。右側のシールドロゴは背景演出を活かす */}
+        <div aria-hidden="true" className="hero-scrim" style={{ zIndex: 5 }} />
         <div style={{
           maxWidth: "var(--container)", margin: "0 auto",
           padding: "80px 24px 90px",
@@ -98,8 +98,6 @@ export default async function HomePage() {
           gap: "56px", alignItems: "center", position: "relative",
           zIndex: 10,
         }} className="hero-inner">
-
-          {/* コピー */}
           <div style={{ position: "relative", zIndex: 1 }}>
             <div style={{
               display: "inline-flex", alignItems: "center", gap: "10px",
@@ -155,9 +153,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* ビジュアル */}
           <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "480px", zIndex: 1 }}>
-            {/* ¥0チップ */}
             <div style={{
               position: "absolute", top: "20px", left: "-10px",
               background: "linear-gradient(135deg, #fff, #fff5f8)", border: "1px solid #ffd4e1",
@@ -171,7 +167,6 @@ export default async function HomePage() {
                 <span style={{ color: "var(--color-text-muted)", fontSize: "11px" }}>無料で承ります</span>
               </span>
             </div>
-            {/* 24年チップ */}
             <div style={{
               position: "absolute", bottom: "60px", right: "-10px",
               background: "#fff", border: "1px solid var(--color-border)",
@@ -195,7 +190,6 @@ export default async function HomePage() {
             />
           </div>
         </div>
-
         <style>{`
           @keyframes floaty {
             0%, 100% { transform: translateY(0) rotate(-2deg); }
