@@ -239,8 +239,20 @@ export default function ServicesPage() {
             </div>
           )}
 
+          {/* 対応エリアへの導線 */}
+          <div style={{ marginTop: "40px", background: "#fff", border: "1px solid var(--color-border)", borderRadius: "var(--radius-lg)", padding: "26px 30px", boxShadow: "var(--shadow-sm)" }}>
+            <h3 style={{ fontSize: "17px", marginBottom: "8px" }}>お住まいのエリアから探す</h3>
+            <p style={{ fontSize: "14.5px", color: "var(--color-text-soft)", marginBottom: "16px", lineHeight: 1.8 }}>
+              持ち込み・出張・郵送のどれが便利かは、お住まいの地域によって変わります。エリア別のご案内もご用意しています。
+            </p>
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+              <Link href="/area/kobe" className="btn btn-outline">神戸市のパソコン修理</Link>
+              <Link href="/area/akashi" className="btn btn-outline">明石市のパソコン修理</Link>
+            </div>
+          </div>
+
           {/* CTA */}
-          <div style={{ marginTop: "48px" }}>
+          <div style={{ marginTop: "24px" }}>
             <CtaBanner
               title="料金や作業の詳細は、お気軽にご相談ください。"
               desc="診断・お見積りは無料です。LINE・電話・フォームでお問い合わせいただけます。"

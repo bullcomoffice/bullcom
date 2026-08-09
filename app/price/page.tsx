@@ -142,7 +142,14 @@ export default function PricePage() {
                 </div>
               ))}
             </div>
-            <p style={{ fontSize: "13px", color: "var(--color-text-muted)" }}>※エリア外の場合もお気軽にご相談ください。別途見積もりいたします。</p>
+            <p style={{ fontSize: "13px", color: "var(--color-text-muted)", marginBottom: "10px" }}>※エリア外の場合もお気軽にご相談ください。別途見積もりいたします。</p>
+            <p style={{ fontSize: "13.5px", color: "var(--color-text-soft)", margin: 0 }}>
+              エリアA内の主要エリアについては、対応内容や持ち込み・出張の選び方を
+              <Link href="/area/kobe" style={{ color: "var(--color-primary)", fontWeight: 600 }}>神戸市のパソコン修理</Link>
+              ・
+              <Link href="/area/akashi" style={{ color: "var(--color-primary)", fontWeight: 600 }}>明石市のパソコン修理</Link>
+              のページで詳しくご案内しています。
+            </p>
           </div>
 
           {/* ===== 04 郵送送料 ===== */}

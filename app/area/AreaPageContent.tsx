@@ -4,6 +4,8 @@ import CtaBanner from "@/components/ui/CtaBanner";
 
 export type AreaFaq = { q: string; a: string };
 export type AreaDistrict = { name: string; note?: string };
+export type AreaPoint = { title: string; body: string };
+export type AreaPost = { slug: string; title: string };
 
 export type AreaData = {
   slug: string;            // "kobe" | "akashi"
@@ -17,8 +19,23 @@ export type AreaData = {
   districtsLead: string;
   districts: AreaDistrict[];
   accessNote: string[];    // 店舗からのアクセス補足
+  // エリアごとに内容を変える独自セクション（両ページの内容重複を避けるため）
+  pointsHeading: string;
+  points: AreaPoint[];
+  travelFee: string;       // そのエリアの出張費（料金ページのエリア区分に準拠）
   faqs: AreaFaq[];
+  relatedPosts: AreaPost[];
 };
+
+// 料金の目安（/price の実データに準拠。金額を変えるときは料金ページと必ず揃えること）
+const priceRows: { label: string; price: string; note?: string }[] = [
+  { label: "持ち込み診断", price: "¥0", note: "修理しない場合も費用はかかりません" },
+  { label: "ウイルス診断・駆除", price: "¥8,800" },
+  { label: "新規パソコン設定", price: "¥11,000〜" },
+  { label: "リカバリーパック", price: "¥16,500〜" },
+  { label: "データバックアップ", price: "¥5,500〜" },
+  { label: "データ移行", price: "¥11,000〜" },
+];
 
 // よくあるご依頼（両エリア共通）
 const commonRequests = [
@@ -151,6 +168,57 @@ export default function AreaPageContent({ area }: { area: AreaData }) {
         </div>
       </section>
 
+      {/* ===== 地域の特徴（エリアごとに内容が異なる独自セクション） ===== */}
+      <section>
+        <div className="container">
+          <div className="section-head">
+            <h2 style={{ fontSize: "clamp(22px, 3vw, 30px)", marginBottom: "12px" }}>{area.pointsHeading}</h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px", maxWidth: "1000px", margin: "0 auto" }}>
+            {area.points.map((p, i) => (
+              <div key={p.title} style={{ background: "#fff", border: "1px solid var(--color-border)", borderRadius: "var(--radius-lg)", padding: "26px 28px", boxShadow: "var(--shadow-sm)" }}>
+                <div style={{ fontFamily: "var(--font-en)", fontSize: "13px", fontWeight: 800, color: "var(--color-primary)", marginBottom: "8px" }}>
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+                <h3 style={{ fontSize: "16.5px", marginBottom: "10px" }}>{p.title}</h3>
+                <p style={{ fontSize: "14.5px", lineHeight: 1.9, color: "var(--color-text-soft)", margin: 0 }}>{p.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== 料金の目安 ===== */}
+      <section style={{ background: "var(--color-bg-soft)" }}>
+        <div className="container">
+          <div className="section-head">
+            <h2 style={{ fontSize: "clamp(22px, 3vw, 30px)", marginBottom: "12px" }}>{area.cityName}での料金の目安</h2>
+            <p style={{ color: "var(--color-text-muted)", fontSize: "15px" }}>すべて税込価格です。作業内容により変動する場合は事前にご案内します。</p>
+          </div>
+          <div style={{ maxWidth: "760px", margin: "0 auto", background: "#fff", border: "1px solid var(--color-border)", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-sm)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px", padding: "18px 26px", background: "linear-gradient(135deg, #1e3a6f, #2c5fb8)", color: "#fff" }}>
+              <div>
+                <div style={{ fontSize: "15px", fontWeight: 700 }}>{area.cityName}への出張費</div>
+                <div style={{ fontSize: "12.5px", opacity: 0.8, marginTop: "2px" }}>出張エリアA（店舗から近いエリア）</div>
+              </div>
+              <div style={{ fontFamily: "var(--font-en)", fontSize: "26px", fontWeight: 800, whiteSpace: "nowrap" }}>{area.travelFee}</div>
+            </div>
+            {priceRows.map(({ label, price, note }, i, arr) => (
+              <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "16px", padding: "15px 26px", borderBottom: i < arr.length - 1 ? "1px solid var(--color-border)" : "none" }}>
+                <div>
+                  <span style={{ fontSize: "15px", color: "var(--color-text)" }}>{label}</span>
+                  {note && <div style={{ fontSize: "12.5px", color: "var(--color-text-muted)", marginTop: "2px" }}>{note}</div>}
+                </div>
+                <span style={{ fontFamily: "var(--font-en)", fontSize: "17px", fontWeight: 800, color: "var(--color-primary-dark)", whiteSpace: "nowrap" }}>{price}</span>
+              </div>
+            ))}
+          </div>
+          <p style={{ textAlign: "center", marginTop: "22px", fontSize: "14px" }}>
+            <Link href="/price" style={{ color: "var(--color-primary)", fontWeight: 600 }}>料金の詳細・出張エリア一覧を見る →</Link>
+          </p>
+        </div>
+      </section>
+
       {/* ===== 店舗情報・アクセス ===== */}
       <section style={{ background: "var(--color-bg-soft)" }}>
         <div className="container">
@@ -205,6 +273,33 @@ export default function AreaPageContent({ area }: { area: AreaData }) {
           </div>
           <p style={{ textAlign: "center", marginTop: "24px", fontSize: "14px" }}>
             <Link href="/faq" style={{ color: "var(--color-primary)", fontWeight: 600 }}>その他のよくある質問を見る →</Link>
+          </p>
+        </div>
+      </section>
+
+      {/* ===== 関連記事（ブログへの内部リンク） ===== */}
+      <section style={{ background: "var(--color-bg-soft)" }}>
+        <div className="container">
+          <div className="section-head">
+            <h2 style={{ fontSize: "clamp(22px, 3vw, 30px)", marginBottom: "12px" }}>症状別の対処法を読む</h2>
+            <p style={{ color: "var(--color-text-muted)", fontSize: "15px" }}>ご相談の多い症状について、ご自身で確認できる手順をまとめています。</p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "14px", maxWidth: "1000px", margin: "0 auto" }}>
+            {area.relatedPosts.map((p) => (
+              <Link key={p.slug} href={`/blog/${p.slug}`} style={{
+                display: "flex", alignItems: "center", gap: "12px",
+                background: "#fff", border: "1px solid var(--color-border)", borderRadius: "var(--radius-lg)",
+                padding: "16px 20px", textDecoration: "none", color: "var(--color-text)", boxShadow: "var(--shadow-sm)",
+              }}>
+                <span style={{ flexShrink: 0, color: "var(--color-primary)" }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </span>
+                <span style={{ fontSize: "14.5px", lineHeight: 1.6 }}>{p.title}</span>
+              </Link>
+            ))}
+          </div>
+          <p style={{ textAlign: "center", marginTop: "24px", fontSize: "14px" }}>
+            <Link href="/blog" style={{ color: "var(--color-primary)", fontWeight: 600 }}>ブログ・コラムをすべて見る →</Link>
           </p>
         </div>
       </section>
