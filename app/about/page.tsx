@@ -193,6 +193,13 @@ export default function AboutPage() {
           <div className="section-head">
             <span className="section-head__eyebrow">ACCESS</span>
             <h2>アクセス</h2>
+            <p style={{ color: "var(--color-text-soft)", fontSize: "15px", lineHeight: 1.9, maxWidth: "700px", margin: "10px auto 0" }}>
+              店舗は神戸市西区伊川谷町、明石市との市境にあります。エリア別の対応内容は
+              <Link href="/area/kobe" style={{ color: "var(--color-primary)", fontWeight: 600 }}>神戸市のパソコン修理</Link>
+              ・
+              <Link href="/area/akashi" style={{ color: "var(--color-primary)", fontWeight: 600 }}>明石市のパソコン修理</Link>
+              をご覧ください。
+            </p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "32px", alignItems: "start" }} className="access-layout">
             {/* マップ */}
