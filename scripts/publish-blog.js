@@ -14,9 +14,17 @@
  * title: Windows 10のサポートが終了しました
  * thumbnail: win10-eyecatch.png   # public/blog-thumbnails/ 内のファイル名
  * category: テクノロジー          # テクノロジー / 更新情報 / チュートリアル
- * publish: true                   # false で下書き保存
+ * publish: true                   # false で下書き保存（?status=draft を付与）
+ * publishAt: 2026-08-09 09:00     # 任意。予約公開の日時（JSTとして解釈）
  * id: wmcef_pc7                   # 更新時のみ（既存記事のコンテンツID）
  * ---
+ *
+ * 注意:
+ *  - microCMS の POST は既定で「公開」で作成される。下書きにするには ?status=draft が必須。
+ *    これが無いために意図せず公開＋SNS自動投稿まで発火した事故あり（2026-08-12）。
+ *  - 投稿後は必ずマネジメントAPIで実ステータスを検証し、想定と違えば異常終了する。
+ *  - eyecatch には外部URLを渡せない（microCMSにアップロードした画像のみ）。
+ *    サムネイルは別途アップロードして紐付ける。
  */
 
 const fs = require('fs');
@@ -163,6 +171,63 @@ function apiRequest(method, endpoint, body) {
 }
 
 // ============================================================
+// microCMS マネジメントAPI（ステータス確認・予約公開）
+//   ※ APIキーに「コンテンツの取得」「公開状態を変更」「スケジュール設定を変更」の
+//      権限が必要（2026-08-12 付与済み）
+// ============================================================
+const MGMT_BASE = `https://${SERVICE_DOMAIN}.microcms-management.io/api/v1`;
+
+function mgmtRequest(method, endpoint, body) {
+  return new Promise((resolve, reject) => {
+    const url = new URL(`${MGMT_BASE}${endpoint}`);
+    const bodyStr = body !== undefined ? JSON.stringify(body) : '';
+    const options = {
+      hostname: url.hostname,
+      path: url.pathname + url.search,
+      method,
+      headers: {
+        'X-MICROCMS-API-KEY': API_KEY,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(bodyStr),
+      },
+    };
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          resolve(data ? JSON.parse(data) : {});
+        } else {
+          reject(new Error(`HTTP ${res.statusCode}: ${data}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    if (bodyStr) req.write(bodyStr);
+    req.end();
+  });
+}
+
+// 実際のステータスを取得（スクリプトの出力ではなくAPIの事実を確認するため）
+async function fetchActualState(contentId) {
+  const c = await mgmtRequest('GET', `/contents/blogs/${contentId}`);
+  return {
+    status: c.status || [],
+    publishTime: c.reservationTime ? c.reservationTime.publishTime : null,
+  };
+}
+
+// front matter の publishAt (JST想定) を ISO8601(UTC) へ
+function toIsoUtc(value) {
+  const s = String(value).trim();
+  // タイムゾーン未指定なら JST として解釈する
+  const hasTz = /[Zz]$|[+-]\d{2}:?\d{2}$/.test(s);
+  const d = new Date(hasTz ? s : `${s.replace(' ', 'T')}+09:00`);
+  if (isNaN(d.getTime())) throw new Error(`publishAt の日時を解釈できません: ${value}`);
+  return d.toISOString();
+}
+
+// ============================================================
 // カテゴリ名 → ID 変換
 // ============================================================
 async function getCategoryId(categoryName) {
@@ -254,32 +319,48 @@ async function main() {
   }
 
   // 投稿 or 更新
+  // ※ microCMS の POST は既定で「公開」状態で作成される。下書きにしたい場合は
+  //   必ず ?status=draft を付ける（2026-08-12: これが無く意図せず公開された事故あり）
+  const wantPublish = meta.publish === true;
   let result;
   if (isUpdate && meta.id) {
     console.log(`\n📤 記事を更新中... (ID: ${meta.id})`);
     result = await apiRequest('PATCH', `/blogs/${meta.id}`, postBody);
     console.log(`✅ 更新完了! ID: ${result.id}`);
   } else {
-    console.log('\n📤 記事を新規投稿中...');
-    result = await apiRequest('POST', '/blogs', postBody);
+    console.log(`\n📤 記事を新規投稿中...（${wantPublish ? '公開' : '下書き'}）`);
+    result = await apiRequest('POST', `/blogs${wantPublish ? '' : '?status=draft'}`, postBody);
     console.log(`✅ 投稿完了! ID: ${result.id}`);
     console.log(`\n💡 次回この記事を更新する場合は front matter に以下を追加:`);
     console.log(`   id: ${result.id}`);
   }
 
-  // 公開状態の設定
-  if (meta.publish === true) {
-    console.log('\n🌐 公開状態に変更中...');
-    try {
-      const contentId = result.id || meta.id;
-      const pubResult = await apiRequest('PATCH', `/blogs/${contentId}`, {});
-      console.log(`✅ 公開済み!`);
-    } catch (e) {
-      console.warn(`⚠️  公開APIでエラー（手動で公開してください）: ${e.message}`);
-    }
-  } else {
-    console.log('\n📝 下書きとして保存されました');
-    console.log('   microCMSの管理画面から公開してください');
+  const contentId = result.id || meta.id;
+
+  // 予約公開（front matter の publishAt。例: 2026-08-09 09:00 → JSTとして解釈）
+  if (meta.publishAt) {
+    const iso = toIsoUtc(meta.publishAt);
+    console.log(`\n⏰ 予約公開を設定中: ${meta.publishAt} (JST) → ${iso}`);
+    await mgmtRequest('PUT', `/contents/blogs/${contentId}/reservation`, { publishTime: iso });
+    console.log('✅ 予約設定完了');
+  }
+
+  // 投入結果を必ずAPIで検証する（スクリプトの表示を信用しない）
+  console.log('\n🔍 実ステータスを検証中...');
+  const actual = await fetchActualState(contentId);
+  const expected = wantPublish ? 'PUBLISH' : 'DRAFT';
+  const ok = actual.status.includes(expected);
+  console.log(`   status         : ${JSON.stringify(actual.status)} (期待: ${expected}) ${ok ? '✅' : '❌'}`);
+  console.log(`   reservationTime: ${actual.publishTime || '(なし)'}`);
+
+  if (!ok) {
+    throw new Error(
+      `想定と異なる状態で登録されました（期待 ${expected} / 実際 ${JSON.stringify(actual.status)}）。` +
+      `ID ${contentId} を確認してください。`
+    );
+  }
+  if (meta.publishAt && !actual.publishTime) {
+    throw new Error(`予約公開が反映されていません。ID ${contentId} を確認してください。`);
   }
 
   console.log('\n🎉 完了!\n');
