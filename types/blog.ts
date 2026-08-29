@@ -9,6 +9,7 @@ export type Category = MicroCMSListContent & {
 export type Blog = MicroCMSListContent & {
   title: string;
   content: string;          // リッチテキスト（HTML）
+  description?: string;     // meta description用（未入力なら本文から自動生成）
   eyecatch?: MicroCMSImage; // アイキャッチ画像
   category?: Category;      // カテゴリ（リレーション）
 };

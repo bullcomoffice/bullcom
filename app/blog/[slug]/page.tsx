@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getBlogById, getBlogs } from "@/lib/microcms";
+import { buildDescription } from "@/lib/excerpt";
 import PageHero from "@/components/ui/PageHero";
 
 export const revalidate = 3600;
@@ -19,15 +20,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const blog = await getBlogById(slug);
   const ogImage = blog.eyecatch?.url ?? "/og-image.jpg";
+  const description = buildDescription(blog);
   return {
     title: blog.title,
-    description: blog.title,
+    description,
     alternates: {
       canonical: `/blog/${slug}`,
     },
     openGraph: {
       title: blog.title,
-      description: blog.title,
+      description,
       url: `https://bullcom.jp/blog/${slug}`,
       siteName: "BULLCOM（ブルコム）パソコン修理",
       locale: "ja_JP",
@@ -44,7 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title: blog.title,
-      description: blog.title,
+      description,
       images: [ogImage],
     },
   };
