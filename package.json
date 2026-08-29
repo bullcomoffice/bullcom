@@ -10,7 +10,9 @@
     "test": "node --test tests/characterization.test.cjs tests/sns-common.test.cjs",
     "_postbuild_note": "SNS post handled by GitHub Actions, triggered directly from microCMS webhook",
     "post-to-x": "node scripts/post-to-x.cjs",
-    "post-to-instagram": "node scripts/post-to-instagram.cjs"
+    "post-to-instagram": "node scripts/post-to-instagram.cjs",
+    "seo:check": "node scripts/seo-healthcheck.mjs",
+    "seo:log": "node scripts/seo-healthcheck.mjs --append"
   },
   "dependencies": {
     "microcms-js-sdk": "^3.4.0",
