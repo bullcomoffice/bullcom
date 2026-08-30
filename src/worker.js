@@ -186,8 +186,48 @@ async function handleContactSubmit(request, env) {
   return json({ success: true });
 }
 
+/* ---------- 正規URLへの301リダイレクト ---------- */
+/**
+ * bullcom.jp の正規形は「https ・ 非www ・ 末尾スラッシュ無し」。
+ * これに合わない入口URLを **301（恒久）** で1回だけ正規形へ寄せる。
+ *
+ * なぜ必要か（2026-08-30 の外形チェックで検出）:
+ * - `http://bullcom.jp/` が 301 せず 200 を返していた。http と https が別URLとして
+ *   インデックスされうる。姉妹サイト bullcom.net では同じ状態を4ヶ月見逃した。
+ * - `/blog/{id}/` → `/blog/{id}` が Cloudflare Static Assets 既定の **307（一時）** だった。
+ *   Googleは一時リダイレクトでは評価を統合しないため、同一記事が2URLで登録されうる。
+ *
+ * 差分をまとめて1回のリダイレクトにするのは、リダイレクトチェーンを作らないため。
+ * POST を 301 するとボディが失われる（フォーム送信が壊れる）ので GET/HEAD のみ対象。
+ */
+function canonicalRedirect(request) {
+  if (request.method !== 'GET' && request.method !== 'HEAD') return null;
+
+  const url = new URL(request.url);
+  let changed = false;
+
+  if (url.protocol === 'http:') {
+    url.protocol = 'https:';
+    changed = true;
+  }
+  if (url.hostname === 'www.bullcom.jp') {
+    url.hostname = 'bullcom.jp';
+    changed = true;
+  }
+  // ルート "/" だけは末尾スラッシュが正規形なので落とさない
+  if (url.pathname.length > 1 && url.pathname.endsWith('/')) {
+    url.pathname = url.pathname.replace(/\/+$/, '');
+    changed = true;
+  }
+
+  return changed ? Response.redirect(url.toString(), 301) : null;
+}
+
 export default {
   async fetch(request, env) {
+    const redirect = canonicalRedirect(request);
+    if (redirect) return redirect;
+
     const url = new URL(request.url);
     const path = url.pathname.replace(/\/$/, '') || '/';
     const method = request.method;
