@@ -46,3 +46,33 @@
 - `git push origin main`（Cloudflare の本番デプロイが走るため未実行）。
 - push 後、Search Console で新しい sitemap.xml の取得を確認する。
 - 記事のサムネイル画像は未紐付け。`scripts/thumbnails/` で生成・アップロードのうえ各記事の eyecatch に設定する。
+
+## 2026-08-30 週報・月報の運用変更と本番デプロイ
+
+### レポート運用の変更
+- 週報を月曜 → **毎週日曜**、月報を毎月1日 → **毎月最終日曜**へ。最終日曜は週報を実施せず月報が兼ねる。
+- ルールの正は [`_seo/report-operation.md`](_seo/report-operation.md)。
+  他セッションへ持ち込む用の貼り付けプロンプトは [`_seo/report-operation-prompt.md`](_seo/report-operation-prompt.md)。
+- cron は第N曜日を表現できないため、週報・月報とも毎週日曜起動にして、プロンプト冒頭の
+  「今日+7日が翌月か」で担当日を判定する方式にした。
+- bullcom.jp 用に `bullcom-jp-seo-weekly-review` / `bullcom-jp-seo-monthly-review` を新設（日曜11:00）。
+  bullcom.net（9:00）・huneya（10:23）とは未反映。
+
+### 外形チェックの導入
+- `scripts/seo-healthcheck.mjs` を追加（`npm run seo:check` / `seo:log`）。17項目。
+- `_seo/` に README・weekly-log・monthly-review・action-log・health-log を整備。
+
+### A-1〜A-4 の対応（同日中に完了・17/17 PASS）
+- **A-1** `http://bullcom.jp/` が301せず200を返していた → `src/worker.js` で301。
+- **A-2** 末尾スラッシュの正規化が307（一時）→ 同じくWorkerで301。
+  `run_worker_first = true` によりアセット層が307を返す前に正規化できる。
+  https・非www・末尾スラッシュ無しの3条件をまとめて評価し、301は1回だけ返す。
+- **A-3** 本番sitemapが21URL・記事11本のままだった → デプロイして **67URL** に。
+- **A-4** 本番の記事descriptionがタイトルと完全一致だった → デプロイして本文抜粋に。
+
+> `deploy.yml` は **push では起動しない**（`repository_dispatch` / `workflow_dispatch` のみ）。
+> `gh workflow run deploy.yml` で手動起動する必要がある。
+
+### 継続観察
+- Search Console でサイトマップが「成功しました」になり検出67URLになるか → インデックス数が増えるか。
+- description 変更後、表示回数の多い記事のCTRが動くか（月次で確認）。
