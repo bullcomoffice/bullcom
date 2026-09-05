@@ -184,7 +184,7 @@ bullcom.jp の deploy.yml は push では起動せず、microCMS の公開（rep
 月次レポート（2026-08）の「トラフィック+58%に対しCVが逆行」という記述は、
 フォームCVしか見ていない不完全な計測に基づくものだった。→ monthly-review.md に訂正注記済み。
 
-## A-9 電話タップ（tel:リンク）を計測する 🆕未着手（実装承認待ち）
+## A-9 電話タップ（tel:リンク）を計測する 🔵検証中（実装・本番反映済み）
 
 - **起票**: 2026-09-06 週次第7回（A-8の結論から派生）
 - **背景**: サイト内に `tel:0789122656` のリンクが **10箇所**あるのに、
@@ -217,4 +217,39 @@ bullcom.jp の deploy.yml は push では起動せず、microCMS の公開（rep
 
 - **検証方法**: 実装・デプロイ後、GA4 のリアルタイムで `cv_tel_tap` の受信を確認。
   その後キーイベント化し、週次で「フォームCV / 電話タップ」を分けて記録する
+
+### 実装・検証の結果（2026-09-06）
+
+コミット `4b8d707`・本番反映済み。`app/layout.tsx` の `gtag('config')` 直後に
+document への委譲リスナーを1つ置き、`tel:` リンクのクリックで `cv_tel_tap` を送る。
+
+送信する内容:
+- `link_location` … `data-tel-loc` 属性があればそれ、無ければ header / footer / body を自動判定
+- `page_path` … どのページからの発信か
+
+`data-tel-loc` を付けたのは、同一パス内に複数CTAがあって自動判定では区別できない箇所のみ:
+`top-hero` / `top-cta`（トップのヒーローと下部CTA）、`header-desktop` / `header-mobile`。
+
+**本番での実測（合成クリックで検証・実際の発信はしていない）**:
+
+| ページ | 発火した link_location |
+|---|---|
+| `/` | header-desktop / top-hero / top-cta / footer（tel:リンク4箇所すべて） |
+| `/area/kobe` | header-desktop / body / footer |
+| `/contact` | 3箇所 |
+
+**GA4リアルタイムで `cv_tel_tap` を10件受信、イベント別で1位（52.63%）を確認** ✅
+
+> 検証メモ: GA4 の送信は `navigator.sendBeacon` のため **Resource Timing API には出ない**。
+> `performance.getEntriesByType('resource')` に `/g/collect` が無くても異常ではない。
+> 到達確認は GA4 リアルタイム（または DebugView）で行うこと。
+> 上記の検証で入った十数件の `cv_tel_tap` は 2026-09-06 のテスト分。
+
+### 残作業（ユーザー操作が必要）
+
+- **GA4 管理画面でキーイベント化**: ［管理］→［イベント］（またはキーイベント）で
+  `cv_tel_tap` を**キーイベントとしてマーク**する。これをしないとCVとして集計されない。
+  ※ イベントは受信済みなので、管理画面の一覧にはすでに出ているはず
+- 次週以降の週次から、**フォームCV（generate_lead）と電話タップ（cv_tel_tap）を
+  分けて記録**する運用にする
 
