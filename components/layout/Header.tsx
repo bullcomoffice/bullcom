@@ -67,7 +67,7 @@ export default function Header() {
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0 }} className="desktop-cta">
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", fontFamily: "var(--font-en)", lineHeight: 1.1 }}>
             <span style={{ fontSize: "11px", color: "var(--color-text-muted)", letterSpacing: "0.08em" }}>TEL ・ 9:00〜19:00</span>
-            <a href="tel:0789122656" style={{ fontSize: "20px", fontWeight: 700, color: "var(--color-primary-dark)", marginTop: "2px" }}>078-912-2656</a>
+            <a href="tel:0789122656" data-tel-loc="header-desktop" style={{ fontSize: "20px", fontWeight: 700, color: "var(--color-primary-dark)", marginTop: "2px" }}>078-912-2656</a>
           </div>
           <Link href="/contact" className="btn btn-primary">
             お問い合わせ
@@ -107,7 +107,7 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            <a href="tel:0789122656" style={{ padding: "12px 8px", fontWeight: 700, color: "var(--color-primary-dark)", fontSize: "18px" }}>
+            <a href="tel:0789122656" data-tel-loc="header-mobile" style={{ padding: "12px 8px", fontWeight: 700, color: "var(--color-primary-dark)", fontSize: "18px" }}>
               📞 078-912-2656
             </a>
             <Link href="/contact" className="btn btn-primary" style={{ marginTop: "12px", justifyContent: "center" }} onClick={() => setIsOpen(false)}>

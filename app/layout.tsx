@@ -82,6 +82,27 @@ export default function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-EEBVV8ECNT');
+
+            /* 電話タップの計測（A-9・2026-09-06）
+               電話が主要導線なのに tel: リンクのクリックを1件も測っておらず、
+               キーイベントがフォーム送信(generate_lead)だけだった。8月の問い合わせは
+               実際にはあったが全て電話経由で、GA4上はCVゼロに見えていた。
+               ＝「CVが減った」ではなく「CVが計測対象外の電話に流れていた」。
+
+               tel: リンクは10箇所あるので、各リンクを触らず document への委譲で拾う。
+               どの導線からの電話かは data-tel-loc（無ければ header/footer/body を自動判定）。
+               ※ gtag('config') より前に積んだ event は黙って捨てられるため、
+                  必ず config の後に登録すること。 */
+            document.addEventListener('click', function (e) {
+              var a = e.target && e.target.closest ? e.target.closest('a[href^="tel:"]') : null;
+              if (!a) return;
+              var loc = a.getAttribute('data-tel-loc')
+                || (a.closest('header') ? 'header' : a.closest('footer') ? 'footer' : 'body');
+              gtag('event', 'cv_tel_tap', {
+                link_location: loc,
+                page_path: location.pathname,
+              });
+            }, true);
           `}
         </Script>
       </head>
