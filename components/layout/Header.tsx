@@ -4,6 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 
+// accent: true のものは色を変えて目立たせる。電話口で
+// 「上のメニューの、青いリモートサポート」と言えば迷わず辿り着けるようにするため。
 const navLinks = [
   { href: "/", label: "トップ", key: "home" },
   { href: "/services", label: "サービス", key: "services" },
@@ -11,6 +13,7 @@ const navLinks = [
   { href: "/faq", label: "FAQ", key: "faq" },
   { href: "/blog", label: "ブログ", key: "blog" },
   { href: "/about", label: "会社概要", key: "about" },
+  { href: "/remote", label: "リモートサポート", key: "remote", accent: true },
 ];
 
 export default function Header() {
@@ -41,11 +44,15 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
+              className={link.accent ? "nav-remote" : undefined}
               style={{
-                padding: "10px 16px",
-                color: "var(--color-text)",
-                fontWeight: 500,
+                padding: link.accent ? "10px 14px" : "10px 16px",
+                color: link.accent ? "var(--color-primary-dark)" : "var(--color-text)",
+                fontWeight: link.accent ? 700 : 500,
                 fontSize: "15px",
+                // 既存6項目は狭い幅で文字を詰めて収める挙動に頼っているので nowrap を付けない。
+                // 付けると本来の幅が出てヘッダーが溢れる。リモートは幅に余裕がある時だけ表示する。
+                whiteSpace: link.accent ? "nowrap" : undefined,
                 borderRadius: "999px",
                 transition: "background 0.15s, color 0.15s",
               }}
@@ -55,7 +62,7 @@ export default function Header() {
               }}
               onMouseLeave={e => {
                 (e.target as HTMLElement).style.background = "transparent";
-                (e.target as HTMLElement).style.color = "var(--color-text)";
+                (e.target as HTMLElement).style.color = link.accent ? "var(--color-primary-dark)" : "var(--color-text)";
               }}
             >
               {link.label}
@@ -101,7 +108,13 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                style={{ padding: "12px 8px", color: "var(--color-text)", borderBottom: "1px solid var(--color-border)", fontSize: "15px", fontWeight: 500 }}
+                style={{
+                  padding: "12px 8px",
+                  color: link.accent ? "var(--color-primary-dark)" : "var(--color-text)",
+                  borderBottom: "1px solid var(--color-border)",
+                  fontSize: "15px",
+                  fontWeight: link.accent ? 700 : 500,
+                }}
                 onClick={() => setIsOpen(false)}
               >
                 {link.label}
@@ -121,6 +134,15 @@ export default function Header() {
         @media (max-width: 960px) {
           .desktop-nav, .desktop-cta { display: none !important; }
           .nav-toggle { display: flex !important; margin-left: auto; }
+        }
+        /* ヘッダーは元から余白ゼロで、1000px時点でナビの空きは1pxしかない。
+           7項目目（リモートサポート）を常時出すとどの幅でも必ず溢れ、
+           電話番号とお問い合わせボタンが画面外に押し出される。
+           電話は最大のコンバージョン導線なのでそちらを優先し、
+           リモートは幅に余裕がある画面でのみナビに出す。
+           狭い画面でも、ヒーローのボタン・フッター・SPメニューから辿れる。 */
+        @media (max-width: 1200px) {
+          .nav-remote { display: none !important; }
         }
       `}</style>
     </header>
