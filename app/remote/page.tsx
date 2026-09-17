@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import PageHero from "@/components/ui/PageHero";
 
@@ -179,6 +180,27 @@ export default function RemotePage() {
                 <div>
                   <p style={{ fontWeight: 700, marginBottom: "6px" }}>{s.title}</p>
                   <p style={{ margin: 0, fontSize: "15px", lineHeight: 1.9, color: "var(--color-text)" }}>{s.body}</p>
+
+                  {/* 手順③だけ実際の画面を添える。電話で「赤い枠の番号を読んでください」と
+                      言えば済むようにするのが目的。番号はサンプルに差し替えてある。 */}
+                  {s.n === "3" && (
+                    <div style={{ marginTop: "16px" }}>
+                      <Image
+                        src="/remote-id-example.png"
+                        alt="BULLCOM Remote Support の画面。「使用中のID」の欄に番号が表示され、赤い枠で囲まれている"
+                        width={328}
+                        height={476}
+                        style={{ width: "100%", maxWidth: "280px", height: "auto", borderRadius: "8px", border: "1px solid var(--color-border)" }}
+                      />
+                      <p style={{ margin: "10px 0 0", fontSize: "14px", fontWeight: 700, color: "#b93030" }}>
+                        ↑ 赤い枠の中の番号（使用中のID）をお読みください
+                      </p>
+                      <p style={{ margin: "4px 0 0", fontSize: "13px", color: "var(--color-text-muted)" }}>
+                        ※ 画面の番号は例です。実際はお客様の画面に出ている番号をお伝えください。<br />
+                        ※ パスワード欄は読み上げていただく必要はありません。
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
