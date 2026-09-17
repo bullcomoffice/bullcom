@@ -147,7 +147,11 @@ export default async function HomePage() {
                 href="https://bullcom.jp/r"
                 data-remote-entry="top-hero"
                 className="btn btn-outline"
-                style={{ padding: "16px 24px", fontSize: "15px", color: "#fff", borderColor: "rgba(255,255,255,0.55)", background: "rgba(255,255,255,0.08)" }}
+                // 以前は白8%の塗り＋半透明の白枠にしていたが、ダークなヒーロー背景に
+                // 埋もれて見つけられなかった。白地で抜いてコントラストを確保する。
+                // 文字色は濃紺（ヘッダーのリモートサポートと同じ）で、電話・LINEの
+                // 塗りボタンとは役割の違いが分かるようにしている。
+                style={{ padding: "16px 24px", fontSize: "15px", background: "#fff", color: "var(--color-primary-dark)", borderColor: "#c8dcf4" }}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="3" width="20" height="14" rx="2" />
