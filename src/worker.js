@@ -232,6 +232,16 @@ export default {
     const path = url.pathname.replace(/\/$/, '') || '/';
     const method = request.method;
 
+    // 電話口で伝えるための短縮URL。「bullcom.jp スラッシュ アール」で済む。
+    // 飛ばし先を TeamViewer ではなく自社の案内ページにしているのは、
+    // ①ダウンロード後の手順（実行→9桁のIDを読み上げ）を見せる必要がある
+    // ②ツール側のURLが変わっても直すのが /remote の1箇所で済む ため。
+    // 恒久リダイレクト(301)はブラウザが強くキャッシュし、後から行き先を
+    // 変えられなくなるので302にしている。
+    if ((method === 'GET' || method === 'HEAD') && path === '/r') {
+      return Response.redirect(new URL('/remote', url).toString(), 302);
+    }
+
     try {
       if (path === '/api/contact-submit' && method === 'POST') return await handleContactSubmit(request, env);
     } catch (e) {

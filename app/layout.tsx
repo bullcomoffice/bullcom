@@ -103,6 +103,18 @@ export default function RootLayout({
                 page_path: location.pathname,
               });
             }, true);
+
+            /* リモートサポートのツールDL計測（A-11・2026-09-18）
+               電話サポートが月に何回使われているかを数える。DLは外部サイト
+               （TeamViewer）へ出ていくため、遷移前にここで撃っておく。 */
+            document.addEventListener('click', function (e) {
+              var a = e.target && e.target.closest ? e.target.closest('a[data-remote-dl]') : null;
+              if (!a) return;
+              gtag('event', 'cv_remote_dl', {
+                link_location: a.getAttribute('data-remote-dl'),
+                page_path: location.pathname,
+              });
+            }, true);
           `}
         </Script>
       </head>

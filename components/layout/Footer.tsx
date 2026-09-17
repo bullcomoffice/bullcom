@@ -58,6 +58,7 @@ export default function Footer() {
               <li><Link href="/contact">お問い合わせ</Link></li>
               <li><a href="https://lin.ee/vX5z2Xf" target="_blank" rel="noopener noreferrer">LINEで相談</a></li>
               <li><a href="tel:0789122656">電話でお問い合わせ</a></li>
+              <li><Link href="/remote">リモートサポート接続</Link></li>
             </ul>
             <h4 style={{ marginTop: "32px" }}>Follow</h4>
             <div className="footer-social">

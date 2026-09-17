@@ -110,6 +110,12 @@ export default function ServicesPage() {
                   <PackCard title="出張診断料" price="¥5,500" items={["ご自宅・オフィスへお伺い", "症状の確認・診断", "※持ち込み診断は無料"]} accent="#3a73d1" />
                   <PackCard title="リモートサポート" price="¥11,000 / 年" items={["1台あたり・月3回まで", "年間契約プラン", "遠隔で操作サポート"]} accent="#6366f1" />
                 </div>
+                <p style={{ marginTop: "16px", marginBottom: 0, fontSize: "14px" }}>
+                  当社でパソコンをご購入の方は<strong>無償</strong>でご利用いただけます。
+                  <Link href="/remote" style={{ color: "var(--color-primary-dark)", fontWeight: 700, marginLeft: "6px" }}>
+                    リモートサポートの接続手順 →
+                  </Link>
+                </p>
               </div>
 
               {/* 02 新規設定 */}
