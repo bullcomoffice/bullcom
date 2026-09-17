@@ -39,20 +39,22 @@ export default function Header() {
         </Link>
 
         {/* PC ナビ */}
-        <nav style={{ display: "flex", gap: "4px", flex: 1 }} className="desktop-nav">
+        <nav style={{ display: "flex", gap: "2px", flex: 1 }} className="desktop-nav">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={link.accent ? "nav-remote" : undefined}
               style={{
-                padding: link.accent ? "10px 14px" : "10px 16px",
+                // メニューは全項目を横一列で見せる。そのため nowrap を全項目に付け、
+                // 折り返さずに収まるよう左右の余白を詰めている（元は16px）。
+                // 収まらない幅では下のメディアクエリでリモートを隠し、
+                // それでも足りない幅ではハンバーガーへ切り替える。
+                padding: "10px 11px",
                 color: link.accent ? "var(--color-primary-dark)" : "var(--color-text)",
                 fontWeight: link.accent ? 700 : 500,
                 fontSize: "15px",
-                // 既存6項目は狭い幅で文字を詰めて収める挙動に頼っているので nowrap を付けない。
-                // 付けると本来の幅が出てヘッダーが溢れる。リモートは幅に余裕がある時だけ表示する。
-                whiteSpace: link.accent ? "nowrap" : undefined,
+                whiteSpace: "nowrap",
                 borderRadius: "999px",
                 transition: "background 0.15s, color 0.15s",
               }}
@@ -131,16 +133,17 @@ export default function Header() {
       )}
 
       <style>{`
-        @media (max-width: 960px) {
+        /* メニューを折り返さず横一列で見せるための段階的な切り替え。
+           以前は狭い幅で文字を2行に折り返して無理に収めていた。
+           ①余裕がある幅 … 7項目すべて表示
+           ②7項目は入らない幅 … リモートを隠して6項目（ヒーロー・フッター・
+             SPメニューから辿れるので導線自体は失われない）
+           ③6項目も入らない幅 … ハンバーガーへ。電話番号はメニュー内に出る
+           しきい値は実測値に合わせている。 */
+        @media (max-width: 1060px) {
           .desktop-nav, .desktop-cta { display: none !important; }
           .nav-toggle { display: flex !important; margin-left: auto; }
         }
-        /* ヘッダーは元から余白ゼロで、1000px時点でナビの空きは1pxしかない。
-           7項目目（リモートサポート）を常時出すとどの幅でも必ず溢れ、
-           電話番号とお問い合わせボタンが画面外に押し出される。
-           電話は最大のコンバージョン導線なのでそちらを優先し、
-           リモートは幅に余裕がある画面でのみナビに出す。
-           狭い画面でも、ヒーローのボタン・フッター・SPメニューから辿れる。 */
         @media (max-width: 1200px) {
           .nav-remote { display: none !important; }
         }
