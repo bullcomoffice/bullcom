@@ -16,3 +16,18 @@
 
 # www → apex（Cloudflare 側で設定済みなら不要だが念のため）
 # https://www.bullcom.jp/*  https://bullcom.jp/:splat  301
+
+# 旧WordPress URL 第2弾（2026-09-21 追加）
+# GSCの「見つかりませんでした(404)」12件が、すべて下記の旧URLだった。
+# 被リンクや古いブックマークからの流入を取りこぼしていたため301で拾う。
+# 転送先は「その事業が今もあるか」で振り分けている。
+/pc-repair.html     /services   301
+/tablet.html        /services   301
+/maintenance.html   /services   301
+# 光回線の取次は現在も提供している。ただし現行サイトに記載が無いため、
+# 暫定で /services へ。サービスページへの追記は別途検討（A-12）。
+/flets.html         /services   301
+# パソコン教室は提供終了。該当ページが無いのでトップへ。
+/lecture.html       /           301
+/member.html        /           301
+/link.html          /           301
