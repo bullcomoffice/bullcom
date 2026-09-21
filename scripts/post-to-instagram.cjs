@@ -9,6 +9,8 @@ const {
   loadEnvLocal,
   fetchLatestArticle,
   isWithinPostWindow,
+  getLastPostedId,
+  saveLastPostedId,
 } = require('./lib/sns-common.cjs');
 
 loadEnvLocal();
@@ -102,6 +104,16 @@ async function main() {
       process.exit(0);
     }
 
+    // 重複投稿の防止。X・GBP には元からあったが、IG/FB だけ実装されていなかった
+    // （.gitignore に .last-posted-ig-id はあるのにコードから未使用だった）。
+    // 2026-09-21、記事本文を編集しただけで webhook が再発火し、同じ記事が
+    // IG・FB・GBP に二重投稿された。その再発防止。
+    const lastId = getLastPostedId('.last-posted-ig-id');
+    if (lastId === article.id) {
+      console.log(`[IG/FB投稿] この記事は投稿済みのためスキップ (ID: ${article.id})`);
+      process.exit(0);
+    }
+
     const articleUrl = `${process.env.SITE_URL}/blog/${article.slug || article.id}`;
     // microCMS CDN URLを優先（Cloudflareキャッシュ問題回避）
     const imageUrl = article.eyecatch?.url || `${process.env.SITE_URL}/blog-thumbnails/${article.id}.jpg`;
@@ -166,6 +178,10 @@ async function main() {
         console.error('[FB投稿] エラー:', e.message);
       }
     }
+
+    // IG か FB のどちらかまで進んだ時点で「この記事は処理済み」として記録する。
+    // 個別の失敗でリトライしたい場合は、この行ではなく各投稿側で扱う。
+    saveLastPostedId('.last-posted-ig-id', article.id);
   } catch (e) {
     console.error('[IG/FB投稿] エラー:', e.message);
     process.exit(1);
