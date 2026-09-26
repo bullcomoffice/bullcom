@@ -53,6 +53,15 @@ npm run seo:log     # 表示 + _seo/health-log.md に追記
 ```
 全項目PASSなら終了コード0、1つでも失敗なら1。
 
+GBP（Googleビジネスプロフィール）の数値:
+```bash
+node scripts/tools/check-gbp-reviews.cjs        # クチコミ件数・平均評価
+node scripts/tools/check-gbp-performance.cjs    # 電話タップ・経路検索・表示回数（直近28日を週別に）
+node scripts/tools/check-gbp-performance.cjs 2026-09-20 2026-09-26   # 期間指定
+```
+※ Business Profile Performance API は 2026-09-27 に GCP プロジェクト `bullcom-seo` で有効化済み。
+　直近数日分は反映が遅れることがある（最新週が0になりやすい）。
+
 ## 実務メモ
 
 ### GSCは URL パラメータで直接開ける
