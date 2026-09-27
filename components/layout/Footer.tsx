@@ -48,6 +48,7 @@ export default function Footer() {
             <ul>
               <li><a href="https://bullcom.net" target="_blank" rel="noopener">BULLCOM Security（セキュリティ）</a></li>
               <li><a href="https://bullcom.org" target="_blank" rel="noopener">BULLCOM（IT機器回収）</a></li>
+              <li><a href="https://bullcom.biz" target="_blank" rel="noopener">BULLCOM AI（AI導入支援）</a></li>
             </ul>
           </div>
 
