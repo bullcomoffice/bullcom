@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getBlogById, getBlogs } from "@/lib/microcms";
 import { buildDescription } from "@/lib/excerpt";
+import { fixBlogContent } from "@/lib/blog-content";
 import PageHero from "@/components/ui/PageHero";
 
 export const revalidate = 3600;
@@ -20,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const blog = await getBlogById(slug);
   const ogImage = blog.eyecatch?.url ?? "/og-image.jpg";
-  const description = buildDescription(blog);
+  const description = buildDescription({ ...blog, content: fixBlogContent(blog.content) });
   return {
     title: blog.title,
     description,
@@ -151,7 +152,7 @@ export default async function BlogPostPage({ params }: Props) {
               {/* 本文 */}
               <div
                 className="blog-content"
-                dangerouslySetInnerHTML={{ __html: blog.content }}
+                dangerouslySetInnerHTML={{ __html: fixBlogContent(blog.content) }}
                 style={{ background: "#fff", borderRadius: "var(--radius-lg)", padding: "40px", border: "1px solid var(--color-border)", boxShadow: "0 2px 8px rgba(28,60,120,0.04)" }}
               />
 
@@ -185,6 +186,12 @@ export default async function BlogPostPage({ params }: Props) {
         .blog-content a { color: var(--color-primary); }
         .blog-content strong { color: var(--color-text); }
         .blog-content code { background: var(--color-bg-tint); padding: 2px 6px; border-radius: 4px; font-size: 14px; font-family: monospace; }
+        .blog-content .table-wrap { overflow-x: auto; margin: 0 0 20px; }
+        .blog-content table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.7; }
+        .blog-content th, .blog-content td { border: 1px solid var(--color-border); padding: 10px 14px; text-align: left; vertical-align: top; color: var(--color-text-soft); min-width: 6em; }
+        .blog-content th { background: var(--color-bg-tint); color: var(--color-text); font-weight: 700; }
+        .blog-content th p, .blog-content td p { margin: 0; line-height: 1.7; }
+        @media (max-width: 600px) { .blog-content th, .blog-content td { padding: 8px 10px; font-size: 14px; min-width: 5em; } }
         .blog-content blockquote { border-left: 4px solid var(--color-primary-light); padding: 12px 20px; margin: 16px 0; background: var(--color-bg-soft); border-radius: 0 var(--radius) var(--radius) 0; color: var(--color-text-soft); }
         @media (max-width: 900px) { .article-layout { grid-template-columns: 1fr !important; } }
       `}</style>
