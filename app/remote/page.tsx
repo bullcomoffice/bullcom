@@ -7,7 +7,7 @@ import PageHero from "@/components/ui/PageHero";
  * リモートサポートの接続案内ページ。
  *
  * 電話口での案内を短くするために用意している。お客様に
- * 「teamviewer.com/bullcom」と英字を綴ってもらうのは電話では難しいので、
+ * 「get.teamviewer.com/bullcom」と英字を綴ってもらうのは電話では難しいので、
  * 自社ドメインの短縮URL（bullcom.jp/r → このページ）へ誘導し、
  * ダウンロード後の手順（実行 → 表示されたIDを読み上げ）まで画面に出しておく。
  *
@@ -16,7 +16,8 @@ import PageHero from "@/components/ui/PageHero";
  * 持ち込み・出張・郵送の導線へ誘導する。
  */
 
-const TEAMVIEWER_URL = "https://teamviewer.com/bullcom";
+// 旧URL https://teamviewer.com/bullcom は www.teamviewer.com/bullcom へ飛んで404になる（2026-09-30 確認）
+const TEAMVIEWER_URL = "https://get.teamviewer.com/bullcom";
 
 const title = "リモートサポート 接続手順｜遠隔サポートツールのダウンロード";
 const description =
