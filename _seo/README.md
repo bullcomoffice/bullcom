@@ -8,7 +8,8 @@ bullcom.jp のSEO/GEO対策を「実装 → スケジュールで答え合わせ
 - 正規形は**末尾スラッシュ無し**（`trailingSlash` 未指定）。姉妹サイト bullcom.net は逆なので混同しないこと。
 - GSCプロパティ: `sc-domain:bullcom.jp`（ドメインプロパティ）。
   URLプレフィックス形式を resource_id に渡すと「アクセス権がありません」になる。
-- 静的エクスポート（`output: "export"`）を Cloudflare へデプロイ。push でデプロイが走る。
+- 静的エクスポート（`output: "export"`）を Cloudflare へデプロイ。**push ではデプロイは走らない**。
+  デプロイが走るのは microCMS の公開・更新（Webhook）と手動実行（`gh workflow run deploy.yml --ref main`）のとき。
 
 ## いま入っている対策（2026-08-30時点）
 - 全ページ self-canonical（末尾スラッシュ無し）
