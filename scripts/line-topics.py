@@ -25,7 +25,7 @@ from datetime import datetime, timedelta, timezone
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
-SITE = "repair"  # このリポジトリのサイト（ネタ帳グループ「Repair ブログネタ」）
+SITE = "repair"  # このリポジトリのサイト（ネタ帳グループ「修理ブログネタ」）
 STATE = "scripts/line-topics-state.json"  # 「ここまで読んだ」の記録
 JST = timezone(timedelta(hours=9))
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36"
