@@ -1,3 +1,9 @@
 /blog-thumbnails/*
   Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=86400
+
+# Next.js のビルド成果物（JS・CSS・フォント）はファイル名に内容のハッシュが入り、
+# 中身が変わればファイル名も変わる。既定の max-age=0 だとページを開くたびに
+# 全ファイルを問い合わせ直すため、1年キャッシュさせる。
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
