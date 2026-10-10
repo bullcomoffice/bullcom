@@ -3,7 +3,8 @@
 import { useState } from "react";
 
 // 問い合わせ内容へのURL混入チェック（サーバー側と同じ判定。送信前に即時フィードバックするため）
-const URL_PATTERN = /https?:\/\/|www\.\S|\b[a-z0-9][a-z0-9-]{1,61}\.(com|net|org|jp|io|co|info|biz|xyz|shop|site|online|club|top|vip|link|click|live|store|me|tv|cc|ru|cn)\b/i;
+// 「gmail.com」「office.com」やメールアドレスは正規の相談でも書かれるので拒否しない
+const URL_PATTERN = /https?:\/\/|www\.\S/i;
 
 export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -111,15 +112,20 @@ export default function ContactForm() {
 
           <div>
             <label style={labelStyle}>お問い合わせ種別</label>
+            {/* 選択肢の一覧は OS の白い背景で開くため、文字色を白のままにすると読めない（Windows の Chrome など） */}
             <select name="お問い合わせ種別" style={{ ...inputStyle, cursor: "pointer" }}>
-              <option value="">選択してください</option>
-              <option value="パソコン修理">パソコン修理</option>
-              <option value="パソコン設定・セットアップ">パソコン設定・セットアップ</option>
-              <option value="データ復旧・バックアップ">データ復旧・バックアップ</option>
-              <option value="ウイルス・セキュリティ対策">ウイルス・セキュリティ対策</option>
-              <option value="法人・オフィスサポート">法人・オフィスサポート</option>
-              <option value="出張サポート">出張サポート</option>
-              <option value="その他">その他</option>
+              {[
+                ["", "選択してください"],
+                ["パソコン修理", "パソコン修理"],
+                ["パソコン設定・セットアップ", "パソコン設定・セットアップ"],
+                ["データ復旧・バックアップ", "データ復旧・バックアップ"],
+                ["ウイルス・セキュリティ対策", "ウイルス・セキュリティ対策"],
+                ["法人・オフィスサポート", "法人・オフィスサポート"],
+                ["出張サポート", "出張サポート"],
+                ["その他", "その他"],
+              ].map(([value, label]) => (
+                <option key={value} value={value} style={{ color: "#1a2332", background: "#fff" }}>{label}</option>
+              ))}
             </select>
           </div>
 
