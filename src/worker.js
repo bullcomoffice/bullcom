@@ -37,8 +37,12 @@ const PHONE_FIELD = '電話番号';
 const MESSAGE_FIELD = 'お問い合わせ内容';
 const EMAIL_FIELD = 'メールアドレス';
 
-// URLらしき文字列の検出（http(s)://・www.・裸ドメイン+主要TLD）
-const URL_PATTERN = /https?:\/\/|www\.\S|\b[a-z0-9][a-z0-9-]{1,61}\.(com|net|org|jp|io|co|info|biz|xyz|shop|site|online|club|top|vip|link|click|live|store|me|tv|cc|ru|cn)\b/i;
+// URLらしき文字列の検出（http(s)://・www.）
+// 以前は「裸ドメイン+主要TLD」も拒否していたが、「gmail.com に届かない」「office.com に
+// サインインできない」「yahoo.co.jp」や本文中のメールアドレスなど、パソコン相談でよく出る
+// 正規の文面まで送信できなくなっていた（2026-10-11 のフォーム点検で判明）。
+// クリックできるリンクになる形だけを拒否する。
+const URL_PATTERN = /https?:\/\/|www\.\S/i;
 
 // お客様宛の自動確認メール
 function customerConfirmationHtml(name) {
