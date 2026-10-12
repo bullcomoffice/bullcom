@@ -600,3 +600,8 @@ chatgpt.com（18）・openai（17）のAI経由も見えた。
     y23-ms6rdlv（TPM 2.0）/ iqodlsosqj-v（台風・停電）/ aqqi16eg7gs（電源ボタンを押しても反応がない）/ f21euzi2xa（ビープ音）/
     iz1y75bk0z（勝手にスリープから復帰）/ msgdzlw7jsp（ファン音）/ swdcbsdd-8（ウイルス感染のサイン）
   - 「URL が Google に認識されていません」4本: 1vk2l2jy7f（ディスク容量）/ uel05wbdklaz（ランサムウェア）/ s0g6eo86cz（画面が映らない）/ 9sej6ewvc8h（Webカメラ・マイク）
+
+### A-17 進捗（10/12・管理セッションより）
+- 10/12 9:5x に ① 755512v-d（26H2・期限10/13）と ② 8n4t03f1grhu（メモリ）を申請し、**どちらも受理**
+- 残りは管理セッションの定期タスクが申請（こちらでは申請しない）:
+  10/13〜 fr9cr7q6pv・uvunks23u（更新）・wh-ne7856xu ／ 10/16〜 s1nxqznp3（更新・10/18の効果測定前）／ 10/17〜 tpnuzqegi36z ／ 10/18〜 0qzf9egsh
