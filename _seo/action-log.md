@@ -606,3 +606,6 @@ chatgpt.com（18）・openai（17）のAI経由も見えた。
 - 残りは管理セッションの定期タスクが申請（こちらでは申請しない）:
   10/13〜 fr9cr7q6pv・uvunks23u（更新）・wh-ne7856xu ／ 10/16〜 s1nxqznp3（更新・10/18の効果測定前）／ 10/17〜 tpnuzqegi36z ／ 10/18〜 0qzf9egsh
 - 10/12: 棚卸しで見つかった既存記事の未登録14本も、ユーザー指示で管理セッションへ送付（中5本: 3yjip-kc8・o-5_1_pfy・jm-2tkjkr・y23-ms6rdlv・aqqi16eg7gs、残り9本は低）。申請は管理セッション側
+- 10/12: 管理セッションの申請日程（各日16:05ごろ）: 10/13 fr9cr7q6pv・uvunks23u ／ 10/14 wh-ne7856xu ／ 10/16 s1nxqznp3 ／ 10/17 tpnuzqegi36z ／
+  10/18 0qzf9egsh ／ 10/21 中5本（3yjip-kc8・o-5_1_pfy・jm-2tkjkr・y23-ms6rdlv・aqqi16eg7gs）／ 10/22 iqodlsosqj-v ／ 10/23 低8本。
+  週報（10/18・10/25月次）で登録状況を確認する
