@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import PageHero from "@/components/ui/PageHero";
 import CtaBanner from "@/components/ui/CtaBanner";
+import { breadcrumbJsonLd, toJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "よくある質問",
@@ -98,6 +99,7 @@ export default function FaqPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(breadcrumbJsonLd("よくある質問", "/faq")) }} />
       <PageHero sub="FAQ" title="よくあるご質問" crumb="よくある質問" lead="皆様からよくいただくご質問をカテゴリ別にまとめました。解決しない場合はお気軽にお問い合わせください。" />
 
       <section style={{ background: "var(--color-bg-soft)" }}>

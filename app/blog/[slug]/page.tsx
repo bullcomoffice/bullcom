@@ -6,6 +6,7 @@ import { buildDescription } from "@/lib/excerpt";
 import { fixBlogContent } from "@/lib/blog-content";
 import PageHero from "@/components/ui/PageHero";
 import ArticleCta from "@/components/ui/ArticleCta";
+import { BUSINESS_ID, WEBSITE_ID } from "@/lib/structured-data";
 
 export const revalidate = 3600;
 
@@ -89,16 +90,26 @@ export default async function BlogPostPage({ params }: Props) {
     "image": blog.eyecatch?.url ?? "https://bullcom.jp/og-image.jpg",
     "datePublished": blog.publishedAt ?? blog.createdAt,
     "dateModified": blog.updatedAt ?? blog.publishedAt ?? blog.createdAt,
+    "description": buildDescription({ ...blog, content: fixBlogContent(blog.content) }),
+    "inLanguage": "ja",
+    // 書き手は店舗そのもの（layout の LocalBusiness と同じ @id）。AI検索が記事を引用したときに
+    // 「どこの店の記事か」を店舗情報まで辿れるようにする
     "author": {
       "@type": "Organization",
+      "@id": BUSINESS_ID,
       "name": "BULLCOM（ブルコム）パソコン修理",
       "url": "https://bullcom.jp",
     },
     "publisher": {
       "@type": "Organization",
+      "@id": BUSINESS_ID,
       "name": "BULLCOM（ブルコム）パソコン修理",
       "url": "https://bullcom.jp",
+      "logo": { "@type": "ImageObject", "url": "https://bullcom.jp/logo-full.png" },
     },
+    "mainEntityOfPage": `https://bullcom.jp/blog/${slug}`,
+    "isPartOf": { "@id": WEBSITE_ID },
+    ...(blog.category?.name ? { "articleSection": blog.category.name } : {}),
     "url": `https://bullcom.jp/blog/${slug}`,
   };
 
