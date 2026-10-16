@@ -5,6 +5,7 @@ import { getBlogById, getBlogs } from "@/lib/microcms";
 import { buildDescription } from "@/lib/excerpt";
 import { fixBlogContent } from "@/lib/blog-content";
 import PageHero from "@/components/ui/PageHero";
+import ArticleCta from "@/components/ui/ArticleCta";
 
 export const revalidate = 3600;
 
@@ -155,6 +156,9 @@ export default async function BlogPostPage({ params }: Props) {
                 dangerouslySetInnerHTML={{ __html: fixBlogContent(blog.content) }}
                 style={{ background: "#fff", borderRadius: "var(--radius-lg)", padding: "40px", border: "1px solid var(--color-border)", boxShadow: "0 2px 8px rgba(28,60,120,0.04)" }}
               />
+
+              {/* 問い合わせ導線（スマホではサイドバーが一覧へ戻るより下になるため本文直後にも置く） */}
+              <ArticleCta />
 
               {/* 戻るボタン */}
               <div style={{ marginTop: "40px" }}>
