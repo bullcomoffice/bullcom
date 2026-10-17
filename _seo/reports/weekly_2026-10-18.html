@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>bullcom.jp SEO/GEO 週次レポート 2026-10-18</title>
+<style>
+  @page { size: A4 portrait; margin: 14mm 14mm 16mm; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Yu Gothic", "Meiryo", "Hiragino Kaku Gothic ProN", sans-serif;
+    color: #1a2332; font-size: 10pt; line-height: 1.75; -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page-break { page-break-before: always; }
+  h1 { font-size: 20pt; color: #fff; line-height: 1.35; }
+  h2 {
+    font-size: 12.5pt; color: #1e3a6f; margin: 9mm 0 3.5mm;
+    padding-left: 3mm; border-left: 4px solid #2c5fb8;
+  }
+  h2:first-of-type { margin-top: 6mm; }
+  h3 { font-size: 10.5pt; color: #1e3a6f; margin: 5mm 0 2mm; }
+  p { margin-bottom: 2.5mm; }
+
+  /* ヘッダー */
+  .hero {
+    background: linear-gradient(135deg, #1e3a6f 0%, #2c5fb8 60%, #4a7fd6 100%);
+    color: #fff; padding: 9mm 10mm; border-radius: 3mm; margin-bottom: 7mm;
+  }
+  .hero .eyebrow {
+    font-size: 8pt; letter-spacing: .18em; opacity: .8; margin-bottom: 2mm; font-weight: 700;
+  }
+  .hero .meta { font-size: 8.5pt; opacity: .85; margin-top: 3mm; }
+
+  /* KPIカード */
+  .kpis { display: flex; gap: 3mm; margin-bottom: 6mm; }
+  .kpi {
+    flex: 1; background: #f5f8fc; border: 1px solid #dde6f1; border-radius: 2.5mm;
+    padding: 4mm 3mm; text-align: center;
+  }
+  .kpi .label { font-size: 7.5pt; color: #768193; margin-bottom: 1.5mm; }
+  .kpi .value { font-size: 16pt; font-weight: 800; color: #1e3a6f; line-height: 1.1; }
+  .kpi .delta { font-size: 8.5pt; font-weight: 700; color: #1a8a58; margin-top: 1mm; }
+
+  table { width: 100%; border-collapse: collapse; margin: 2.5mm 0 4mm; font-size: 9pt; }
+  th {
+    background: #1e3a6f; color: #fff; text-align: left; padding: 2mm 2.5mm; font-weight: 600; font-size: 8.5pt;
+  }
+  td { border-bottom: 1px solid #e3eaf3; padding: 2mm 2.5mm; vertical-align: top; }
+  tr:nth-child(even) td { background: #fafcfe; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .up { color: #1a8a58; font-weight: 700; }
+  .down { color: #c0392b; font-weight: 700; }
+  .zero { color: #768193; }
+  strong.hl { color: #1e3a6f; }
+
+  /* 注目ボックス */
+  .callout {
+    border-radius: 2.5mm; padding: 4.5mm 5mm; margin: 4mm 0;
+    border-left: 4px solid #e05252; background: #fff5f5;
+  }
+  .callout.info { border-left-color: #2c5fb8; background: #f0f5ff; }
+  .callout.good { border-left-color: #2db87a; background: #f0fff8; }
+  .callout .t { font-weight: 700; margin-bottom: 2mm; color: #1a2332; font-size: 10pt; }
+  .quote {
+    background: #fff; border: 1px solid #f0c9c9; border-radius: 2mm;
+    padding: 3mm 4mm; margin: 3mm 0 2mm; font-size: 9pt;
+  }
+
+  ol, ul { margin: 0 0 3mm 5mm; }
+  li { margin-bottom: 1.5mm; }
+
+  .footer {
+    margin-top: 8mm; padding-top: 3mm; border-top: 1px solid #dde6f1;
+    font-size: 7.5pt; color: #768193; display: flex; justify-content: space-between;
+  }
+  .badge {
+    display: inline-block; font-size: 7.5pt; font-weight: 700; padding: .5mm 2mm;
+    border-radius: 1.5mm; margin-left: 1.5mm;
+  }
+  .badge.new { background: #2db87a; color: #fff; }
+  .badge.warn { background: #e05252; color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="eyebrow">WEEKLY SEO / GEO REPORT — 第13回</div>
+  <h1>bullcom.jp 週次レポート<br>2026年10月18日</h1>
+  <div class="meta">
+    対象期間: 2026年10月11日〜10月17日／前回: 10月11日（第12回）<br>
+    パソコン修理・設定 BULLCOM（ブルコム）｜神戸市西区・明石市
+  </div>
+</div>
+
+<div class="callout info" style="margin-top:0">
+  <div class="t">今回の取得範囲</div>
+  <p style="margin:0">今回はクラウドのセッションで作成した。<strong>GSC・GA4・Googleビジネスプロフィールの数値と、外形チェック（npm run seo:check）は取得できていない</strong>（鍵がなく、bullcom.jp への直接の通信もネットワーク制限で通らない）。本番ページは読み取りで確認した。数値の欄は「-」で、このPCで埋める。</p>
+</div>
+
+<div class="kpis">
+  <div class="kpi"><div class="label">sitemap URL数</div><div class="value">90</div><div class="delta">▲ +4（前回86）</div></div>
+  <div class="kpi"><div class="label">今週の新記事</div><div class="value">4本</div><div class="delta" style="color:#768193">うちLINEの急ぎのネタ2本</div></div>
+  <div class="kpi"><div class="label">今週の本番反映</div><div class="value">2件</div><div class="delta">A-19・A-20</div></div>
+  <div class="kpi"><div class="label">クリック・表示</div><div class="value">-</div><div class="delta" style="color:#768193">このPCで取得</div></div>
+</div>
+
+<h2>1. 今週の要点</h2>
+<div class="callout good">
+  <div class="t">✅ 前進</div>
+  <ul style="margin-bottom:0">
+    <li><strong>記事末尾の問い合わせ導線（A-19）が本番に出た</strong>（10/17 9:00）。新記事でも本文の直後に電話・フォームのボタンを確認</li>
+    <li><strong>神戸ページの条件つきFAQ（A-20）が本番に出た</strong>（10/17 9:07）。「全9区へ出張・市内一律¥5,500」と送料「往復ともお客様負担」も反映</li>
+    <li>GEO の店舗情報の整備（A-21）は PR #4 で準備済み（未マージ）</li>
+  </ul>
+</div>
+<div class="callout">
+  <div class="t">🔴 課題</div>
+  <ul style="margin-bottom:0">
+    <li><strong>公開中のブログ2本が「返送料は当社負担」のまま</strong>。サイトの他の箇所（往復ともお客様負担）と食い違っている</li>
+    <li><strong>今週入れた導線・表記に退行の見張りがない</strong></li>
+    <li>A-14（タイトル変更）・A-18（フォーム修正）の答え合わせは、数値がないため来週の月次へ</li>
+  </ul>
+</div>
+
+<h2>2. 前週対策の答え合わせ</h2>
+<table>
+  <tr><th>ID / 対策</th><th>今週の結果</th><th>判定</th></tr>
+  <tr><td>A-14 チラつき記事のタイトル変更（10/11）</td><td>GSC が必要（本命KW 9.2位・CTR1.3% からの変化）</td><td class="zero">-</td></tr>
+  <tr><td>A-17 新記事の登録リクエスト</td><td>管理セッションが日程どおり申請中。登録状況は GSC で確認</td><td class="zero">-</td></tr>
+  <tr><td>A-18 フォーム修正（10/12）</td><td>GA4 が必要（入力開始と送信の比）</td><td class="zero">-</td></tr>
+  <tr><td><strong>A-19 記事末尾の問い合わせ導線</strong></td><td>本番反映を確認。効果は来週から</td><td>🔵</td></tr>
+  <tr><td><strong>A-20 神戸ページの条件つきFAQ</strong></td><td>本番反映を確認。GEO 条件軸は来週から</td><td>🔵</td></tr>
+  <tr><td>クチコミ運用開始</td><td>ユーザー判断待ちで保留中</td><td class="zero">-</td></tr>
+</table>
+
+<h2>3. 今週の新記事</h2>
+<table>
+  <tr><th>公開日</th><th>記事</th><th>備考</th></tr>
+  <tr><td>10/12</td><td>0qzf9egsh</td><td>管理セッションが 10/18 に申請予定</td></tr>
+  <tr><td>10/14</td><td>ftwjzo611vc9 パスキーと2段階認証</td><td>LINEの急ぎのネタ。管理セッションへの送付を確認</td></tr>
+  <tr><td>10/15</td><td>samjnf7hfl7l 社内PCが感染、最初の10分</td><td>10/13 送付済みの予約28本に含まれる</td></tr>
+  <tr><td>10/17</td><td>7b5vr5spoq Windows 11 の10月更新でWi-Fi・RDP不通</td><td>LINEの急ぎのネタ。管理セッションへの送付を確認</td></tr>
+</table>
+
+<h2>4. 問題点と対策</h2>
+<table>
+  <tr><th>問題</th><th>対策</th><th>状態</th></tr>
+  <tr><td><strong>ブログ2本の送料表記が古い</strong><br>uvunks23u（2か所）・euedtvng1（3か所）</td><td><strong>A-22</strong> 元原稿を「往復の送料はお客様負担」に修正。microCMS の本文更新はこのPCで</td><td>PR作成 / PCで更新</td></tr>
+  <tr><td><strong>今週の対策に退行の見張りがない</strong></td><td><strong>A-23</strong> 外形チェックに「記事末尾の問い合わせ導線」「郵送送料の旧表記なし」を追加</td><td>PR作成</td></tr>
+  <tr><td>数値がクラウドから取れない</td><td>このPCで seo:log・GSC・GA4・GBP・GEO 条件軸を実施</td><td>PCで</td></tr>
+</table>
+
+<p>次回は <strong>10/25（日）の月次レビュー</strong>（週報を兼ねる）。A-19・A-20 の効果と、A-14・A-18 の判定をまとめて行う。</p>
+
+<div class="footer">
+  <div>BULLCOM bullcom.jp — SEO/GEO 週次レポート 第13回（2026-10-18）</div>
+  <div>記録: _seo/weekly-log.md ｜ 対策台帳: _seo/action-log.md</div>
+</div>
+
+</body>
+</html>
