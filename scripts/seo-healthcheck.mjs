@@ -135,6 +135,27 @@ async function run() {
     check("ブログ description がタイトルと別文", ok, ok ? `${desc.length}字` : "タイトルと同一/空");
   });
 
+  // A-19（2026-10-17）の退行監視。記事本文の直後の問い合わせ導線（components/ui/ArticleCta.tsx）。
+  // スマホではサイドバーが一覧へ戻るより下に落ちるため、これが消えると読了後の導線がなくなる。
+  await guard("ブログ 記事末尾の問い合わせ導線", async () => {
+    const r = await get(`/blog/${BLOG_SAMPLE}`, { redirect: "follow" });
+    const ok = r.body.includes('data-tel-loc="blog-article"');
+    check("ブログ 記事末尾の問い合わせ導線", ok, ok ? "検出" : "未検出");
+  });
+
+  // 郵送修理の送料は「往復ともお客様負担」（2026-10-16 ユーザー確認）。
+  // 以前は「返送料は当社負担」と書いたページがあり、AI回答や来店前の誤解につながる。
+  // 固定ページと、旧表記が残っていたブログ2本（uvunks23u・euedtvng1）を見る。
+  await guard("郵送送料の旧表記なし", async () => {
+    const paths = ["/", "/faq", "/price", "/area/kobe", "/area/akashi", "/blog/uvunks23u", "/blog/euedtvng1"];
+    const found = [];
+    for (const p of paths) {
+      const r = await get(p, { redirect: "follow" });
+      if (/返送料(は)?当社負担/.test(r.body)) found.push(p);
+    }
+    check("郵送送料の旧表記なし", found.length === 0, found.length ? `残っている: ${found.join(" ")}` : `${paths.length}ページ確認`);
+  });
+
   // ---- レポート生成 ----
   const now = new Date().toISOString().slice(0, 16).replace("T", " ") + " UTC";
   const passed = results.filter((r) => r.ok).length;
