@@ -86,8 +86,8 @@ export const localBusinessJsonLd = {
     { "@type": "AdministrativeArea", name: "稲美町" },
     { "@type": "AdministrativeArea", name: "兵庫県" },
   ],
-  // 営業時間は会社概要の「事務所 9:30〜15:30／連絡受付 9:00〜19:00／不定休」とずれている。
-  // どちらに合わせるかはユーザー確認待ちのため、従来の値のまま（2026-10-17）
+  // 会社概要の「事務所 9:30〜15:30／連絡受付 9:00〜19:00／不定休」とは異なるが、
+  // 2026-10-17 にユーザーの判断で従来の「毎日 9:00〜19:00」のままとした
   openingHoursSpecification: [{
     "@type": "OpeningHoursSpecification",
     dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
