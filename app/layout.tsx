@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { localBusinessJsonLd, toJsonLd, websiteJsonLd } from "@/lib/structured-data";
 
 const notoSansJP = Noto_Sans_JP({
   subsets: ["latin"],
@@ -119,6 +120,9 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="flex min-h-screen flex-col">
+        {/* 事業者情報は全ページに出す（AI検索はページ単位で読むため。lib/structured-data.ts） */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(websiteJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(localBusinessJsonLd) }} />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

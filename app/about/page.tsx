@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import PageHero from "@/components/ui/PageHero";
 import CtaBanner from "@/components/ui/CtaBanner";
+import { aboutPageJsonLd, breadcrumbJsonLd, toJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "会社概要｜パソコン修理 BULLCOM 神戸・明石",
@@ -23,6 +24,8 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(aboutPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(breadcrumbJsonLd("会社概要", "/about")) }} />
       <PageHero sub="ABOUT US" title="会社概要" crumb="会社概要" lead="2002年の創業から、神戸・明石を中心に地域のパソコンの困りごとに寄り添ってきました。" />
 
       {/* ===== 実績バー ===== */}

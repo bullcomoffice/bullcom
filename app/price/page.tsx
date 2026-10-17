@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import PageHero from "@/components/ui/PageHero";
 import CtaBanner from "@/components/ui/CtaBanner";
+import { breadcrumbJsonLd, priceCatalogJsonLd, toJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "料金・プラン",
@@ -32,6 +33,8 @@ const SectionHeader = ({ num, color, title, lead }: { num: string, color: string
 export default function PricePage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(priceCatalogJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(breadcrumbJsonLd("料金・プラン", "/price")) }} />
       <PageHero sub="PRICING" title="料金・プラン" crumb="料金・プラン" lead="わかりやすい価格で、ご納得いただける作業をお約束します。すべて税込価格です。" />
 
       <section>
@@ -54,7 +57,7 @@ export default function PricePage() {
               </p>
             </div>
             <Link href="/contact" style={{ background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.4)", color: "#fff", padding: "14px 24px", borderRadius: "var(--radius)", fontWeight: 700, fontSize: "15px", flexShrink: 0, whiteSpace: "nowrap", textDecoration: "none" }}>
-              未店予約をする
+              来店予約をする
             </Link>
           </div>
 
