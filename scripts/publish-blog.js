@@ -8,6 +8,8 @@
  * オプション:
  *   --dry-run    APIに投稿せずに確認のみ
  *   --update     既存記事を更新（IDはfront matterの id: フィールドから）
+ *                publish: false なら下書きのまま、true なら公開中の本文を更新する。
+ *                今の状態（下書き／公開中）と publish が食い違うときは更新せずに止まる
  *
  * front matter 例:
  * ---
@@ -72,7 +74,8 @@ function parseFrontMatter(content) {
 // マークダウン → microCMS HTML 変換
 // ============================================================
 function markdownToHtml(md) {
-  let html = md;
+  // 改行を LF にそろえる（CRLF の原稿だと表の判定で行末の \r が邪魔をする）
+  let html = md.replace(/\r\n?/g, '\n');
 
   // エスケープ（& < >）
   const escape = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -89,6 +92,17 @@ function markdownToHtml(md) {
   html = html.replace(/^### (.+)$/gm, (_, t) => `<h3>${t}</h3>`);
   html = html.replace(/^## (.+)$/gm, (_, t) => `<h2>${t}</h2>`);
   html = html.replace(/^# (.+)$/gm, (_, t) => `<h2>${t}</h2>`);
+
+  // 表（| 見出し | … | の行のあとに |---| の区切り行が続くブロック）
+  // ※ 以前は変換しておらず、「| … |」の文字のまま本文に保存されていた（2026-10-24 修正）
+  html = html.replace(/((?:^\|.*\|[ \t]*(?:\n|$))+)/gm, (block) => {
+    const rows = block.trim().split('\n');
+    if (rows.length < 2 || !/^\|[\s:|-]+\|$/.test(rows[1].trim())) return block;
+    const cells = (line) => line.trim().replace(/^\||\|$/g, '').split('|').map((c) => inlineFormat(c.trim()));
+    const th = cells(rows[0]).map((c) => `<th>${c}</th>`).join('');
+    const tr = rows.slice(2).map((r) => `<tr>${cells(r).map((c) => `<td>${c}</td>`).join('')}</tr>`).join('');
+    return `<table><thead><tr>${th}</tr></thead><tbody>${tr}</tbody></table>\n\n`;
+  });
 
   // 水平線
   html = html.replace(/^---+$/gm, '<hr>');
@@ -117,7 +131,7 @@ function markdownToHtml(md) {
     block = block.trim();
     if (!block) return '';
     // 既にHTMLタグ（h2,h3,ul,ol,pre,hr）で始まる場合はそのまま
-    if (/^<(h[23]|ul|ol|pre|hr|li)/.test(block)) return block;
+    if (/^<(h[23]|ul|ol|pre|hr|li|table)/.test(block)) return block;
     // それ以外は <p> で包む
     const lines = block.split('\n').map(line => inlineFormat(line));
     return `<p>${lines.join('<br>')}</p>`;
@@ -324,8 +338,26 @@ async function main() {
   const wantPublish = meta.publish === true;
   let result;
   if (isUpdate && meta.id) {
-    console.log(`\n📤 記事を更新中... (ID: ${meta.id})`);
-    result = await apiRequest('PATCH', `/blogs/${meta.id}`, postBody);
+    // ※ PATCH も ?status=draft が無いと「公開」で保存される。以前は常に付けずに更新しており、
+    //   下書き（予約記事）に --update すると今すぐ公開され SNS 自動投稿まで走る作りだった（2026-10-24 修正）。
+    //   今の状態と front matter の publish を突き合わせ、食い違うときは更新しない。
+    const before = await fetchActualState(meta.id);
+    const isPublished = before.status.includes('PUBLISH');
+    console.log(`\n🔍 更新前の状態: ${JSON.stringify(before.status)} / 予約 ${before.publishTime || '(なし)'}`);
+    if (isPublished && !wantPublish) {
+      throw new Error(
+        `公開中の記事に publish: false で更新しようとしています（公開版と別に下書きができてしまいます）。` +
+        `公開中の本文を更新するなら front matter を publish: true にしてください。`
+      );
+    }
+    if (!isPublished && wantPublish) {
+      throw new Error(
+        `下書きの記事に publish: true で更新しようとしています（今すぐ公開され、SNS 自動投稿も走ります）。` +
+        `下書きのまま更新するなら publish: false にしてください。`
+      );
+    }
+    console.log(`\n📤 記事を更新中...（${wantPublish ? '公開中の本文を更新' : '下書きのまま更新'}） (ID: ${meta.id})`);
+    result = await apiRequest('PATCH', `/blogs/${meta.id}${wantPublish ? '' : '?status=draft'}`, postBody);
     console.log(`✅ 更新完了! ID: ${result.id}`);
   } else {
     console.log(`\n📤 記事を新規投稿中...（${wantPublish ? '公開' : '下書き'}）`);
