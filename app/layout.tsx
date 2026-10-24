@@ -115,6 +115,22 @@ export default function RootLayout({
                 page_path: location.pathname,
               });
             }, true);
+
+            /* LINE で相談のタップ計測（A-24・2026-10-17）
+               LINE はスマホの追従ボタン・トップ・お問い合わせ・フッターなど11か所にあるが計測しておらず、
+               「サイトからの問い合わせ0」に LINE 経由が入っていなかった（A-9 の電話と同じ構図）。
+               どこからのタップかは data-line-loc（無ければ floating/header/footer/body を自動判定）。 */
+            document.addEventListener('click', function (e) {
+              var a = e.target && e.target.closest ? e.target.closest('a[href*="lin.ee/"]') : null;
+              if (!a) return;
+              var loc = a.getAttribute('data-line-loc')
+                || (a.classList.contains('floating-line') ? 'floating'
+                  : a.closest('header') ? 'header' : a.closest('footer') ? 'footer' : 'body');
+              gtag('event', 'cv_line_tap', {
+                link_location: loc,
+                page_path: location.pathname,
+              });
+            }, true);
           `}
         </Script>
       </head>

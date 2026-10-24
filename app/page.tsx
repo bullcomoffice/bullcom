@@ -163,7 +163,7 @@ export default async function HomePage() {
             </div>
 
             <div style={{ display: "flex", gap: "24px", flexWrap: "wrap", paddingTop: "24px", borderTop: "1px solid rgba(255,255,255,0.2)" }}>
-              {["持ち込み診断 無料", "個人・法人どちらも対応", "出張・郵送OK"].map((text) => (
+              {["持ち込み診断 無料", "神戸市・明石市 出張一律¥5,500", "個人・法人どちらも対応"].map((text) => (
                 <span key={text} style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>
                   <span style={{ width: "32px", height: "32px", background: "rgba(100,149,237,0.25)", borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#6495ED", flexShrink: 0 }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -404,7 +404,7 @@ export default async function HomePage() {
           <div className="section-head">
             <span className="section-head__eyebrow">SERVICE AREA</span>
             <h2>出張対応エリア</h2>
-            <p className="section-head__lead">兵庫県・大阪府を中心に、京都府の一部まで対応。明石を拠点に出張対応を行っています。</p>
+            <p className="section-head__lead">神戸市西区伊川谷（明石市との市境）の店舗を拠点に、兵庫県・大阪府を中心に京都府の一部まで出張しています。神戸市は全9区、明石市は全域が出張エリアAで、出張費はどこでも一律¥5,500です。</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", alignItems: "center" }} className="area-grid">
             {/* マップ */}
@@ -422,7 +422,7 @@ export default async function HomePage() {
               ))}
               {/* ピン */}
               <div style={{ position: "absolute", left: "50%", top: "53%", width: "30px", height: "30px", background: "linear-gradient(135deg, #d6486f, #b3214e)", borderRadius: "50% 50% 50% 0", transform: "rotate(-45deg) translate(0,-50%)", boxShadow: "0 6px 16px rgba(179,33,78,0.5), 0 0 0 4px rgba(214,72,111,0.2)", zIndex: 3 }}>
-                <span style={{ position: "absolute", transform: "rotate(45deg)", top: "-10px", left: "30px", fontSize: "11px", fontWeight: 800, background: "#b3214e", color: "#fff", padding: "2px 7px", borderRadius: "3px", whiteSpace: "nowrap" }}>明石（拠点）</span>
+                <span style={{ position: "absolute", transform: "rotate(45deg)", top: "-10px", left: "30px", fontSize: "11px", fontWeight: 800, background: "#b3214e", color: "#fff", padding: "2px 7px", borderRadius: "3px", whiteSpace: "nowrap" }}>神戸市西区（拠点）</span>
               </div>
               {[
                 { left: "56%", top: "50%", size: "22px", bg: "linear-gradient(135deg,#3fb287,#2c8068)", shadow: "0 4px 10px rgba(38,128,90,0.4)", name: "神戸" },
@@ -438,7 +438,7 @@ export default async function HomePage() {
               ))}
               {/* 凡例 */}
               <div style={{ position: "absolute", bottom: "14px", left: "14px", background: "rgba(255,255,255,0.92)", border: "1px solid var(--color-border)", borderRadius: "6px", padding: "10px 12px", display: "grid", gap: "6px", fontSize: "11px", zIndex: 5 }}>
-                {[{ color: "#b3214e", label: "拠点（明石）" }, { color: "#2c8068", label: "近郊エリア" }, { color: "#2c5fb8", label: "中距離エリア" }, { color: "#d97706", label: "遠方エリア" }].map((item) => (
+                {[{ color: "#b3214e", label: "拠点（神戸市西区）" }, { color: "#2c8068", label: "近郊エリア" }, { color: "#2c5fb8", label: "中距離エリア" }, { color: "#d97706", label: "遠方エリア" }].map((item) => (
                   <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                     <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: item.color, flexShrink: 0 }} />
                     {item.label}
@@ -450,7 +450,7 @@ export default async function HomePage() {
             <div>
               <h3 style={{ fontSize: "22px", marginBottom: "8px" }}>出張料金</h3>
               {[
-                { name: "エリアA", color: "linear-gradient(135deg,#3fb287,#2c8068)", desc: "神戸市全域・明石市・芦屋市・尼崎市・西宮市・姫路市・三田市・宝塚市 ほか", fee: "¥5,500" },
+                { name: "エリアA", color: "linear-gradient(135deg,#3fb287,#2c8068)", desc: "神戸市全域・明石市・芦屋市・尼崎市・西宮市・姫路市・加古川市 ほか", fee: "¥5,500" },
                 { name: "エリアB", color: "linear-gradient(135deg,#4a7fd6,#2c5fb8)", desc: "相生市・赤穂市・淡路市・大阪市全域・茨木市・高槻市 ほか", fee: "¥11,000" },
                 { name: "エリアC", color: "linear-gradient(135deg,#f5a83c,#d97706)", desc: "養父市・朝来市・豊岡市・京都府亀岡市", fee: "¥16,500" },
               ].map((area) => (
@@ -664,7 +664,7 @@ export default async function HomePage() {
                   { q: "診断だけでも来店できますか？", a: "もちろん大丈夫です。診断のみであれば無料です。お気軽にご来店ください。" },
                   { q: "修理にどれくらいかかりますか？", a: "内容により様々です。気になる方は作業前にお尋ねください。お見積りの段階で目安の所要時間をお伝えいたします。" },
                   { q: "WindowsとMac、どちらも対応していますか？", a: "どちらも対応可能です。デスクトップ・ノートPC・一体型など機種は問いません。" },
-                  { q: "出張費用はいくらかかりますか？", a: "¥5,500〜となります。エリアにより異なりますので、出張エリアのご案内をご確認ください。" },
+                  { q: "出張費用はいくらかかりますか？", a: "神戸市（全9区）と明石市は出張エリアAで、どこでも一律¥5,500です。そのほかの地域はエリアにより異なりますので、出張エリアのご案内をご確認ください。" },
                   { q: "着払いで送ってもいいですか？", a: "基本的に不可です。必ず元払いでお送りください。内容によっては可能な場合もありますので、事前にご相談ください。" },
                 ].map((item, i) => (
                   <details key={item.q} style={{ background: "#fff", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "0 2px 8px rgba(28,60,120,0.06)", border: "1px solid var(--color-border)" }}>
