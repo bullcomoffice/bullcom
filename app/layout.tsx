@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import VisitSourceTracker from "@/components/ui/VisitSourceTracker";
 
 const notoSansJP = Noto_Sans_JP({
   subsets: ["latin"],
@@ -135,6 +136,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="flex min-h-screen flex-col">
+        <VisitSourceTracker />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

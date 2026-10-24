@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { readVisitSource } from "@/lib/visit-source";
 
 // 問い合わせ内容へのURL混入チェック（サーバー側と同じ判定。送信前に即時フィードバックするため）
 // 「gmail.com」「office.com」やメールアドレスは正規の相談でも書かれるので拒否しない
@@ -22,6 +23,15 @@ export default function ContactForm() {
       setErrorMsg("お問い合わせ内容にURLは含めないでください。");
       setStatus("error");
       return;
+    }
+
+    // どのページから来た人かをメールに載せる（lib/visit-source.ts 参照）。
+    // Worker は「_」で始まらない項目をすべてメールの表に入れるので、末尾に足すだけで表の最後に載る
+    const source = readVisitSource();
+    if (source) {
+      data.append("最初に見たページ", source.landing);
+      data.append("流入元", source.referrer || "直接・不明");
+      data.append("直前に見たページ", source.last || "なし");
     }
 
     setStatus("sending");
