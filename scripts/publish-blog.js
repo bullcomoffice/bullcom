@@ -125,6 +125,13 @@ function markdownToHtml(md) {
     return `<ul>${items}</ul>`;
   });
 
+  // 見出し・リスト・表などのブロック要素の前後に空行を入れる。
+  // ※ 見出しやリストの直後に空行なしで段落が続くと、段落が <p> で包まれず、
+  //   中の太字・リンクが「**」「[…](…)」のまま残っていた（2026-10-30 修正）
+  html = html
+    .replace(/(<\/(?:h2|h3|ul|ol|table|pre)>|<hr>)/g, '$1\n\n')
+    .replace(/(<(?:h2|h3|ul|ol|table|pre)>|<hr>)/g, '\n\n$1');
+
   // 段落（空行で区切られたブロック）
   const blocks = html.split(/\n\n+/);
   html = blocks.map(block => {
