@@ -2,7 +2,8 @@ import Link from "next/link";
 
 // ブログ記事の本文直後に置く問い合わせ導線。
 // サイドバーの CTA はスマホでは「ブログ一覧へ戻る」より下に落ちて読まれないため、
-// 読み終えた位置で電話とフォームを案内する（LINE はスマホの追従ボタンがある）。
+// 読み終えた位置で電話・フォーム・LINE を案内する。
+// LINE は当初スマホの追従ボタンに任せていたが、11/1 週報で記事末尾からの電話が2週0・記事ページの LINE タップが週7件と分かり足した（A-33）。
 // 文言はサービス・料金・お問い合わせページの記載に合わせる。
 export default function ArticleCta() {
   return (
@@ -29,6 +30,14 @@ export default function ArticleCta() {
           </span>
           <svg className="article-cta__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </Link>
+        <a href="https://lin.ee/vX5z2Xf" target="_blank" rel="noopener noreferrer" data-line-loc="blog-article" className="article-cta__btn article-cta__btn--line">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.5 2 2 5.6 2 10c0 2.8 1.8 5.3 4.6 6.7-.1.6-.6 2.4-.7 2.7-.1.4.2.4.4.3.2-.1 2.6-1.8 3.7-2.5.7.1 1.3.1 2 .1 5.5 0 10-3.6 10-8.3S17.5 2 12 2z"/></svg>
+          <span className="article-cta__btn-text">
+            <small>24時間受付</small>
+            <strong>LINEで相談</strong>
+          </span>
+          <svg className="article-cta__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
       </div>
       <style>{`
         .article-cta { position: relative; overflow: hidden; margin-top: 32px; padding: 36px 40px; border-radius: var(--radius-lg); background-color: #0b2853; background-image: linear-gradient(135deg, rgba(9,31,68,.95), rgba(18,77,156,.9)), linear-gradient(to right, rgba(143,204,255,.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(143,204,255,.08) 1px, transparent 1px); background-size: auto, 28px 28px, 28px 28px; box-shadow: var(--shadow-lg); }
@@ -38,13 +47,17 @@ export default function ArticleCta() {
         .article-cta__eyebrow b { width: 7px; height: 7px; border-radius: 50%; background: #55dfa4; box-shadow: 0 0 0 3px rgba(85,223,164,.25); }
         .article-cta__title { margin: 0 0 6px; color: #fff; font-family: var(--font-display); font-size: 24px; font-weight: 700; line-height: 1.4; }
         .article-cta__lead { margin: 0 0 24px; color: #cfe0fa; font-size: 14px; line-height: 1.6; }
-        .article-cta__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .article-cta__actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+        /* 電話を1段目いっぱいに、フォームと LINE を2段目に並べる（3つ横並びだとスマホで電話番号が収まらない） */
+        .article-cta__btn--tel { grid-column: 1 / -1; }
         .article-cta__btn { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-radius: 14px; color: #fff; text-decoration: none; transition: transform .15s, box-shadow .15s, background .15s; }
         .article-cta__btn:hover { color: #fff; transform: translateY(-2px); }
         .article-cta__btn--tel { background: linear-gradient(135deg, #3d8bff, #1f5fd0); box-shadow: 0 1px 0 rgba(255,255,255,.3) inset, 0 10px 24px rgba(10,40,100,.45); }
         .article-cta__btn--tel:hover { box-shadow: 0 1px 0 rgba(255,255,255,.3) inset, 0 14px 30px rgba(10,40,100,.55); }
         .article-cta__btn--form { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.4); backdrop-filter: blur(4px); }
         .article-cta__btn--form:hover { background: rgba(255,255,255,.16); }
+        .article-cta__btn--line { background: #06c755; box-shadow: 0 1px 0 rgba(255,255,255,.25) inset, 0 10px 24px rgba(3,60,30,.35); }
+        .article-cta__btn--line:hover { box-shadow: 0 1px 0 rgba(255,255,255,.25) inset, 0 14px 30px rgba(3,60,30,.45); }
         .article-cta__btn svg { flex-shrink: 0; }
         .article-cta__arrow { margin-left: auto; opacity: .7; transition: transform .15s; }
         .article-cta__btn:hover .article-cta__arrow { transform: translateX(3px); opacity: 1; }
