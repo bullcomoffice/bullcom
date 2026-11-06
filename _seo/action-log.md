@@ -839,3 +839,12 @@ chatgpt.com（18）・openai（17）のAI経由も見えた。
 - **11/3 実施（ユーザー指示「LINEボタンも足して」）**: `ArticleCta.tsx` に「LINEで相談」（24時間受付・LINE の緑）を追加。電話を1段目いっぱいに、フォームと LINE を2段目に並べた（3つ横並びだとスマホで電話番号が収まらないため）。
   `data-line-loc="blog-article"`。ローカルで PC 幅・スマホ幅（375px）とも文字のはみ出しなし、クリックで `cv_line_tap`（link_location: blog-article）が送られることを確認
 - **11/3 12:11 手動デプロイ**（deploy.yml の workflow_dispatch・ユーザー承認）。本番のプリンター記事で LINE ボタン（data-line-loc="blog-article"）を確認、外形チェック 19/19 PASS。効果は 11/8 の週報で
+
+## A-34 Windows 11 の自動修復ループの修理案内ページ（/boot-repair）とトップの告知 🔵検証中（11/6 公開）
+- **起票**: 2026-11-06 ユーザー依頼（緊急）。2026年10月末から「デバイスで問題が発生したため、修復できませんでした」で起動しない PC の持ち込みが続き、11月上旬にリカバリーせず複数台を修復
+- **内容**: 原稿 `D:\Data\Dropbox\Shared\hp_video\hp_article.md` をもとに `/boot-repair` を新設（料金16,500円・直らなければ無料・データそのまま、実際の画面の動画、やってはいけないこと、FAQ、持ち込み・配送の案内）。
+  VideoObject・FAQPage・BreadcrumbList の構造化データ、sitemap に追加。トップのヒーロー直下にエラー画面つきの告知（`components/sections/BootRepairBanner.tsx`）
+- **載せていないこと**（原稿の社内メモ）: 原因の更新プログラムの番号、修復手順、「必ず直る」、修復できなかった PC の再インストール料金
+- 配送先はユーザー確認のうえ店舗住所で案内
+- **検証方法**: 週報で /boot-repair の表示・クリック（「自動修復 ループ」「修復できませんでした」などの検索語）、電話・LINE タップ（data-tel-loc / data-line-loc = boot-repair-top / boot-repair-bottom）
+- **注意**: 告知は落ち着いたら外す
