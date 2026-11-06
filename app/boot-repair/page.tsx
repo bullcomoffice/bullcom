@@ -21,8 +21,8 @@ const description =
 
 const PAGE_URL = "https://bullcom.jp/boot-repair";
 
-// YouTube の長い版（字幕・BGM つき、冒頭4秒のタイトルのぶん下の秒数は元の動画より4秒遅い）。Shorts は https://youtube.com/shorts/QlbEVj6WwqM
-const YOUTUBE_ID = "LEeEekbMNmE";
+// YouTube の長い版（字幕・BGM つき、冒頭4秒のタイトルのぶん下の秒数は元の動画より4秒遅い）。Shorts は https://youtube.com/shorts/H8sfmJUc7Ks
+const YOUTUBE_ID = "jbeoraonUh0";
 
 export const metadata: Metadata = {
   title,
