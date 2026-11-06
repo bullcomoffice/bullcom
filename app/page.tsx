@@ -4,6 +4,7 @@ import TerminalBg from "@/components/sections/TerminalBg";
 import ContactForm from "@/components/ui/ContactForm";
 import { getLatestBlogs } from "@/lib/microcms";
 import { catColors, defaultCatColor, formatDate } from "@/lib/blog-ui";
+import BootRepairBanner from "@/components/sections/BootRepairBanner";
 
 export const revalidate = 3600;
 
@@ -221,6 +222,9 @@ export default async function HomePage() {
           }
         `}</style>
       </section>
+
+      {/* ===== 緊急の告知（Windows 11 の自動修復ループ） ===== */}
+      <BootRepairBanner />
 
       {/* ===== CONCEPT ===== */}
       <section style={{

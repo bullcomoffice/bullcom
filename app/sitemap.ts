@@ -23,6 +23,7 @@ const STATIC_PATHS: { path: string; priority: number; changeFrequency: MetadataR
   { path: "/price", priority: 0.9, changeFrequency: "monthly" },
   { path: "/area/kobe", priority: 0.9, changeFrequency: "monthly" },
   { path: "/area/akashi", priority: 0.9, changeFrequency: "monthly" },
+  { path: "/boot-repair", priority: 0.9, changeFrequency: "weekly" },
   { path: "/faq", priority: 0.7, changeFrequency: "monthly" },
   { path: "/about", priority: 0.7, changeFrequency: "monthly" },
   { path: "/contact", priority: 0.8, changeFrequency: "monthly" },
