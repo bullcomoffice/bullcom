@@ -21,6 +21,9 @@ const description =
 
 const PAGE_URL = "https://bullcom.jp/boot-repair";
 
+// YouTube の長い版（字幕・BGM つき、冒頭4秒のタイトルのぶん下の秒数は元の動画より4秒遅い）。Shorts は https://youtube.com/shorts/QlbEVj6WwqM
+const YOUTUBE_ID = "LEeEekbMNmE";
+
 export const metadata: Metadata = {
   title,
   description,
@@ -37,17 +40,17 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: `${title}｜BULLCOM`, description, images: ["/videos/boot-loop-poster.jpg"] },
 };
 
-// 動画の流れ（原稿の秒数のまま）
+// 動画の流れ（YouTube 版の秒数。原稿の秒数に冒頭のタイトル4秒を足したもの）
 const timeline: [string, string][] = [
-  ["0:00", "メーカーロゴが表示される"],
-  ["0:06ごろ", "画面が消えて電源が落ちる（モニターに「映像信号がありません」）"],
-  ["0:15ごろ", "再びロゴが出て「自動修復を準備しています」"],
-  ["0:26ごろ", "また画面が消えて再起動"],
-  ["0:33ごろ", "「回復の準備をしています」"],
-  ["0:37ごろ", "「PC を診断中」"],
-  ["0:59ごろ", "「ネットワークに接続しています…」"],
-  ["1:36ごろ", "「ソリューションを探しています…」"],
-  ["2:11ごろ", "「デバイスで問題が発生したため、修復できませんでした。」"],
+  ["0:04", "メーカーロゴが表示される"],
+  ["0:10ごろ", "画面が消えて電源が落ちる（モニターに「映像信号がありません」）"],
+  ["0:19ごろ", "再びロゴが出て「自動修復を準備しています」"],
+  ["0:30ごろ", "また画面が消えて再起動"],
+  ["0:37ごろ", "「回復の準備をしています」"],
+  ["0:41ごろ", "「PC を診断中」"],
+  ["1:03ごろ", "「ネットワークに接続しています…」"],
+  ["1:40ごろ", "「ソリューションを探しています…」"],
+  ["2:15ごろ", "「デバイスで問題が発生したため、修復できませんでした。」"],
 ];
 
 const faqs = [
@@ -76,10 +79,11 @@ const jsonLd = [
     name: "Windows 11 が起動しない（自動修復ループ）症状の実際の画面",
     description:
       "メーカーロゴのあと電源が落ち、「自動修復を準備しています」「PC を診断中」「ソリューションを探しています」と進んだあと、「デバイスで問題が発生したため、修復できませんでした。」と表示されて起動しないWindows 11の実際の画面です。",
-    thumbnailUrl: "https://bullcom.jp/videos/boot-loop-poster.jpg",
-    contentUrl: "https://bullcom.jp/videos/boot-loop-symptom.mp4",
-    uploadDate: "2026-11-06T22:00:00+09:00",
-    duration: "PT2M19S",
+    thumbnailUrl: `https://i.ytimg.com/vi/${YOUTUBE_ID}/maxresdefault.jpg`,
+    embedUrl: `https://www.youtube.com/embed/${YOUTUBE_ID}`,
+    contentUrl: `https://www.youtube.com/watch?v=${YOUTUBE_ID}`,
+    uploadDate: "2026-11-06",
+    duration: "PT2M35S",
   },
   {
     "@context": "https://schema.org",
@@ -162,17 +166,19 @@ export default function BootRepairPage() {
 
           {/* 動画 */}
           <h2 className="boot-repair__h2">実際の画面（動画）</h2>
-          <video
+          {/* youtube-nocookie: 再生ボタンを押すまで YouTube の Cookie を置かない */}
+          <iframe
             className="boot-repair__video"
-            controls
-            playsInline
-            preload="metadata"
-            poster="/videos/boot-loop-poster.jpg"
-          >
-            <source src="/videos/boot-loop-symptom.mp4" type="video/mp4" />
-          </video>
+            src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}?rel=0`}
+            title="Windows 11 が起動しない（自動修復ループ）症状の実際の画面"
+            loading="lazy"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
           <p style={{ fontSize: "14px", color: "var(--color-text-soft)" }}>
-            実際に当社に持ち込まれたパソコンの画面です（音声なし・約2分20秒）。
+            実際に当社に持ち込まれたパソコンの画面です（字幕・BGM つき、約2分35秒）。
+            <a href={`https://www.youtube.com/watch?v=${YOUTUBE_ID}`} target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-primary-dark)", fontWeight: 600, marginLeft: "6px" }}>YouTube で見る</a>
           </p>
           <ol className="boot-repair__timeline">
             {timeline.map(([t, text]) => (
@@ -180,7 +186,7 @@ export default function BootRepairPage() {
             ))}
           </ol>
           <p style={{ fontSize: "13px", color: "var(--color-text-muted)" }}>
-            ※ 0:09〜0:12 ごろに出る四角い表示は、モニターの「信号なし」の表示です（パソコンの故障表示ではありません）。
+            ※ 0:13〜0:16 ごろに出る四角い表示は、モニターの「信号なし」の表示です（パソコンの故障表示ではありません）。
           </p>
 
           {/* 原因 */}
@@ -268,7 +274,7 @@ export default function BootRepairPage() {
         .boot-repair__screen p { margin: 0 0 14px; font-size: 15px; line-height: 1.7; }
         .boot-repair__screen .boot-repair__screen-log { margin: 22px 0 0; font-size: 12px; color: #bbb; word-break: break-all; }
         .boot-repair__list { padding-left: 22px; line-height: 2; margin-bottom: 16px; }
-        .boot-repair__video { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: var(--radius); display: block; margin-bottom: 10px; }
+        .boot-repair__video { width: 100%; aspect-ratio: 16 / 9; background: #000; border: 0; border-radius: var(--radius); display: block; margin-bottom: 10px; }
         .boot-repair__timeline { list-style: none; padding: 16px 20px; margin: 0 0 8px; background: var(--color-bg-soft); border: 1px solid var(--color-border); border-radius: var(--radius); font-size: 14px; line-height: 1.9; }
         .boot-repair__timeline li { display: grid; grid-template-columns: 80px 1fr; gap: 8px; }
         .boot-repair__timeline span { font-family: var(--font-en); font-weight: 700; color: var(--color-primary-dark); }
