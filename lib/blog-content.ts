@@ -72,6 +72,9 @@ export function fixBlogContent(html: string): string {
     isInternal(href) ? `<a href="${href}">` : m,
   );
 
+  // **太字** → <strong>（リッチエディタに Markdown の記号が残っている記事がある・2026-11-15 時点で26本）
+  out = out.replace(/\*\*([^*<>\n]{1,80})\*\*/g, "<strong>$1</strong>");
+
   // 横に長い表はスマホで横スクロールできるようにする
   out = out.replace(/<table>/g, '<div class="table-wrap"><table>').replace(/<\/table>/g, "</table></div>");
 
