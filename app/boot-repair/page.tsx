@@ -138,7 +138,7 @@ export default function BootRepairPage() {
                 <b className="boot-repair__offer-text">そのまま</b>
               </div>
             </div>
-            <p className="boot-repair__offer-note">持ち込み・配送修理に対応（配送の場合は往復の送料をご負担ください）</p>
+            <p className="boot-repair__offer-note"><strong>全国から配送修理を承ります</strong>（往復の送料はお客様のご負担）。神戸・明石の店舗への持ち込みも可</p>
             <div className="boot-repair__actions">
               <a href="tel:0789122656" data-tel-loc="boot-repair-top" className="btn btn-primary">電話で相談する 078-912-2656</a>
               <a href="https://lin.ee/vX5z2Xf" target="_blank" rel="noopener noreferrer" data-line-loc="boot-repair-top" className="btn btn-line">LINEで相談する</a>
@@ -189,6 +189,16 @@ export default function BootRepairPage() {
             ※ 0:13〜0:16 ごろに出る四角い表示は、モニターの「信号なし」の表示です（パソコンの故障表示ではありません）。
           </p>
 
+          <div className="boot-repair__mid">
+            <p className="boot-repair__mid-lead">同じ画面で止まっていたら、初期化する前にご相談ください</p>
+            <div className="boot-repair__actions">
+              <a href="tel:0789122656" data-tel-loc="boot-repair-mid-video" className="btn btn-primary">電話で相談する 078-912-2656</a>
+              <a href="https://lin.ee/vX5z2Xf" target="_blank" rel="noopener noreferrer" data-line-loc="boot-repair-mid-video" className="btn btn-line">LINEで相談する</a>
+              <Link href="/contact" className="btn btn-outline boot-repair__form-btn">フォームで相談する</Link>
+            </div>
+            <p className="boot-repair__mid-note">修理料金 16,500円（税込）・直らなければ0円・データはそのまま／全国から配送修理OK</p>
+          </div>
+
           {/* 原因 */}
           <h2 className="boot-repair__h2">原因について</h2>
           <p>
@@ -223,6 +233,16 @@ export default function BootRepairPage() {
               <li>何十回も電源の入れ直しを繰り返す</li>
             </ul>
             <p style={{ marginBottom: 0 }}><strong>画面が上の動画と同じなら、そのままの状態でご相談ください。</strong></p>
+          </div>
+
+          <div className="boot-repair__mid">
+            <p className="boot-repair__mid-lead">今の状態のまま、お電話・LINE・フォームでご連絡ください</p>
+            <div className="boot-repair__actions">
+              <a href="tel:0789122656" data-tel-loc="boot-repair-mid-warn" className="btn btn-primary">電話で相談する 078-912-2656</a>
+              <a href="https://lin.ee/vX5z2Xf" target="_blank" rel="noopener noreferrer" data-line-loc="boot-repair-mid-warn" className="btn btn-line">LINEで相談する</a>
+              <Link href="/contact" className="btn btn-outline boot-repair__form-btn">フォームで相談する</Link>
+            </div>
+            <p className="boot-repair__mid-note">修理料金 16,500円（税込）・直らなければ0円・データはそのまま／全国から配送修理OK</p>
           </div>
 
           {/* FAQ */}
@@ -290,6 +310,9 @@ export default function BootRepairPage() {
         .boot-repair__contact { margin-top: 48px; background: var(--color-bg-soft); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 32px; text-align: center; }
         .boot-repair__contact h2 { font-size: 22px; margin: 0 0 10px; }
         .boot-repair__contact > p { margin: 0 0 20px; }
+        .boot-repair__mid { margin: 32px 0 0; background: #f0f5ff; border: 1px solid #cddcf5; border-radius: var(--radius-lg); padding: 24px; text-align: center; }
+        .boot-repair__mid-lead { font-weight: 700; font-size: 17px; margin: 0 0 14px; color: var(--color-primary-dark); }
+        .boot-repair__mid-note { font-size: 13px; color: var(--color-text-soft); margin: 12px 0 0; }
         .boot-repair__form-btn { background: #fff; }
         .boot-repair__info { text-align: left; margin: 24px 0 0; display: grid; grid-template-columns: 110px 1fr; gap: 10px 16px; font-size: 14px; line-height: 1.8; }
         .boot-repair__info dt { font-weight: 700; color: var(--color-primary-dark); }
@@ -306,7 +329,7 @@ export default function BootRepairPage() {
           .boot-repair__offer-grid b.boot-repair__offer-text { font-size: 17px; }
           .boot-repair__actions .btn { width: 100%; }
           .boot-repair__screen p { font-size: 13px; }
-          .boot-repair__warn, .boot-repair__contact { padding: 20px 16px; }
+          .boot-repair__warn, .boot-repair__contact, .boot-repair__mid { padding: 20px 16px; }
           .boot-repair__info { grid-template-columns: 1fr; gap: 2px; }
           .boot-repair__info dd { margin-bottom: 10px; }
         }
