@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHero from "@/components/ui/PageHero";
+import CopyButton from "@/components/ui/CopyButton";
+
+const SHIP_ADDRESS = "〒651-2113 兵庫県神戸市西区伊川谷町有瀬846-10 ギャラリエ1F BULLCOM 宛（TEL 078-912-2656）";
 
 /**
  * Windows 11 の自動修復ループ（「デバイスで問題が発生したため、修復できませんでした」）の修理案内。
@@ -138,11 +141,30 @@ export default function BootRepairPage() {
                 <b className="boot-repair__offer-text">そのまま</b>
               </div>
             </div>
-            <p className="boot-repair__offer-note"><strong>全国から配送修理を承ります</strong>（往復の送料はお客様のご負担）。神戸・明石の店舗への持ち込みも可</p>
+            <p className="boot-repair__offer-note"><strong>全国から配送修理を承ります</strong>（往復の送料はお客様のご負担）。神戸・明石の店舗への持ち込みも可　<a href="#shipping" className="boot-repair__offer-ship">配送先を見る ↓</a></p>
             <div className="boot-repair__actions">
               <a href="tel:0789122656" data-tel-loc="boot-repair-top" className="btn btn-primary">電話で相談する 078-912-2656</a>
               <a href="https://lin.ee/vX5z2Xf" target="_blank" rel="noopener noreferrer" data-line-loc="boot-repair-top" className="btn btn-line">LINEで相談する</a>
             </div>
+          </div>
+
+          {/* 配送先（配送修理のお客様から「送り先が分かりにくい」と言われたため上部に置く・2026-11-22） */}
+          <div id="shipping" className="boot-repair__ship">
+            <p className="boot-repair__ship-label">配送修理の方へ</p>
+            <h2 className="boot-repair__ship-title">＜配送先＞</h2>
+            <div className="boot-repair__ship-addr">
+              <p className="boot-repair__ship-zip">〒651-2113</p>
+              <p className="boot-repair__ship-line">兵庫県神戸市西区伊川谷町有瀬846-10<br />ギャラリエ1F</p>
+              <p className="boot-repair__ship-name">BULLCOM（ブルコム）宛</p>
+              <p className="boot-repair__ship-tel">TEL 078-912-2656</p>
+              <CopyButton text={SHIP_ADDRESS} label="配送先をコピー" className="boot-repair__ship-copy" />
+            </div>
+            <ol className="boot-repair__ship-steps">
+              <li><strong>送る前に</strong>、お電話・LINE・フォームでご連絡ください</li>
+              <li>パソコン本体と<strong>電源アダプター</strong>を、緩衝材で包んで箱に入れてください</li>
+              <li><strong>お名前・お電話番号・返送先のご住所</strong>を書いたメモを同封してください</li>
+              <li><strong>元払い</strong>でお送りください（<strong>着払いはお受けできません</strong>）。返送の送料もお客様のご負担です</li>
+            </ol>
           </div>
 
           {/* 症状 */}
@@ -196,7 +218,7 @@ export default function BootRepairPage() {
               <a href="https://lin.ee/vX5z2Xf" target="_blank" rel="noopener noreferrer" data-line-loc="boot-repair-mid-video" className="btn btn-line">LINEで相談する</a>
               <Link href="/contact" className="btn btn-outline boot-repair__form-btn">フォームで相談する</Link>
             </div>
-            <p className="boot-repair__mid-note">修理料金 16,500円（税込）・直らなければ0円・データはそのまま／全国から配送修理OK</p>
+            <p className="boot-repair__mid-note">修理料金 16,500円（税込）・直らなければ0円・データはそのまま／全国から配送修理OK（<a href="#shipping">配送先</a>）</p>
           </div>
 
           {/* 原因 */}
@@ -242,7 +264,7 @@ export default function BootRepairPage() {
               <a href="https://lin.ee/vX5z2Xf" target="_blank" rel="noopener noreferrer" data-line-loc="boot-repair-mid-warn" className="btn btn-line">LINEで相談する</a>
               <Link href="/contact" className="btn btn-outline boot-repair__form-btn">フォームで相談する</Link>
             </div>
-            <p className="boot-repair__mid-note">修理料金 16,500円（税込）・直らなければ0円・データはそのまま／全国から配送修理OK</p>
+            <p className="boot-repair__mid-note">修理料金 16,500円（税込）・直らなければ0円・データはそのまま／全国から配送修理OK（<a href="#shipping">配送先</a>）</p>
           </div>
 
           {/* FAQ */}
@@ -269,7 +291,7 @@ export default function BootRepairPage() {
               <dt>持ち込み先</dt>
               <dd>〒651-2113 兵庫県神戸市西区伊川谷町有瀬846-10 ギャラリエ1F（<Link href="/about">アクセス</Link>）</dd>
               <dt>配送修理</dt>
-              <dd>全国から承ります。お送りいただく前に、お電話・LINE・フォームでご連絡ください。往復の送料はお客様のご負担です（元払い。目安は<Link href="/price">料金ページ</Link>）。</dd>
+              <dd>全国から承ります。お送りいただく前に、お電話・LINE・フォームでご連絡ください。往復の送料はお客様のご負担です（元払い。目安は<Link href="/price">料金ページ</Link>）。<a href="#shipping">配送先と送り方はこちら</a></dd>
             </dl>
           </div>
         </div>
@@ -290,6 +312,20 @@ export default function BootRepairPage() {
         .boot-repair__offer-note { text-align: center; font-size: 13px; color: #cfe0fa; margin: 0 0 20px; }
         .boot-repair__actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
         .boot-repair__actions .btn { padding: 14px 24px; font-size: 15px; justify-content: center; }
+        .boot-repair__offer-ship { color: #fcd34d; font-weight: 700; text-decoration: underline; white-space: nowrap; }
+        .boot-repair__ship { margin: 28px 0 0; background: #fffbea; border: 3px solid #f59e0b; border-radius: var(--radius-lg); padding: 28px 32px; scroll-margin-top: 90px; }
+        .boot-repair__ship-label { display: inline-block; background: #f59e0b; color: #fff; font-weight: 700; font-size: 13px; padding: 3px 12px; border-radius: 999px; margin: 0 0 8px; }
+        .boot-repair__ship-title { font-size: 26px; margin: 0 0 14px; color: #92400e; }
+        .boot-repair__ship-addr { background: #fff; border: 1px solid #fcd9a0; border-radius: var(--radius); padding: 20px 24px; margin-bottom: 18px; }
+        .boot-repair__ship-addr p { margin: 0; line-height: 1.6; }
+        .boot-repair__ship-zip { font-size: 16px; font-weight: 700; }
+        .boot-repair__ship-line { font-size: 22px; font-weight: 800; color: var(--color-text); margin: 2px 0 6px !important; }
+        .boot-repair__ship-name { font-size: 18px; font-weight: 700; }
+        .boot-repair__ship-tel { font-size: 15px; color: var(--color-text-soft); margin-top: 4px !important; }
+        .boot-repair__ship-copy { margin-top: 14px; background: #92400e; color: #fff; border: 0; border-radius: var(--radius); padding: 10px 18px; font-size: 14px; font-weight: 700; cursor: pointer; }
+        .boot-repair__ship-copy:hover { background: #78350f; }
+        .boot-repair__ship-steps { list-style: decimal; margin: 0; padding-left: 24px; line-height: 1.9; font-size: 15px; }
+        .boot-repair__mid-note a, .boot-repair__info a[href="#shipping"] { color: #b45309; font-weight: 700; }
         .boot-repair__screen { background: #000; color: #f2f2f2; border-radius: var(--radius); padding: 32px 20px; text-align: center; margin: 20px 0; }
         .boot-repair__screen p { margin: 0 0 14px; font-size: 15px; line-height: 1.7; }
         .boot-repair__screen .boot-repair__screen-log { margin: 22px 0 0; font-size: 12px; color: #bbb; word-break: break-all; }
@@ -328,6 +364,11 @@ export default function BootRepairPage() {
           .boot-repair__offer-grid b span { font-size: 10px; }
           .boot-repair__offer-grid b.boot-repair__offer-text { font-size: 17px; }
           .boot-repair__actions .btn { width: 100%; }
+          .boot-repair__ship { padding: 20px 16px; }
+          .boot-repair__ship-title { font-size: 22px; }
+          .boot-repair__ship-addr { padding: 16px; }
+          .boot-repair__ship-line { font-size: 18px; }
+          .boot-repair__ship-copy { width: 100%; }
           .boot-repair__screen p { font-size: 13px; }
           .boot-repair__warn, .boot-repair__contact, .boot-repair__mid { padding: 20px 16px; }
           .boot-repair__info { grid-template-columns: 1fr; gap: 2px; }
