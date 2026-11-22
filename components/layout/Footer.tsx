@@ -13,7 +13,7 @@ export default function Footer() {
             </div>
             <div className="footer-info">
               <strong>パソコン修理・設定 BULLCOM</strong>
-              〒651-2113<br />兵庫県神戸市西区伊川谷町846-10<br />ギャラリエ1F<br /><br />
+              〒651-2113<br />兵庫県神戸市西区伊川谷町有瀬846-10<br />ギャラリエ1F<br /><br />
               TEL: 078-912-2656<br />FAX: 078-939-6660<br />Mail: info@bullcom.jp<br /><br />
               事務所営業時間: 9:30〜15:30<br />連絡受付時間: 9:00〜19:00<br />定休日: 不定休
             </div>
