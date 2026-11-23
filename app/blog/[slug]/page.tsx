@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getBlogById, getBlogs } from "@/lib/microcms";
 import { buildDescription } from "@/lib/excerpt";
-import { fixBlogContent } from "@/lib/blog-content";
+import { fixBlogContent, insertMidCta } from "@/lib/blog-content";
 import PageHero from "@/components/ui/PageHero";
 import ArticleCta from "@/components/ui/ArticleCta";
 
@@ -153,7 +153,7 @@ export default async function BlogPostPage({ params }: Props) {
               {/* 本文 */}
               <div
                 className="blog-content"
-                dangerouslySetInnerHTML={{ __html: fixBlogContent(blog.content) }}
+                dangerouslySetInnerHTML={{ __html: insertMidCta(fixBlogContent(blog.content)) }}
                 style={{ background: "#fff", borderRadius: "var(--radius-lg)", padding: "40px", border: "1px solid var(--color-border)", boxShadow: "0 2px 8px rgba(28,60,120,0.04)" }}
               />
 
@@ -197,6 +197,17 @@ export default async function BlogPostPage({ params }: Props) {
         .blog-content th p, .blog-content td p { margin: 0; line-height: 1.7; }
         @media (max-width: 600px) { .blog-content th, .blog-content td { padding: 8px 10px; font-size: 14px; min-width: 5em; } }
         .blog-content blockquote { border-left: 4px solid var(--color-primary-light); padding: 12px 20px; margin: 16px 0; background: var(--color-bg-soft); border-radius: 0 var(--radius) var(--radius) 0; color: var(--color-text-soft); }
+        .blog-content .blog-mid-cta { margin: 32px 0; padding: 20px 22px; border: 2px solid var(--color-primary-light); border-radius: var(--radius-lg); background: var(--color-bg-soft); }
+        .blog-content .blog-mid-cta__lead { margin: 0 0 4px; color: var(--color-text); font-weight: 700; font-size: 16px; line-height: 1.6; }
+        .blog-content .blog-mid-cta__note { margin: 0 0 14px; font-size: 13px; line-height: 1.6; color: var(--color-text-soft); }
+        .blog-content .blog-mid-cta__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+        .blog-content .blog-mid-cta__btn { display: inline-flex; align-items: center; justify-content: center; padding: 11px 18px; border-radius: var(--radius); font-weight: 700; font-size: 15px; text-decoration: none; color: #fff; }
+        .blog-content .blog-mid-cta__btn--tel { background: var(--color-primary); }
+        .blog-content .blog-mid-cta__btn--line { background: #06c755; }
+        .blog-content .blog-mid-cta__btn--form { background: #fff; color: var(--color-primary); border: 1px solid var(--color-primary); }
+        .blog-content .blog-mid-cta__btn:hover { opacity: .9; color: #fff; }
+        .blog-content .blog-mid-cta__btn--form:hover { color: var(--color-primary); }
+        @media (max-width: 600px) { .blog-content .blog-mid-cta { padding: 16px 14px; } .blog-content .blog-mid-cta__actions { flex-direction: column; } .blog-content .blog-mid-cta__btn { width: 100%; } }
         @media (max-width: 900px) { .article-layout { grid-template-columns: 1fr !important; } }
       `}</style>
     </>
