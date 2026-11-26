@@ -1,8 +1,9 @@
 name: SNS Auto Post
 
+# 手動実行専用。CMS の公開での自動投稿は deploy.yml の中で行う
+# （Actions の無料枠の節約のため、デプロイと同じジョブにまとめた。2026-11）。
+# ここに repository_dispatch を戻すと、deploy.yml と二重に投稿処理が走るので戻さないこと。
 on:
-  repository_dispatch:
-    types: [microcms-publish]
   workflow_dispatch:
 
 jobs:

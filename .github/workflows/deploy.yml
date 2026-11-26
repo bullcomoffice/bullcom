@@ -5,6 +5,13 @@ on:
     types: [microcms-publish]
   workflow_dispatch:
 
+# 短時間に何本も起動したら、最後の1本だけを完走させる（後から起動した方が最新の内容でビルドする）。
+# ただし push で起動した回は、実行中の回を止めずに待つ。実行中の回が CMS の通知で起動していて
+# SNS 投稿の途中だと、push の回は投稿しないので投稿が落ちてしまうため（2026-11、SNS 投稿をまとめた時）。
+concurrency:
+  group: deploy
+  cancel-in-progress: ${{ github.event_name != 'push' }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -30,3 +37,96 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx wrangler deploy
+
+      # ── SNS 投稿 ──────────────────────────────────────────
+      # 以前は sns-post.yml で別ジョブとして並列に走らせていたが、Actions の無料枠の節約のため
+      # デプロイと同じジョブにまとめた（ジョブごとに分単位で切り上げて数えられるため。2026-11）。
+      # ・CMS の通知（repository_dispatch）のときだけ投稿する。push・手動では投稿しない
+      #   （手動で投稿したいときは sns-post.yml を workflow_dispatch で実行する）
+      # ・デプロイの後に置き、ページが出来てから投稿する。デプロイが失敗したら投稿しない
+      #   （直したら「Re-run jobs」でデプロイと投稿をまとめてやり直せる）
+      # ・1つの媒体が失敗しても次は試す。どれかが失敗したら最後のステップでジョブを失敗にする
+      # ・二重投稿は scripts/.last-posted-* （Actions のキャッシュで実行間に引き継ぐ）で防ぐ
+      # 投稿済み記事IDを実行間で引き継ぐ。
+      # scripts/.last-posted-* は .gitignore 対象で、CIは毎回まっさらな
+      # チェックアウトになるため、そのままでは重複防止がまったく効かない。
+      # 2026-09-21、記事本文を編集しただけで webhook が再発火し、同じ記事が
+      # IG・FB・GBP に二重投稿された。その再発防止。
+      # キャッシュキーは同一キーだと上書きできないので、run_id で毎回新規作成し
+      # restore-keys で直前のものを復元する（よくある write-through パターン）。
+      - name: Restore last-posted state
+        if: github.event_name == 'repository_dispatch'
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            scripts/.last-posted-id
+            scripts/.last-posted-ig-id
+            scripts/.last-posted-gbp-id
+          key: sns-last-posted-${{ github.run_id }}
+          restore-keys: |
+            sns-last-posted-
+
+      - name: Trigger Cloudflare rebuild (safety double-fire)
+        if: github.event_name == 'repository_dispatch'
+        continue-on-error: true
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$DEPLOY_HOOK_URL" ]; then
+            echo "CLOUDFLARE_DEPLOY_HOOK_URL not set, skipping"
+            exit 0
+          fi
+          echo "Triggering Cloudflare deploy hook..."
+          RESPONSE=$(curl -s -X POST "$DEPLOY_HOOK_URL")
+          echo "Response: $RESPONSE"
+
+      # X は 2026-05-26 に自動投稿を停止（手動運用。blog_check/bullcom_jp_x_schedule.md）
+
+      - name: Post to Instagram & Facebook
+        id: ig
+        if: github.event_name == 'repository_dispatch'
+        continue-on-error: true
+        env:
+          MICROCMS_SERVICE_DOMAIN: ${{ secrets.MICROCMS_SERVICE_DOMAIN }}
+          MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
+          IG_BUSINESS_ACCOUNT_ID: ${{ secrets.IG_BUSINESS_ACCOUNT_ID }}
+          IG_PAGE_ACCESS_TOKEN: ${{ secrets.IG_PAGE_ACCESS_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          SITE_URL: ${{ secrets.SITE_URL }}
+          SNS_HASHTAGS_IG: ${{ secrets.SNS_HASHTAGS_IG }}
+          SNS_POST_MAX_MINUTES: ${{ secrets.SNS_POST_MAX_MINUTES }}
+        run: node scripts/post-to-instagram.cjs
+
+      - name: Post to Google Business Profile
+        id: gbp
+        if: github.event_name == 'repository_dispatch'
+        continue-on-error: true
+        env:
+          MICROCMS_SERVICE_DOMAIN: ${{ secrets.MICROCMS_SERVICE_DOMAIN }}
+          MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
+          GBP_CLIENT_ID: ${{ secrets.GBP_CLIENT_ID }}
+          GBP_CLIENT_SECRET: ${{ secrets.GBP_CLIENT_SECRET }}
+          GBP_REFRESH_TOKEN: ${{ secrets.GBP_REFRESH_TOKEN }}
+          GBP_ACCOUNT_ID: ${{ secrets.GBP_ACCOUNT_ID }}
+          GBP_LOCATION_ID: ${{ secrets.GBP_LOCATION_ID }}
+          SITE_URL: ${{ secrets.SITE_URL }}
+          SNS_POST_MAX_MINUTES: ${{ secrets.SNS_POST_MAX_MINUTES }}
+        run: node scripts/post-to-gbp.cjs
+
+      # 投稿の成否にかかわらず保存する。途中で失敗しても、
+      # 次の実行で同じ記事を投稿し直さないことを優先する。
+      - name: Save last-posted state
+        if: always() && github.event_name == 'repository_dispatch'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            scripts/.last-posted-id
+            scripts/.last-posted-ig-id
+            scripts/.last-posted-gbp-id
+          key: sns-last-posted-${{ github.run_id }}
+
+      - name: SNS 投稿の失敗を知らせる
+        if: steps.ig.outcome == 'failure' || steps.gbp.outcome == 'failure'
+        run: |
+          echo "SNS 投稿に失敗しました（ig: ${{ steps.ig.outcome }} / gbp: ${{ steps.gbp.outcome }}）。上のログを確認してください"
+          exit 1
